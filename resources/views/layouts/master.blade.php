@@ -67,6 +67,6 @@
 <script src="{{ asset('/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('/vendor/metisMenu/metisMenu.min.js') }}"></script>
 <script src="{{ asset('/dist/js/sb-admin-2.js') }}"></script>
-
+@stack('scripts')
 </body>
 </html>

@@ -9,6 +9,10 @@
 	<li><a href="{{route('profile')}}">Dynamic</a> </li>
 @endpush
 
+@push('scripts')
+	<script>console.log('pushed');</script>
+@endpush
+
 @section('content')
 	<div class="col-lg-12">
 		<h1 class="page-header">Small Cents</h1>
