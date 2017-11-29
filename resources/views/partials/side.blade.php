@@ -23,7 +23,7 @@
 				<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Charts<span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">
 					<li>
-						<a href="{{ route('small_cent') }}">Small Cents</a>
+						<a href="{{ route('catList') }}">All Types</a>
 					</li>
 					<li>
 						<a href="{{ route('home') }}">Morris.js Charts</a>

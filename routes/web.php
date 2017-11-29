@@ -16,6 +16,8 @@ Route::get('/', function () {
 });
 
 require_once 'tuts/tutorials.php';
+require_once __DIR__.'/types/types.php';
+require_once __DIR__.'/types/categories.php';
 
 Auth::routes();
 

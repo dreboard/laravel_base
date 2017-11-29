@@ -17,7 +17,8 @@
 	<link href="{{ asset('/vendor/metisMenu/metisMenu.min.css') }}" rel="stylesheet">
 	<link href="{{ asset('/dist/css/sb-admin-2.css') }}" rel="stylesheet">
 	<link href="{{ asset('/vendor/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
-
+	<link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+    @stack('css')
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
@@ -66,6 +67,7 @@
 <script async src="{{ asset('/vendor/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('/vendor/metisMenu/metisMenu.min.js') }}"></script>
+<script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="{{ asset('/dist/js/sb-admin-2.js') }}"></script>
 @stack('scripts')
 </body>

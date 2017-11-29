@@ -12,3 +12,4 @@ yarn-error.log
 .env
 
 /dev_ops/logs/*
+/public/img/

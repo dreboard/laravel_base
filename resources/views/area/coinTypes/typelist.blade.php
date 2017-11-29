@@ -6,9 +6,9 @@
 
 {{-- Route Number 2--}}
 @push('side-menu')
-
-	<li><a href="{{route('profile')}}">All Types</a> </li>
-
+	@foreach($typeLinks as $typeLink)
+        <li><a href="{!! route('getType', [$typeLink]) !!}">{{$typeLink}}</a></li>
+	@endforeach
 @endpush
 
 @push('scripts')
@@ -20,9 +20,9 @@
 		<h1 class="page-header">Small Cents</h1>
 		<div class="table-responsive">
 			<table class="table table-striped">
-				@foreach($coins as $coin)
+				@foreach($typeList as $type)
 					<tr>
-						<td>{{$coin->coinName}}</td>
+						<td>{{$type}}</td>
 					</tr>
 				@endforeach
 			</table>

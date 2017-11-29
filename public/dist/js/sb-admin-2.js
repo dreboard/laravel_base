@@ -5,9 +5,8 @@
  */
 
 $(function() {
-	console.log('works');
-	//alert('works');
     $('#side-menu').metisMenu();
+    $('.dataTable').DataTable();
 });
 
 //Loads the correct sidebar on window load,

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Validator;
+use App\Http\Models\Coin;
 
 class HomeController extends Controller {
 	/**
@@ -30,8 +31,11 @@ class HomeController extends Controller {
 	 */
 	public function smallCent() {
 
-		return view( 'area.smallCent' );
+	    $coins = Coin::where('coinType', 'Lincoln Memorial')->orderBy('coinYear', 'desc')->get();
+
+		return view( 'area.smallCent', ['coins' => $coins] );
 	}
+
 
 	/**
 	 * @param Request $request
