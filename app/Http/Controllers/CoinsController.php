@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Auth;
 use PDO;
+use App\Exceptions\UnknownCoinException;
 
 /**
  * Class CategoriesController
@@ -41,6 +42,9 @@ class CoinsController
     public function getCoin(int $coin)
     {
         $coin = $coin;
+        if(null === $coin || empty($coin)){
+            throw new UnknownCoinException();
+        }
 
         try {
 
