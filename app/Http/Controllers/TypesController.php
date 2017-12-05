@@ -10,37 +10,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Coin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use PDO;
 
 class TypesController
 {
     protected $typeLinkArr = [];
-    protected $allTypes = [
-        'One Hundred Dollar',
-        'Fifty Dollar',
-        'Twenty Five Dollar',
-        'Twenty Dollar',
-        'Ten Dollar',
-        'Five Dollar',
-        'Four Dollar',
-        'Three Dollar',
-        'Quarter Eagle',
-        'Dollar',
-        'Gold Dollar',
-        'No Coin',
-        'Commemorative Dollar',
-        'Silver Dollar',
-        'Commemorative Half Dollar',
-        'Half Dollar',
-        'Quarter',
-        'Twenty Cent',
-        'Dime',
-        'Nickel',
-        'Half Dime',
-        'Three Cent',
-        'Two Cent',
-        'Large Cent',
-        'Small Cent',
-    ];
+
 
     /**
      * View Coin Types Page
@@ -66,31 +42,44 @@ class TypesController
     public function getType(string $type) {
         $type = strip_tags(str_replace('_', ' ', $type));
 
-        if(in_array($type, $this->allTypes)){
-            $typeLinks = array_map(array($this, 'createTypeLink'), $this->allTypes);
-            $coinType = Coin::where('coinCategory', "{$type}")->orderBy('coinYear', 'desc')->get();
-            return view( 'area.coinTypes.typeview', ['coinType' => $coinType, 'typeLinks' => $typeLinks, 'title' => $type] );
+        if('string' === gettype($type)){
+            //$typeLinks = array_map(array($this, 'createTypeLink'), $this->allTypes);
+
+            $category = $this->getThisCategory($type);
+            $coins = Coin::where('coinType', "{$type}")->orderBy('coinYear', 'desc')->get();
+            //return view( 'area.coinTypes.typeview', ['coinType' => $coinType, 'typeLinks' => $typeLinksDisplay, 'title' => $type] );
+            return view( 'area.coinTypes.typeview', [
+                'coinType' => $type,
+                'title' => $type,
+                'coins' => $coins,
+                'category' => $this->getThisCategory($type),
+                'catLink' => str_replace(' ', '_', $this->getThisCategory($type))
+            ] );
         }else {
             $this->typePage();
         }
 
-
-
-
-
     }
 
-    /**
-     * @return array
-     */
-    public function getAllTypes(): array
-    {
-        return $this->allTypes;
-    }
 
-    public function createTypeLink($value)
+
+    public function createTypeLink(string $value): string
     {
         return str_replace(' ', '_', $value);
     }
 
+    /**
+     * Get Category for this type
+     * @param $type
+     * @return string
+     */
+    public function getThisCategory(string $type): string
+    {
+        $pdo = DB::getPdo();
+        $statement = $pdo->prepare("call TypesGetThisCategory(:type)");
+        //$statement->setFetchMode(\PDO::FETCH_ASSOC);
+        $statement->bindValue(':type', str_replace('_', ' ', $type), PDO::PARAM_STR);
+        $statement->execute();
+        return $statement->fetchColumn();
+    }
 }

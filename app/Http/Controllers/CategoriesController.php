@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Created by PhpStorm.
  * User: owner
@@ -11,10 +12,17 @@ namespace App\Http\Controllers;
 use App\Http\Models\Coin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Auth;
+use PDO;
 
+/**
+ * Class CategoriesController
+ * @package App\Http\Controllers
+ */
 class CategoriesController
 {
     protected $typeLinkArr = [];
+
     protected $allCategories = [
         'One Hundred Dollar',
         'Fifty Dollar',
@@ -59,28 +67,44 @@ class CategoriesController
      * @param string $category
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getCategory(string $category) {
-        $category = strip_tags(str_replace('_', ' ', $category));
+    public function getCategory(string $category)
+    {
+        $category = \strip_tags(str_replace('_', ' ', $category));
 
-        if(\in_array($category, $this->allCategories, true)){
-            $catLinks = array_map(array($this, 'createCatLink'), $this->allCategories);
+        if (\in_array($category, $this->allCategories, true)) {
+            $catLinks = \array_map(array($this, 'createCatLink'), $this->allCategories);
             $coinCategory = Coin::where('coinCategory', "{$category}")->orderBy('coinYear', 'desc')->get();
+            $totalCollected = $this->categoryCollectedCountByUser($category, 5);
 
-            $coinTypes = DB::table('coins')
+/*            $coinTypes = DB::table('coins')
                 ->select('coinType')
                 ->where('coinCategory', '=', $category)
                 ->distinct('coins.coinType')
                 ->orderBy('coinYear', 'desc')
-                ->get();
+                ->get()->toArray();
+            */
 
-            return view( 'area.coinCategory.categoryview',
+
+
+            $pdo = DB::getPdo();
+            $statement = $pdo->prepare("SELECT DISTINCT coinType FROM coins WHERE coinCategory = :cat ORDER BY coinYear DESC");
+            //$statement->setFetchMode(\PDO::FETCH_ASSOC);
+            $statement->bindValue(':cat', str_replace('_', ' ', $category), PDO::PARAM_STR);
+            $statement->execute();
+            $coinTypes = $statement->fetchAll(PDO::FETCH_COLUMN, 0);
+            //var_dump(array_values($coinTypes));die;
+            $typeLinks = array_map([$this, 'createCatLink'], $coinTypes);
+            $typeLinksDisplay = array_combine(array_values($typeLinks), array_values($coinTypes));
+
+            return view('area.coinCategory.categoryview',
                 [
-                'coinCategory' => $coinCategory,
-                'catLinks' => $catLinks,
-                'title' => $category, 'coinTypes'=> $coinTypes
-            ]
+                    'totalCollected' => $totalCollected,
+                    'coinCategory' => $coinCategory,
+                    'catLinks' => $catLinks,
+                    'title' => $category, 'coinTypes' => $typeLinksDisplay
+                ]
             );
-        }else {
+        } else {
             $this->typePage();
         }
     }
@@ -100,7 +124,35 @@ class CategoriesController
      */
     public function createCatLink(string $value):string
     {
-        return str_replace(' ', '_', $value);
+        return \str_replace(' ', '_', $value);
+    }
+
+    public function getThisCategory()
+    {
+
+    }
+
+    /**
+     * @param string $category
+     * @param int $userID
+     * @return mixed
+     */
+    public function categoryCollectedCountByUser(string $category, int $userID)
+    {
+       /* $result = DB::select('call CategoryCollectedCountByUser(?, ?)', [$category, $userID]);
+        $count = collect($result)->toArray();
+        return $count[0]->catCount;*/
+//dd(\Auth::user()->id);
+        $pdo = DB::getPdo();
+        $statement = $pdo->prepare("call CategoryUserTotalInvestmentSumAll(:id, :cat)");
+
+        $statement->setFetchMode(\PDO::FETCH_ASSOC);
+        $statement->execute([$userID, $category]);
+        //$results = $statement->fetchAll();
+        //return $results[0]['catCount'];
+        return $statement->fetchColumn();
+
+
     }
 
 }

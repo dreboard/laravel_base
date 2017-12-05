@@ -10,7 +10,7 @@
 @endpush
 
 @push('scripts')
-	<script>console.log('pushed');</script>
+
 @endpush
 
 @push('css')
@@ -19,8 +19,12 @@
 
 @section('content')
 	<div class="col-lg-12">
-		<h1 class="page-header">{{$title}}</h1>
-        <p><a href="{!! route('getCategory', [$catLink]) !!}">{{$category}}</a> </p>
+
+        <div class="page-header">
+            <h1>{{$coinData['coinName']}} <br><small><a href="{!! route('getCategory', [$coinData['coinCategory']]) !!}">{{$coinData['coinCategory']}}</a> |
+                    <a href="{!! route('getType', [$coinData['coinType']]) !!}">{{$coinData['coinType']}}</a></small></h1>
+        </div>
+
 		<div class="table-responsive">
             <table class="table table-striped dataTable">
                 <thead>
@@ -35,11 +39,7 @@
                     <th>Type</th>
                 </tr>
                 </tfoot>
-                @foreach($coins as $t)
-                    <tr>
-                        <td><a href="{!! route('getCoin', [$t->coinID]) !!}"> {{$t->coinName}}</a></td><td>{{$t->coinVersion}}</td>
-                    </tr>
-                @endforeach
+
             </table>
 		</div>
 	</div>

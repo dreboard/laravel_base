@@ -19,17 +19,17 @@
 
 	<script>
         $(document).ready(function(){
-            $('.dataTable').DataTable();
+            //$('.dataTable').DataTable();
         });
 	</script>
 @endpush
 
 @section('content')
 	<div class="col-lg-12">
-		<h1 class="page-header">{{$title}}</h1>
+		<h1 class="page-header">{{$title}} {{$totalCollected}}</h1>
         <ul>
-            @foreach($coinTypes as $t)
-                <li><a href="{!! route('getCategory', [$t->coinType]) !!}">{{$t->coinType}}</a></li>
+            @foreach($coinTypes as $k => $v)
+                <li><a href="{!! route('getType', [$k]) !!}">{{$v}}</a></li>
             @endforeach
         </ul>
 		<div class="table-responsive">
