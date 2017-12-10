@@ -4,7 +4,6 @@ namespace Coins\Exceptions;
 
 use Exception;
 
-class UnknownCoinException extends Exception
-{
+class UnknownCoinCategoryException extends Exception{
 
 }

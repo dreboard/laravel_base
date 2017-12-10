@@ -1,6 +1,6 @@
 /*
 |--------------------------------------------------------------------------
-| Types MySQL Queries
+| Coin Types MySQL Queries
 |--------------------------------------------------------------------------
 |
 | This value is the name of your application. This value is used when the

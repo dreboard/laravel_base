@@ -9,7 +9,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Models\Coin;
+use App\Http\Models\{Coin, CoinCategory};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Auth;
@@ -51,6 +51,15 @@ class CategoriesController
         'Small Cent',
     ];
 
+    protected $getCoinCategory;
+
+    protected $thisCategory;
+
+    public function __construct()
+    {
+        $this->getCoinCategory = new CoinCategory();
+    }
+
     /**
      * View Coin Categories Page
      *
@@ -63,49 +72,42 @@ class CategoriesController
     }
 
     /**
+     * View Coin Category Page
      * Create Coin Category Links
      * @param string $category
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function getCategory(string $category)
     {
-        $category = \strip_tags(str_replace('_', ' ', $category));
+        try {
+            $this->thisCategory = \strip_tags(str_replace('_', ' ', $category));
 
-        if (\in_array($category, $this->allCategories, true)) {
-            $catLinks = \array_map(array($this, 'createCatLink'), $this->allCategories);
-            $coinCategory = Coin::where('coinCategory', "{$category}")->orderBy('coinYear', 'desc')->get();
-            $totalCollected = $this->categoryCollectedCountByUser($category, 5);
+            if (\in_array($this->thisCategory, $this->allCategories, true)) {
+                $catLinks = \array_map(array($this, 'createCatLink'), $this->allCategories);
+                $coinCategory = Coin::where('coinCategory', "{$this->thisCategory}")->orderBy('coinYear', 'desc')->get();
+                $totalCollected = $this->categoryCollectedCountByUser($this->thisCategory, 5);
+                //$catDetails = $this->getCoinCategory->getCategoryDetails($this->thisCategory);
 
-/*            $coinTypes = DB::table('coins')
-                ->select('coinType')
-                ->where('coinCategory', '=', $category)
-                ->distinct('coins.coinType')
-                ->orderBy('coinYear', 'desc')
-                ->get()->toArray();
-            */
+                $coinTypes = $this->getCoinCategory->getTypesByCategory($this->thisCategory);
 
 
+                $typeLinks = array_map([$this, 'createCatLink'], $coinTypes);
+                $typeLinksDisplay = array_combine(array_values($typeLinks), array_values($coinTypes));
 
-            $pdo = DB::getPdo();
-            $statement = $pdo->prepare("SELECT DISTINCT coinType FROM coins WHERE coinCategory = :cat ORDER BY coinYear DESC");
-            //$statement->setFetchMode(\PDO::FETCH_ASSOC);
-            $statement->bindValue(':cat', str_replace('_', ' ', $category), PDO::PARAM_STR);
-            $statement->execute();
-            $coinTypes = $statement->fetchAll(PDO::FETCH_COLUMN, 0);
-            //var_dump(array_values($coinTypes));die;
-            $typeLinks = array_map([$this, 'createCatLink'], $coinTypes);
-            $typeLinksDisplay = array_combine(array_values($typeLinks), array_values($coinTypes));
-
-            return view('area.coinCategory.categoryview',
-                [
-                    'totalCollected' => $totalCollected,
-                    'coinCategory' => $coinCategory,
-                    'catLinks' => $catLinks,
-                    'title' => $category, 'coinTypes' => $typeLinksDisplay
-                ]
-            );
-        } else {
-            $this->typePage();
+                return view(
+                    'area.coinCategory.categoryview',
+                    [
+                        'totalCollected' => $totalCollected,
+                        'coinCategory' => $coinCategory,
+                        'catLinks' => $catLinks,
+                        //'catDetails' => $catDetails,
+                        'title' => $category, 'coinTypes' => $typeLinksDisplay
+                    ]
+                );
+            }
+            $this->categoryPage();
+        } catch (\Throwable $e) {
+            $this->categoryPage();
         }
     }
 
@@ -151,8 +153,14 @@ class CategoriesController
         //$results = $statement->fetchAll();
         //return $results[0]['catCount'];
         return $statement->fetchColumn();
-
-
     }
 
+    /**
+     * View Coin Types Page
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function categoryPage() {
+
+    }
 }

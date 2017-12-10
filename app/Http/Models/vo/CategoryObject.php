@@ -1,6 +1,6 @@
 <?php
 /**
- * Coin Categories Entity Class
+ * Coin Categories Value Object Class
  * The purpose of this class is fill the categories
  * array with the listed properties when using
  * PDO::FetchClass
@@ -14,7 +14,7 @@ namespace App\Http\Models;
  * Class CoinCategories
  * @package App\Http\Models
  */
-class CategoryEntity
+class CategoryObject
 {
     /** @var int Database primary key */
     protected $coincategoriesID;
