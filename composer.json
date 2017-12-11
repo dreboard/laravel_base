@@ -26,6 +26,7 @@
         "psr-4": {
             "App\\": "app/",
             "Coins\\Exceptions\\": "app/Exceptions/Coin/",
+            "Coins\\Interfaces\\": "app/http/Interfaces",
             "Coins\\": "app/Http/Models/entities/"
         }
     },

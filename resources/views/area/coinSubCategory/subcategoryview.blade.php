@@ -5,12 +5,16 @@
 --}}
 
 {{-- Route Number 2--}}
-@push('side-menu')
 
-@endpush
+
 
 @push('scripts')
-	<script>console.log('pushed');</script>
+
+	<script>
+        $(document).ready(function(){
+
+        });
+	</script>
 @endpush
 
 @push('css')
@@ -19,10 +23,11 @@
 
 @section('content')
 	<div class="col-lg-12">
-		<h1 class="page-header">{{$title}}</h1>
-        <p><a href="{!! route('getCategory', [$catLink]) !!}">{{$category}}</a> </p>
+		<h1 class="page-header">{{$title}} {{-- $totalCollected --}}</h1>
+
 		<div class="table-responsive">
-            <table class="table table-striped dataTable">
+
+			<table class="table table-striped dataTable">
                 <thead>
                 <tr>
                     <th>Name</th>
@@ -35,13 +40,13 @@
                     <th>Type</th>
                 </tr>
                 </tfoot>
-                @foreach($coins as $t)
-                    <tr>
-                        <td><a href="{!! route('getCoin', [$t->coinID]) !!}"> {{$t->coinName}}</a></td>
-                        <td><a href="{!! route('getSubCategory', [str_replace(' ', '_', $t->coinSubCategory)]) !!}"> {{$t->coinSubCategory}}</a></td>
-                    </tr>
-                @endforeach
-            </table>
+				@foreach($coinSubCatCoins as $t)
+					<tr>
+                        <td><a href="{!! route('getCoin', [$t['coinID']]) !!}"> {{$t['coinName']}}</a></td>
+						<td>{{$t['mintMark']}}</td>
+					</tr>
+				@endforeach
+			</table>
 		</div>
 	</div>
 @endsection

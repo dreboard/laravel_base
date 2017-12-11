@@ -9,6 +9,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Coin;
+use App\Http\Models\CoinType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDO;
@@ -17,6 +18,14 @@ class TypesController
 {
     protected $typeLinkArr = [];
 
+    protected $typeModel;
+
+    protected $thisType;
+
+    public function __construct()
+    {
+        $this->typeModel = new CoinType();
+    }
 
     /**
      * View Coin Types Page
@@ -36,26 +45,29 @@ class TypesController
     }
 
     /**
+     * Get this coin type
      * @param string $type
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getType(string $type) {
-        $type = strip_tags(str_replace('_', ' ', $type));
+    public function getType(string $type)
+    {
+        $this->thisType = strip_tags(str_replace('_', ' ', $type));
 
-        if('string' === gettype($type)){
+        if ('string' === gettype($type)) {
             //$typeLinks = array_map(array($this, 'createTypeLink'), $this->allTypes);
 
-            $category = $this->getThisCategory($type);
-            $coins = Coin::where('coinType', "{$type}")->orderBy('coinYear', 'desc')->get();
+            $category = $this->getThisCategory($this->thisType);
+            $coins = $this->typeModel->getCoinType($this->thisType);
+            //$coins = Coin::where('coinType', "{$type}")->orderBy('coinYear', 'desc')->get();
             //return view( 'area.coinTypes.typeview', ['coinType' => $coinType, 'typeLinks' => $typeLinksDisplay, 'title' => $type] );
-            return view( 'area.coinTypes.typeview', [
-                'coinType' => $type,
-                'title' => $type,
+            return view('area.coinTypes.typeview', [
+                'coinType' => $this->thisType,
+                'title' => $this->thisType,
                 'coins' => $coins,
-                'category' => $this->getThisCategory($type),
-                'catLink' => str_replace(' ', '_', $this->getThisCategory($type))
-            ] );
-        }else {
+                'category' => $this->getThisCategory($this->thisType),
+                'catLink' => str_replace(' ', '_', $this->getThisCategory($this->thisType))
+            ]);
+        } else {
             $this->typePage();
         }
 

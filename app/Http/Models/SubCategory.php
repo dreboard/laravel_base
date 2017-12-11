@@ -1,6 +1,6 @@
 <?php
 /**
- * Class CoinVersion
+ * Class SubCategory
  * @package App\Http\Models
  */
 namespace App\Http\Models;
@@ -14,7 +14,7 @@ use PDO;
  * Class CoinCategory
  * @package App\Http\Models
  */
-class CoinVersion implements CoinInterface
+class SubCategory implements CoinInterface
 {
 
     /**
@@ -38,14 +38,14 @@ class CoinVersion implements CoinInterface
      * @return mixed
      * @throws UnknownCoinCategoryException
      */
-    public function getCoinVersions(string $version): array
+    public function getSubCategory(string $subCategory): array
     {
-        $statement = $this->pdo->prepare("call VersionGetAll(:ver)");
-        $statement->bindValue(':ver', str_replace('_', ' ', $version), PDO::PARAM_STR);
+        $statement = $this->pdo->prepare("call SubCategoryGetAll(:sub)");
+        $statement->bindValue(':sub', str_replace('_', ' ', $subCategory), PDO::PARAM_STR);
         $statement->execute();
         $coinTypes = $statement->fetchAll(PDO::FETCH_ASSOC);
         if (!$coinTypes) {
-            throw new UnknownCoinCategoryException("Could not get types from {$category}");
+            throw new UnknownCoinCategoryException("Could not get types from {$subCategory}");
         }
         return $coinTypes;
     }
@@ -55,10 +55,10 @@ class CoinVersion implements CoinInterface
      * @param $type
      * @return string
      */
-    public function getThisCategory(string $version): string
+    public function getThisCategory(string $subCategory): string
     {
-        $statement = $this->pdo->prepare("call VersionGetCategory(:cat)");
-        $statement->bindValue(':cat', str_replace('_', ' ', $version), PDO::PARAM_STR);
+        $statement = $this->pdo->prepare("call SubCategoryGetCategory(:sub)");
+        $statement->bindValue(':sub', str_replace('_', ' ', $subCategory), PDO::PARAM_STR);
         $statement->execute();
         return $statement->fetchColumn();
     }
@@ -68,10 +68,10 @@ class CoinVersion implements CoinInterface
      * @param $type
      * @return string
      */
-    public function getThisType(string $version): string
+    public function getThisType(string $subCategory): string
     {
-        $statement = $this->pdo->prepare("call VersionGetType(:cat)");
-        $statement->bindValue(':cat', str_replace('_', ' ', $version), PDO::PARAM_STR);
+        $statement = $this->pdo->prepare("call SubCategoryGetType(:sub)");
+        $statement->bindValue(':sub', str_replace('_', ' ', $subCategory), PDO::PARAM_STR);
         $statement->execute();
         return $statement->fetchColumn();
     }

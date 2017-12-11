@@ -10,37 +10,33 @@
 
 
 /*--------------------------------------------------VIEWS------------------------------------------------------------*/
-DROP VIEW IF EXISTS allCategoriesListView;
-CREATE VIEW allCategoriesListView AS SELECT DISTINCT coinCategory FROM `coins` ORDER BY denomination DESC;
-
-
-
-
 
 
 
 /*--------------------------------------------------FUNCTIONS------------------------------------------------------------*/
 
-/*
-Total Investments By Category FROM Source
 
-Collection::CategoryUserTotalInvestmentSum()
-REPLACE UserTotalInvestmentSumByCategory
-*/
+
+/*--------------------------------------------------PROCEDURES------------------------------------------------------------*/
+
 DELIMITER //
-DROP FUNCTION IF EXISTS categoryGetCoinTypesCount//
-CREATE FUNCTION categoryGetCoinTypesCount(p_type VARCHAR(20)) RETURNS INT
-
+DROP PROCEDURE IF EXISTS CoinTypeGetAll//
+CREATE PROCEDURE CoinTypeGetAll
+  (IN type VARCHAR(100)
+)
+  /***********************************************************
+  Authors Name : Andre Board
+  Created Date : 2017-12-01
+  Description : Get coin coinTypeegory.
+                MODEL-CoinVersion::getVersion().
+  ************************************************************/
   BEGIN
-    DECLARE typesCollected INT;
-
-    SELECT coinCategory FROM coins WHERE coinType = p_type;
-
-    RETURN typesCollected;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Type not found';
+    SELECT * FROM coins WHERE coinType = type
+    ORDER BY coinName ASC;
   END//
 DELIMITER ;
 
-/*--------------------------------------------------PROCEDURES------------------------------------------------------------*/
 
 /*
 Get Category for this type
@@ -54,6 +50,9 @@ CREATE PROCEDURE TypesGetThisCategory
     SELECT coinCategory FROM coins WHERE coinType = p_type;
   END//
 DELIMITER ;
+
+
+
 
 
 
