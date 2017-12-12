@@ -33,7 +33,10 @@ CREATE PROCEDURE CoinTypeGetAll
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Type not found';
     SELECT * FROM coins WHERE coinType = type
-    ORDER BY coinName ASC;
+    ORDER BY coinSubCategory ASC;
+
+    #SELECT * FROM (SELECT * FROM coins c1 WHERE c1.coinType = type ORDER BY c1.coinYear DESC) coins GROUP BY coins.coinSubCategory;
+
   END//
 DELIMITER ;
 

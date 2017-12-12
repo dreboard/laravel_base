@@ -68,7 +68,7 @@
 <script src="{{ asset('/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('/vendor/metisMenu/metisMenu.min.js') }}"></script>
 <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
-<script src="{{ asset('/dist/js/sb-admin-2.js') }}"></script>
+<script src="{{ asset('/dist/js/coin_app.js') }}"></script>
 @stack('scripts')
 </body>
 </html>

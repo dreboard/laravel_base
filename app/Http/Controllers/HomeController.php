@@ -36,35 +36,6 @@ class HomeController extends Controller {
 		return view( 'area.smallCent', ['coins' => $coins] );
 	}
 
-
-	/**
-	 * @param Request $request
-	 * @param \Illuminate\Validation\Factory $validator
-	 *
-	 * @return \Illuminate\Http\RedirectResponse
-	 */
-	public function searching(Request $request, \Illuminate\Validation\Factory $validator) {
-		$validation = $validator->make( $request->all(),
-			[
-				'search' => 'required|max:22|alpha_num|min:2'
-			]
-		);
-		if($validation->fails()){
-			return redirect()->back()->withErrors($validation);
-		}
-		return view( 'area.search', ['search' => $request->input('search')] );
-		//return view( 'area.search', ['search' => $request->input('search')] );
-		return redirect()
-			->route('displaySearch');
-			//->with('info', "You searched for {$request->input('search')}");
-		/*$this->validate($request,[
-			'search'=>'required|max:22',
-		]);*/
-		//$search = $request->input('search');
-		//return redirect('area.search', ['search' => $search])->with('status', 'You have successfully searched!');
-		//
-	}
-
 	/**
 	 * @param Request $request
 	 *

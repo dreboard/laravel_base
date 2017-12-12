@@ -81,8 +81,9 @@ class CategoriesController
     {
         try {
             $this->thisCategory = \strip_tags(str_replace('_', ' ', $category));
-
-            if (\in_array($this->thisCategory, $this->allCategories, true)) {
+dd(Config::get('coins.coinCategories'));
+            if (\in_array($this->thisCategory, config('constants.coinCategories'), true)) {
+            //if (\in_array($this->thisCategory, $this->allCategories, true)) {
                 $catLinks = \array_map(array($this, 'createCatLink'), $this->allCategories);
                 $coinCategory = Coin::where('coinCategory', "{$this->thisCategory}")->orderBy('coinYear', 'desc')->get();
                 $totalCollected = $this->categoryCollectedCountByUser($this->thisCategory, 5);

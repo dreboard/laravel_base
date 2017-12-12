@@ -25,6 +25,10 @@
 	<div class="col-lg-12">
 		<h1 class="page-header">{{$title}} {{-- $totalCollected --}}</h1>
 
+        <ul>
+            <li><a href="{!! route('getCategory', [str_replace(' ', '_', $coinCategory)]) !!}">{{$coinCategory}}</a></li>
+            <li><a href="{!! route('getType', [str_replace(' ', '_', $coinType)]) !!}">{{$coinType}}</a></li>
+        </ul>
 		<div class="table-responsive">
 
 			<table class="table table-striped dataTable">

@@ -21,16 +21,18 @@ require_once __DIR__.'/types/categories.php';
 require_once __DIR__.'/types/coins.php';
 require_once __DIR__.'/types/versions.php';
 require_once __DIR__.'/types/subcategory.php';
+require_once __DIR__.'/types/designs.php';
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::post('/searching', 'SearchController@searching')->name('searching');
+Route::get('/searching', 'SearchController@searching')->name('searching');
+
 Auth::routes();
 
 Route::get('/small_cent', 'HomeController@smallCent')->name('small_cent');
-Route::post('/searching', 'HomeController@searching')->name('searching');
-Route::get('/searching', 'HomeController@searching')->name('searching');
 
 
 //Profiles

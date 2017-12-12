@@ -1,7 +1,9 @@
 /*!
- * Start Bootstrap - SB Admin 2 v3.3.7+1 (http://startbootstrap.com/template-overviews/sb-admin-2)
- * Copyright 2013-2016 Start Bootstrap
- * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ * Coin App JS v1.0.0
+ *
+ * Main javascript file for elements that exits in master template
+ * Copyright 2017 Coin App
+ * Licensed under MIT
  */
 
 $(function() {
@@ -9,6 +11,9 @@ $(function() {
     $('.dataTable').DataTable();
 });
 
+/*!
+ * Sidebar search form
+ */
 $(document).ready(function() {
     $('#searchForm').on("submit", function(e){
         if($('#search').val() == ''){
