@@ -1,6 +1,6 @@
 <?php
 /**
- * Search Model
+ * Search Model.
  * Search database for requested item from search form
  * or advanced search form.
  * @since v0.1.1
@@ -48,5 +48,13 @@ class Search
             throw new UnknownCoinException("Could not get {$item}");
         }
         return $coinTypes;
+    }
+
+    public function countSearchItem(string $item)
+    {
+        $statement = $this->pdo->prepare("call CountSearchItem(:item)");
+        $statement->bindValue(':item', str_replace('_', ' ', $item), PDO::PARAM_STR);
+        $statement->execute();
+        return $statement->fetchColumn();
     }
 }

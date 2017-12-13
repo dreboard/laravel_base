@@ -1,11 +1,10 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: owner
- * Date: 11/27/2017
- * Time: 10:34 PM
+ * Coin Types Controller
+ * Routing class for coin types
+ * @since v0.1.1
+ * @package App\Http\Controllers
  */
-
 namespace App\Http\Controllers;
 
 use App\Http\Models\Coin;

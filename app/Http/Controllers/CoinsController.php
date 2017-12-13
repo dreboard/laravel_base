@@ -35,8 +35,8 @@ class CoinsController
             $statement->execute();
             $coinData = $statement->fetch(PDO::FETCH_ASSOC);
 
-            //dd($coinData);
-            return view('area.coins.coinview',
+            return view(
+                'area.coins.coinview',
                 [
                     'coinData' => $coinData
                 ]

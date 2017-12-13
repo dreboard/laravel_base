@@ -1,10 +1,10 @@
 <?php
 declare(strict_types=1);
 /**
- * Created by PhpStorm.
- * User: owner
- * Date: 11/27/2017
- * Time: 10:34 PM
+ * Category Controller
+ * Routing class for coin category
+ * @since v0.1.1
+ * @package App\Http\Controllers
  */
 
 namespace App\Http\Controllers;
@@ -81,17 +81,15 @@ class CategoriesController
     {
         try {
             $this->thisCategory = \strip_tags(str_replace('_', ' ', $category));
-dd(Config::get('coins.coinCategories'));
-            if (\in_array($this->thisCategory, config('constants.coinCategories'), true)) {
-            //if (\in_array($this->thisCategory, $this->allCategories, true)) {
+
+            //if (\in_array($this->thisCategory, config('constants.coinCategories'), true)) {
+            if (\in_array($this->thisCategory, $this->allCategories, true)) {
                 $catLinks = \array_map(array($this, 'createCatLink'), $this->allCategories);
                 $coinCategory = Coin::where('coinCategory', "{$this->thisCategory}")->orderBy('coinYear', 'desc')->get();
                 $totalCollected = $this->categoryCollectedCountByUser($this->thisCategory, 5);
                 //$catDetails = $this->getCoinCategory->getCategoryDetails($this->thisCategory);
 
                 $coinTypes = $this->getCoinCategory->getTypesByCategory($this->thisCategory);
-
-
                 $typeLinks = array_map([$this, 'createCatLink'], $coinTypes);
                 $typeLinksDisplay = array_combine(array_values($typeLinks), array_values($coinTypes));
 
@@ -108,7 +106,7 @@ dd(Config::get('coins.coinCategories'));
             }
             $this->categoryPage();
         } catch (\Throwable $e) {
-            $this->categoryPage();
+            echo $e->getMessage(), $e->getLine();
         }
     }
 

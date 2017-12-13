@@ -1,6 +1,6 @@
 /*
 |--------------------------------------------------------------------------
-| Coin Search MySQL Queries
+| Coin Version MySQL Queries
 |--------------------------------------------------------------------------
 |
 | This value is the name of your application. This value is used when the
@@ -12,6 +12,13 @@
 
 
 /*--------------------------------------------------VIEWS------------------------------------------------------------*/
+DROP VIEW IF EXISTS allCategoriesListView;
+CREATE VIEW allCategoriesListView AS SELECT DISTINCT coinCategory FROM `coins` ORDER BY denomination DESC;
+
+
+
+
+
 
 
 /*--------------------------------------------------FUNCTIONS------------------------------------------------------------*/
@@ -26,99 +33,85 @@ Collection::CategoryUserTotalInvestmentSum()
 REPLACE UserTotalInvestmentSumByCategory
 */
 DELIMITER //
-DROP FUNCTION IF EXISTS subcatGetCount//
-CREATE FUNCTION subcatGetCount(subcat VARCHAR(20)) RETURNS INT
+DROP FUNCTION IF EXISTS designGetCount//
+CREATE FUNCTION designGetCount(design VARCHAR(20)) RETURNS INT
 
   BEGIN
-    DECLARE coinSubCategoryCollected INT;
+    DECLARE designsCollected INT;
 
-    SELECT COUNT(DISTINCT coins.coinVersion) INTO coinSubCategoryCollected FROM coins
-    WHERE coins.coinSubCategory = subcat;
+    SELECT COUNT(DISTINCT coins.coinVersion) INTO designsCollected FROM coins
+    WHERE coins.coinVersion = design;
 
-    RETURN coinSubCategoryCollected;
+    RETURN designsCollected;
   END//
 DELIMITER ;
 
 /*--------------------------------------------------PROCEDURES------------------------------------------------------------*/
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS FindSearchItem//
-CREATE PROCEDURE FindSearchItem
-  (IN searchItem VARCHAR(100)
+DROP PROCEDURE IF EXISTS DesignGetAll//
+CREATE PROCEDURE DesignGetAll
+  (
+    IN design VARCHAR(100)
  )
   /***********************************************************
   Authors Name : Andre Board
   Created Date : 2017-12-01
-  Description : Search coins for item.
-                MODEL-Search::findItem().
+  Description : Get coin design.
+                MODEL-CoinDesign::getDesign().
   ************************************************************/
   BEGIN
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Item not found';
-    SELECT * FROM coins
-    WHERE
-      (
-        coinName LIKE CONCAT('%', searchItem , '%')
-        OR
-        coinType LIKE CONCAT('%', searchItem, '%')
-        OR
-        coins.coinVersion LIKE CONCAT('%', searchItem, '%')
-        OR
-        design LIKE CONCAT('%', searchItem, '%')
-      )
-    ORDER BY coinName ASC;
-  END//
-DELIMITER ;
-
-DELIMITER //
-DROP PROCEDURE IF EXISTS CountSearchItem//
-CREATE PROCEDURE CountSearchItem
-  (IN searchItem VARCHAR(100)
-  )
-  /***********************************************************
-  Authors Name : Andre Board
-  Created Date : 2017-12-01
-  Description : Search count for item.
-                MODEL-Search::findItem().
-  ************************************************************/
-  BEGIN
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Item not found';
-    SELECT COUNT(*) FROM coins
-    WHERE
-      (
-        coinName LIKE CONCAT('%', searchItem , '%')
-        OR
-        coinType LIKE CONCAT('%', searchItem, '%')
-        OR
-        coins.coinVersion LIKE CONCAT('%', searchItem, '%')
-        OR
-        design LIKE CONCAT('%', searchItem, '%')
-      )
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Design not found';
+    SELECT * FROM coins WHERE coins.design = design
     ORDER BY coinName ASC;
   END//
 DELIMITER ;
 
 
 DELIMITER //
-DROP PROCEDURE IF EXISTS AdvancedSearchItem//
-CREATE PROCEDURE AdvancedSearchItem
+DROP PROCEDURE IF EXISTS DesignCoinTypes//
+CREATE PROCEDURE DesignCoinTypes
   (
-    IN searchItem VARCHAR(100),
-    IN searchCategory VARCHAR(100)
+    IN design VARCHAR(100)
   )
   /***********************************************************
   Authors Name : Andre Board
   Created Date : 2017-12-01
-  Description : Search coins for item.
-                MODEL-Search::findItem().
+  Description : Get coin designs type.
+                MODEL-CoinVersion::getVersion().
   ************************************************************/
   BEGIN
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Item not found';
-    SELECT * FROM coins WHERE coinName LIKE CONCAT('%', searchItem , '%')
-    ORDER BY coinName ASC;
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Design not found';
+    SELECT DISTINCT( coinType ) FROM coins WHERE coins.design = design
+    ORDER BY denomination ASC;
   END//
 DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS DesignCoinCategory//
+CREATE PROCEDURE DesignCoinCategory
+  (
+    IN design VARCHAR(100)
+  )
+  /***********************************************************
+  Authors Name : Andre Board
+  Created Date : 2017-12-01
+  Description : Get coin designs category.
+                MODEL-CoinVersion::getVersion().
+  ************************************************************/
+  BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Design not found';
+    SELECT DISTINCT( coinCategory ) FROM coins WHERE coins.design = design
+    ORDER BY denomination ASC;
+  END//
+DELIMITER ;
+
 
 /*--------------------------------------------------TRIGGERS------------------------------------------------------------*/
+
+
+
+
 
 
 

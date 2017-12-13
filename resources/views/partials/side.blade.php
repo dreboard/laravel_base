@@ -68,16 +68,16 @@
 				<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Designs<span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">
 					<li>
-						<a href="{{ route('catList') }}">Liberty Cap</a>
+						<a href="{!! route('getDesign', ['Liberty_Cap']) !!}">Liberty Cap</a>
 					</li>
 					<li>
-						<a href="{{ route('home') }}">Draped Bust</a>
+						<a href="{!! route('getDesign', ['Draped_Bust']) !!}">Draped Bust</a>
 					</li>
 					<li>
-						<a href="{{ route('home') }}">Seated</a>
+						<a href="{!! route('getDesign', ['Seated_Liberty']) !!}">Seated</a>
 					</li>
 					<li>
-						<a href="{{ route('home') }}">Barber</a>
+						<a href="{!! route('getDesign', ['Barber']) !!}">Barber</a>
 					</li>
 					<li>
 					<li><a href="{!! route('getDesign', ['Flowing_Hair']) !!}">Flowing Hair</a></li>

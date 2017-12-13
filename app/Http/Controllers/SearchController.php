@@ -31,13 +31,14 @@ class SearchController extends Controller
      * @param \Illuminate\Validation\Factory $validator
      *
      * @return \Illuminate\Http\RedirectResponse
+     * @todo add alpha_num with spaces validator
      */
     public function searching(Request $request, \Illuminate\Validation\Factory $validator)
     {
         $validation = $validator->make(
             $request->all(),
             [
-                'search' => 'required|max:22|alpha_num|min:2'
+                'search' => 'required|max:22|min:2'
             ]
         );
         if ($validation->fails()) {
@@ -45,12 +46,14 @@ class SearchController extends Controller
         }
         $item = $request->input('search');
         $results = $this->searchModel->findItem($item);
+        $count = $this->searchModel->countSearchItem($item);
 
         return view(
             'area.search',
             [
                 'search' => $results,
-                'term' => $item
+                'term' => $item,
+                'count' => $count
             ]
         );
         //return view( 'area.search', ['search' => $request->input('search')] );

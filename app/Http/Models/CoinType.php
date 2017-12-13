@@ -1,11 +1,10 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: owner
- * Date: 12/3/2017
- * Time: 4:06 AM
+ * Coin Type Model.
+ * Search database for coin type
+ * @since v0.1.1
+ * @package App\Http\Models
  */
-
 namespace App\Http\Models;
 
 use Coins\Exceptions\UnknownCoinTypeException;

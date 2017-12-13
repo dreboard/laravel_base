@@ -2,7 +2,7 @@
 
 @section('content')
 	<div class="col-lg-12">
-		<h1 class="page-header">Results for: {{$term}} {{-- $totalCollected --}}</h1>
+		<h3 class="page-header">{{ $count }} Results for: {{$term}}</h3>
 
 		<div class="table-responsive">
 

@@ -6,15 +6,15 @@
  * Licensed under MIT
  */
 
-$(function() {
-    $('#side-menu').metisMenu();
-    $('.dataTable').DataTable();
-});
-
 /*!
  * Sidebar search form
  */
 $(document).ready(function() {
+
+    $('#side-menu').metisMenu();
+    $('.dataTable').DataTable();
+
+
     $('#searchForm').on("submit", function(e){
         if($('#search').val() == ''){
             e.preventDefault();
@@ -22,13 +22,13 @@ $(document).ready(function() {
         }
         return true;
     });
-});
+
 
 
 //Loads the correct sidebar on window load,
 //collapses the sidebar on window resize.
 // Sets the min-height of #page-wrapper to window size
-$(function() {
+
     $(window).bind("load resize", function() {
         var topOffset = 50;
         var width = (this.window.innerWidth > 0) ? this.window.innerWidth : this.screen.width;

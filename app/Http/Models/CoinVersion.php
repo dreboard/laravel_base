@@ -1,6 +1,8 @@
 <?php
 /**
- * Class CoinVersion
+ * CoinVersion Model.
+ * Search database for coin version
+ * @since v0.1.1
  * @package App\Http\Models
  */
 namespace App\Http\Models;
@@ -11,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 use PDO;
 
 /**
- * Class CoinCategory
+ * Class CoinVersion
  * @package App\Http\Models
  */
 class CoinVersion implements CoinInterface
