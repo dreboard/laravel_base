@@ -24,6 +24,24 @@ CREATE VIEW allCategoriesListView AS SELECT DISTINCT coinCategory FROM `coins` O
 /*--------------------------------------------------FUNCTIONS------------------------------------------------------------*/
 
 
+DELIMITER //
+DROP PROCEDURE IF EXISTS CategoryGetAll//
+CREATE PROCEDURE CategoryGetAll
+  (
+    IN category VARCHAR(100)
+  )
+  /***********************************************************
+  Authors Name : Andre Board
+  Created Date : 2017-12-01
+  Description : Get coin category.
+                MODEL-CoinDesign::getDesign().
+  ************************************************************/
+  BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'category not found';
+    SELECT * FROM coins WHERE coins.coinCategory = category
+    ORDER BY coinName DESC;
+  END//
+DELIMITER ;
 
 
 /*

@@ -53,11 +53,14 @@ class CategoriesController
 
     protected $getCoinCategory;
 
+    protected $categoryModel;
+
     protected $thisCategory;
 
     public function __construct()
     {
         $this->getCoinCategory = new CoinCategory();
+        $this->categoryModel = new CoinCategory();
     }
 
     /**
@@ -86,6 +89,7 @@ class CategoriesController
             if (\in_array($this->thisCategory, $this->allCategories, true)) {
                 $catLinks = \array_map(array($this, 'createCatLink'), $this->allCategories);
                 $coinCategory = Coin::where('coinCategory', "{$this->thisCategory}")->orderBy('coinYear', 'desc')->get();
+                $coins = $this->categoryModel->getCoinCategory($this->thisCategory);
                 $totalCollected = $this->categoryCollectedCountByUser($this->thisCategory, 5);
                 //$catDetails = $this->getCoinCategory->getCategoryDetails($this->thisCategory);
 
@@ -97,7 +101,7 @@ class CategoriesController
                     'area.coinCategory.categoryview',
                     [
                         'totalCollected' => $totalCollected,
-                        'coinCategory' => $coinCategory,
+                        'coins' => $coins,
                         'catLinks' => $catLinks,
                         //'catDetails' => $catDetails,
                         'title' => $category, 'coinTypes' => $typeLinksDisplay

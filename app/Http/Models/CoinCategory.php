@@ -29,7 +29,23 @@ class CoinCategory
         $this->pdo = DB::getPdo();
     }
 
-
+    /**
+     * Get all coins by Category
+     * @param string $category
+     * @return mixed
+     * @throws UnknownCoinCategoryException
+     */
+    public function getCoinCategory(string $category): array
+    {
+        $statement = $this->pdo->prepare("call CategoryGetAll(:category)");
+        $statement->bindValue(':category', str_replace('_', ' ', $category), PDO::PARAM_STR);
+        $statement->execute();
+        $coins = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if (!$coins) {
+            throw new UnknownCoinCategoryException("Could not get coins from {$category}");
+        }
+        return $coins;
+    }
 
     /**
      * Get Category Distinct Types

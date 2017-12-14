@@ -64,7 +64,7 @@
 --}}
 
 
-<script async src="{{ asset('/vendor/jquery/jquery.min.js') }}"></script>
+<script src="{{ asset('/vendor/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
 <script src="{{ asset('/vendor/metisMenu/metisMenu.min.js') }}"></script>
 <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
