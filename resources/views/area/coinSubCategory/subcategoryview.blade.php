@@ -24,11 +24,13 @@
 @section('content')
 	<div class="col-lg-12">
 		<h1 class="page-header">{{$title}} {{-- $totalCollected --}}</h1>
+        <div class="well">
+            <ul>
+                <li><a href="{!! route('getCategory', [str_replace(' ', '_', $coinCategory)]) !!}">{{$coinCategory}}</a></li>
+                <li><a href="{!! route('getType', [str_replace(' ', '_', $coinType)]) !!}">{{$coinType}}</a></li>
+            </ul>
+        </div>
 
-        <ul>
-            <li><a href="{!! route('getCategory', [str_replace(' ', '_', $coinCategory)]) !!}">{{$coinCategory}}</a></li>
-            <li><a href="{!! route('getType', [str_replace(' ', '_', $coinType)]) !!}">{{$coinType}}</a></li>
-        </ul>
 		<div class="table-responsive">
 
 			<table class="table table-striped dataTable">
@@ -47,7 +49,7 @@
 				@foreach($coinSubCatCoins as $t)
 					<tr>
                         <td><a href="{!! route('getCoin', [$t['coinID']]) !!}"> {{$t['coinName']}}</a></td>
-						<td>{{$t['mintMark']}}</td>
+                        <td><a href="{!! route('getType', [str_replace(' ', '_', $t['coinType'])]) !!}"> {{$t['coinType']}}</a></td>
 					</tr>
 				@endforeach
 			</table>

@@ -104,7 +104,7 @@ class CategoriesController
                         'coins' => $coins,
                         'catLinks' => $catLinks,
                         //'catDetails' => $catDetails,
-                        'title' => $category, 'coinTypes' => $typeLinksDisplay
+                        'title' => str_replace('_', ' ', $category), 'coinTypes' => $typeLinksDisplay
                     ]
                 );
             }

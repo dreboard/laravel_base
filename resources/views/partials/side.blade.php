@@ -52,13 +52,13 @@
 				<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Metal<span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">
 					<li>
-						<a href="{{ route('catList') }}">Gold</a>
+						<a href="{{ route('getMetal', ['Gold']) }}">Gold</a>
 					</li>
 					<li>
-						<a href="{{ route('home') }}">Silver</a>
+						<a href="{{ route('getMetal', ['Silver']) }}">Silver</a>
 					</li>
 					<li>
-						<a href="{{ route('home') }}">Platinum</a>
+						<a href="{{ route('getMetal', ['Platinum']) }}">Platinum</a>
 					</li>
 
 				</ul>

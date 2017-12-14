@@ -20,7 +20,11 @@
 @section('content')
 	<div class="col-lg-12">
 		<h1 class="page-header">{{$title}}</h1>
-        <p><a href="{!! route('getCategory', [$catLink]) !!}">{{$category}}</a> </p>
+        <div class="well">
+            <p>Type: <a href="{!! route('getCategory', [$catLink]) !!}">{{$category}}</a> </p>
+        </div>
+
+
 		<div class="table-responsive">
             <table class="table table-striped dataTable">
                 <thead>

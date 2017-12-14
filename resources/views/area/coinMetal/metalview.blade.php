@@ -4,32 +4,25 @@
 
 --}}
 
-{{-- Route Number 2
+{{-- Route Number 2--}}
 @push('side-menu')
-	@foreach($catLinks as $catLink)
-        <li><a href="{!! route('getCategory', [$catLink]) !!}">{{$catLink}}</a></li>
-	@endforeach
-@endpush
---}}
-@push('css')
 
 @endpush
 
-@push('scripts')
 
-@endpush
 
 @section('content')
 	<div class="col-lg-12">
-		<h1 class="page-header">{{$title}} {{$totalCollected}}</h1>
+		<h1 class="page-header">{{$title}} Collection</h1>
         <ul>
-            @foreach($coinTypes as $k => $v)
-                <li><a href="{!! route('getType', [$k]) !!}">{{$v}}</a></li>
+            @foreach($coinType as $t)
+                <li>
+                    <a href="{!! route('getType', [str_replace(' ', '_', $t['coinType'])]) !!}"> {{$t['coinType']}}</a>
+                </li>
             @endforeach
         </ul>
 		<div class="table-responsive">
-
-			<table class="table table-striped dataTable">
+            <table class="table table-striped dataTable">
                 <thead>
                 <tr>
                     <th>Name</th>
@@ -42,13 +35,13 @@
                     <th>Type</th>
                 </tr>
                 </tfoot>
-                @foreach($coins as $t)
+                @foreach($coinVersions as $t)
                     <tr>
                         <td><a href="{!! route('getCoin', [$t['coinID']]) !!}"> {{$t['coinName']}}</a></td>
                         <td><a href="{!! route('getType', [str_replace(' ', '_', $t['coinType'])]) !!}"> {{$t['coinType']}}</a></td>
                     </tr>
                 @endforeach
-			</table>
+            </table>
 		</div>
 	</div>
 @endsection

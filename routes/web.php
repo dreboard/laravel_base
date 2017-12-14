@@ -22,6 +22,7 @@ require_once __DIR__.'/types/coins.php';
 require_once __DIR__.'/types/versions.php';
 require_once __DIR__.'/types/subcategory.php';
 require_once __DIR__.'/types/designs.php';
+require_once __DIR__.'/types/metal.php';
 
 Auth::routes();
 

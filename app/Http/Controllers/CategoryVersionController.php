@@ -58,7 +58,7 @@ class CategoryVersionController
                     //'totalCollected' => $totalCollected,
                     'coinCategory' => $coinCategory,
                     'coinType' => $coinType,
-                    'title' => $version
+                    'title' => str_replace('_', ' ', $version)
                 ]
             );
 

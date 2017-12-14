@@ -40,7 +40,8 @@
                 </tfoot>
 				@foreach($coinVersions as $t)
 					<tr>
-						<td>{{$t['coinName']}}</td><td>{{$t['mintMark']}}</td>
+                        <td><a href="{!! route('getCoin', [$t['coinID']]) !!}"> {{$t['coinName']}}</a></td>
+                        <td><a href="{!! route('getType', [str_replace(' ', '_', $t['coinType'])]) !!}"> {{$t['coinType']}}</a></td>
 					</tr>
 				@endforeach
 			</table>

@@ -34,7 +34,7 @@
 
 	<!-- Page Content -->
 	<div id="page-wrapper">
-		<div class="container-fluid">
+		<div class="container-fluid main-content">
 			<div class="row">
 
 				@if(count($errors->all()))
@@ -50,7 +50,9 @@
 				@endif
 
 				@yield('content')<!-- /.col-lg-12 DEFAULT-->
+
 			</div>
+
 			<!-- /.row -->
 		</div>
 		<!-- /.container-fluid -->
@@ -58,6 +60,13 @@
 	<!-- /#page-wrapper -->
 
 </div>
+
+<footer class="footer">
+	<div class="container">
+		<p class="text-muted"><a href="{!! route('home') !!}">Home</a> </p>
+	</div>
+</footer>
+
 {{--
 <script async src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><script href="{{ asset('/vendor/metisMenu/metisMenu.min.js') }}"></script>
