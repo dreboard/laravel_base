@@ -46,7 +46,7 @@
 				<a href="{{ route('catList') }}"><i class="fa fa-dashboard fa-fw"></i> Categories</a>
 			</li>
 			<li>
-				<a href="{{ route('home') }}"><i class="fa fa-dashboard fa-fw"></i> Commemoratives</a>
+				<a href="{{ route('getCommemoratives') }}"><i class="fa fa-dashboard fa-fw"></i> Commemoratives</a>
 			</li>
 			<li>
 				<a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Metal<span class="fa arrow"></span></a>

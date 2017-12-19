@@ -10,7 +10,7 @@ interface CoinInterface
 
     /**
      * Get this category
-     * @param string $subCategory
+     * @param string $value
      * @return string
      */
     public function getThisCategory(string $value): string;

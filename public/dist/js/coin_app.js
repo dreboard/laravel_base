@@ -13,7 +13,7 @@ $(document).ready(function() {
 
     $('#side-menu').metisMenu();
     $('.dataTable').DataTable();
-
+    //$('div.main-content .col-lg-12').height($(window).height());
 
     $('#searchForm').on("submit", function(e){
         if($('#search').val() == ''){

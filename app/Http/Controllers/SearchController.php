@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 use Validator;
 use App\Http\Models\Search;
 
+/**
+ * Class SearchController
+ * @package App\Http\Controllers
+ */
 class SearchController extends Controller
 {
     private $searchModel;
@@ -27,11 +31,12 @@ class SearchController extends Controller
     }
 
     /**
+     * Search post handling.
      * @param Request $request
      * @param \Illuminate\Validation\Factory $validator
-     *
      * @return \Illuminate\Http\RedirectResponse
      * @todo add alpha_num with spaces validator
+     * @throws \App\Http\Models\UnknownCoinCategoryException
      */
     public function searching(Request $request, \Illuminate\Validation\Factory $validator)
     {

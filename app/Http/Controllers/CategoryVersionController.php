@@ -63,7 +63,12 @@ class CategoryVersionController
             );
 
         } catch (\Throwable $e) {
-            $this->categoryPage();
+            return view(
+                'error',
+                [
+                    'message' => $e->getMessage()
+                ]
+            );
         }
     }
 

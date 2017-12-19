@@ -11,14 +11,14 @@ use PDO;
 use Coins\Exceptions\UnknownCoinException;
 
 /**
- * Class CategoriesController
+ * Class CollectionController
  * @package App\Http\Controllers
  */
-class CoinsController
+class CollectionController
 {
 
     /**
-     * Create Coin Category Links
+     * Create Coin Collection Links
      * @param int $coin
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */

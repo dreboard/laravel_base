@@ -1,52 +1,65 @@
 <?php
 /**
- * Coin Types Controller
- * Routing class for coin types
- * @since v0.1.1
+ * Commemorative Controller
+ * Routing class for Commemoratives
+ * @since v0.1.4
  * @package App\Http\Controllers
  */
-
 namespace App\Http\Controllers;
 
 use App\Http\Models\Coin;
-use App\Http\Models\CoinType;
+use App\Http\Models\Commemorative;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDO;
+use Coins\Traits\CoinHelper;
 
 /**
- * Class TypesController
+ * Class CommemorativeController
  * @package App\Http\Controllers
  */
-class TypesController
+class CommemorativeController
 {
+    use CoinHelper;
+
     protected $typeLinkArr = [];
 
-    protected $typeModel;
+    protected $commemorativeModel;
 
-    protected $thisType;
+    protected $thisCommemorativeDesign;
 
     public function __construct()
     {
-        $this->typeModel = new CoinType();
+        $this->commemorativeModel = new Commemorative();
     }
 
     /**
-     * View Coin Types Page
-     *
+     * View Coin Commemoratives Page
+     * Create Coin Category Links
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function typePage()
+    public function getCommemoratives()
     {
+        try {
+            $coins = $this->commemorativeModel->getAll();
+            $types = $this->commemorativeModel->getAllTypes();
+            return view(
+                'area.coinCommemorative.commemorativeview',
+                [
+                    'coins' => $coins,
+                    'types' => $types,
+                    'title' => 'Commemoratives'
+                ]
+            );
 
-        $typeList = $this->allTypes;
-        //$typeLinks = $typeList;
-        //$typeLinks = array_map(TypesController::createTypeLink($typeList), $this->allTypes);
-        $typeLinks = array_map(array($this, 'createTypeLink'), $typeList);
-
-        //dd($typeLinks, $typeList);
-
-        return view('area.coinTypes.typelist', ['typeList' => $typeList, 'typeLinks' => $typeLinks]);
+        } catch (\Throwable $e) {
+            return view(
+                'error',
+                [
+                    'message' => $e->getMessage()
+                ]
+            );
+        }
     }
 
     /**
@@ -54,7 +67,7 @@ class TypesController
      * @param string $type
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getType(string $type)
+    public function getCommemorativeType(string $type)
     {
         try {
             $this->thisType = strip_tags(str_replace('_', ' ', $type));
@@ -81,24 +94,4 @@ class TypesController
         }
     }
 
-
-    public function createTypeLink(string $value): string
-    {
-        return str_replace(' ', '_', $value);
-    }
-
-    /**
-     * Get Category for this type
-     * @param $type
-     * @return string
-     */
-    public function getThisCategory(string $type): string
-    {
-        $pdo = DB::getPdo();
-        $statement = $pdo->prepare("call TypesGetThisCategory(:type)");
-        //$statement->setFetchMode(\PDO::FETCH_ASSOC);
-        $statement->bindValue(':type', str_replace('_', ' ', $type), PDO::PARAM_STR);
-        $statement->execute();
-        return $statement->fetchColumn();
-    }
 }

@@ -39,5 +39,6 @@ return [
         'Two Cent',
         'Large Cent',
         'Small Cent',
+        'Half Cent'
     ]
 ];

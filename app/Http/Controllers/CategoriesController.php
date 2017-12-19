@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Auth;
 use PDO;
+use Coins\Exceptions\UnknownCoinCategoryException;
 
 /**
  * Class CategoriesController
@@ -49,6 +50,7 @@ class CategoriesController
         'Two Cent',
         'Large Cent',
         'Small Cent',
+        'Half Cent'
     ];
 
     protected $getCoinCategory;
@@ -79,14 +81,13 @@ class CategoriesController
      * Create Coin Category Links
      * @param string $category
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws UnknownCoinCategoryException
      */
     public function getCategory(string $category)
     {
         try {
             $this->thisCategory = \strip_tags(str_replace('_', ' ', $category));
-
-            //if (\in_array($this->thisCategory, config('constants.coinCategories'), true)) {
-            if (\in_array($this->thisCategory, $this->allCategories, true)) {
+            if (\in_array($this->thisCategory, config('coins.coinCategories'), true)) {
                 $catLinks = \array_map(array($this, 'createCatLink'), $this->allCategories);
                 $coinCategory = Coin::where('coinCategory', "{$this->thisCategory}")->orderBy('coinYear', 'desc')->get();
                 $coins = $this->categoryModel->getCoinCategory($this->thisCategory);
@@ -107,10 +108,17 @@ class CategoriesController
                         'title' => str_replace('_', ' ', $category), 'coinTypes' => $typeLinksDisplay
                     ]
                 );
+            } else {
+                throw new UnknownCoinCategoryException('Unknown coin category');
             }
-            $this->categoryPage();
-        } catch (\Throwable $e) {
-            echo $e->getMessage(), $e->getLine();
+
+        } catch (UnknownCoinCategoryException | \Throwable $e) {
+            return view(
+                'error',
+                [
+                    'message' => $e->getMessage()
+                ]
+            );
         }
     }
 

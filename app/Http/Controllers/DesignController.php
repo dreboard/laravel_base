@@ -52,7 +52,12 @@ class DesignController
             );
 
         } catch (\Throwable $e) {
-            echo $e->getMessage();
+            return view(
+                'error',
+                [
+                    'message' => $e->getMessage()
+                ]
+            );
         }
     }
 }
