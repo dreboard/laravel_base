@@ -21,10 +21,35 @@
 	<div class="col-lg-12">
 
         <div class="page-header">
-            <h1>{{$coinData['coinName']}} <br><small><a href="{!! route('getCategory', [$coinData['coinCategory']]) !!}">{{$coinData['coinCategory']}}</a> |
-                    <a href="{!! route('getType', [$coinData['coinType']]) !!}">{{$coinData['coinType']}}</a></small></h1>
+            <h1>{{$coinData['coinName']}} <br>
+                <small>
+                    <a href="{!! route('getCategory', [$coinData['coinCategory']]) !!}">{{$coinData['coinCategory']}}</a> |
+                    <a href="{!! route('getType', [$coinData['coinType']]) !!}">{{$coinData['coinType']}}</a> |
+                    <a href="{!! route('getYear', [$coinData['coinYear']]) !!}">{{$coinData['coinYear']}}</a>
+                    <br>
+
+                </small>
+            </h1>
+            <div class="btn-group" role="group" aria-label="...">
+                <div class="btn-group" role="group">
+                    <a class="btn btn-default">All {{$coinData['coinType']}} {{$coinData['coinYear']}}</a>
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Mint Marks
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        @foreach($mintMarks as $m)
+                            <li><a href="{!! route('getCategory', [$m['mintMark']]) !!}">{{$m['mintMark']}}</a></li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+
         </div>
 
+        <p>
+            @include('partials.forms.coin_grade')
+        </p>
 		<div class="table-responsive">
             <table class="table table-striped dataTable">
                 <thead>

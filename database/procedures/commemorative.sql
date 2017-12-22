@@ -26,8 +26,24 @@ SELECT * FROM `coins` WHERE `coinType` = 'First Spouse' ORDER BY `coinType` ASC;
 
 
 
+/***********************************************************
+Authors Name : Andre Board
+Created Date : 2017-12-01
+Description : Get coin category.
+              MODEL-Commemorative::getAll().
+************************************************************/
+DELIMITER //
+DROP FUNCTION IF EXISTS commemorativeGetCoinVersion//
+CREATE FUNCTION commemorativeGetCoinVersion(type VARCHAR(20))
+  RETURNS VARCHAR(20)
 
+  BEGIN
+    DECLARE cv VARCHAR(20);
+    SELECT coinVersion INTO cv FROM coins WHERE coinType = type;
 
+    RETURN type;
+  END//
+DELIMITER ;
 
 /*--------------------------------------------------PROCEDURES------------------------------------------------------------*/
 /***********************************************************

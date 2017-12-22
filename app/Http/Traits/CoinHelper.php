@@ -23,4 +23,17 @@ trait CoinHelper
         
     }
 
+    /**
+     * Prevent future date
+     * @param int $year
+     * @return int
+     */
+    public function getMaxYear(string $year): string
+    {
+        if ((int)$year > date('Y') || (int)$year < 1793) {
+            return date('Y');
+        }
+        return $year;
+    }
+
 }
