@@ -38,7 +38,7 @@
     </select>
     @break
 
-    @case(2)
+    @case('Proof')
 <option value="PR35">PR-35</option>
 <option value="PR40">PR-40</option>
 <option value="PR45">PR-45</option>

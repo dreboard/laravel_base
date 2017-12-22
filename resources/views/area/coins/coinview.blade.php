@@ -21,7 +21,8 @@
 	<div class="col-lg-12">
 
         <div class="page-header">
-            <h1>{{$coinData['coinName']}} <br>
+            <h1>
+                <img class="smImg" src="{!! url('/img/'.str_replace(' ', '_', $coinData['coinVersion'])).'.jpg'!!}"> {{$coinData['coinName']}} <br>
                 <small>
                     <a href="{!! route('getCategory', [$coinData['coinCategory']]) !!}">{{$coinData['coinCategory']}}</a> |
                     <a href="{!! route('getType', [$coinData['coinType']]) !!}">{{$coinData['coinType']}}</a> |
@@ -32,7 +33,7 @@
             </h1>
             <div class="btn-group" role="group" aria-label="...">
                 <div class="btn-group" role="group">
-                    <a class="btn btn-default">All {{$coinData['coinType']}} {{$coinData['coinYear']}}</a>
+                    <a href="{!! route('getTypeByYear', [str_replace(' ', '_', $coinData['coinType']), $coinData['coinYear']]) !!}" class="btn btn-default">All {{$coinData['coinType']}} {{$coinData['coinYear']}}</a>
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Mint Marks
                         <span class="caret"></span>

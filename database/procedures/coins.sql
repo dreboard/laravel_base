@@ -43,6 +43,27 @@ DELIMITER ;
 
 
 /*-------------------------------------------------------------BY YEAR------------------------------------------------------------*/
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS CoinTypeYearList//
+CREATE PROCEDURE CoinTypeYearList
+  (
+    IN type VARCHAR(100)
+  )
+  /***********************************************************
+  Authors Name : Andre Board
+  Created Date : 2017-12-01
+  Description : Get coin type minted years.
+                MODEL-Coins::yearMintMarks().
+  ************************************************************/
+  BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Details not found';
+    SELECT DISTINCT(coinYear) FROM coins
+    WHERE coins.coinType = type
+    ORDER BY coins.coinYear DESC;
+  END//
+DELIMITER ;
+
 DELIMITER //
 DROP PROCEDURE IF EXISTS CoinGetAllFromYear//
 CREATE PROCEDURE CoinGetAllFromYear
@@ -66,7 +87,7 @@ DELIMITER //
 DROP PROCEDURE IF EXISTS CoinTypeAllFromYear//
 CREATE PROCEDURE CoinTypeAllFromYear
   (
-    IN cy INT,
+    IN cy VARCHAR(100),
     IN type VARCHAR(100)
   )
   /***********************************************************

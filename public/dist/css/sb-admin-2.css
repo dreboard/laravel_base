@@ -463,3 +463,8 @@ body {
 .main-content {
     padding-bottom: 50px;
 }
+
+.smImg {
+  height: 50px;
+  width: auto;
+}

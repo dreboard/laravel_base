@@ -81,7 +81,41 @@ class TypesController
         }
     }
 
+    /**
+     * Get this coin type
+     * @param string $type
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getTypeByYear(string $type, string $year)
+    {
+        try {
+            $this->thisType = strip_tags(str_replace('_', ' ', $type));
 
+            $category = $this->getThisCategory($this->thisType);
+            $coins = $this->typeModel->getYearCoinType($this->thisType, $year);
+
+            return view('area.coinTypes.typeYearView', [
+                'coinType' => $this->thisType,
+                'title' => $this->thisType,
+                'coins' => $coins,
+                'category' => $category,
+                'coinYear' => (int)$year,
+                'catLink' => str_replace(' ', '_', $this->getThisCategory($this->thisType))
+            ]);
+        } catch (\Throwable $e) {
+            return view(
+                'error',
+                [
+                    'message' => $e->getMessage()
+                ]
+            );
+        }
+    }
+
+    /**
+     * @param string $value
+     * @return string
+     */
     public function createTypeLink(string $value): string
     {
         return str_replace(' ', '_', $value);
