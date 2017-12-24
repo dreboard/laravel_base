@@ -19,7 +19,8 @@
 
 @section('content')
 	<div class="col-lg-12">
-		<h2 class="page-header">{{$coinYear}} {{$title}}</h2>
+		<h2 class="page-header"><img class="smImg"
+                                     src="{!! url('/img/'.str_replace(' ', '_', $coinType)).'.jpg'!!}"> {{$coinYear}} {{$title}}</h2>
         <div class="well">
             <p>Type: <a href="{!! route('getCategory', [$catLink]) !!}">{{$category}}</a> </p>
         </div>

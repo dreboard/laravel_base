@@ -39,3 +39,7 @@ Route::get('/small_cent', 'HomeController@smallCent')->name('small_cent');
 
 //Profiles
 Route::get('/profile', 'HomeController@profile')->name('profile');
+
+Route::get('ajaxRequest', 'PostController@ajaxRequest');
+
+Route::post('ajaxRequestPost', 'PostController@ajaxRequestPost');

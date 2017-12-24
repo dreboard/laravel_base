@@ -21,7 +21,7 @@
 
 @section('content')
 	<div class="col-lg-12">
-		<h1 class="page-header">{{$title}} {{$totalCollected}}</h1>
+		<h1 class="page-header"><img class="smImg" src="{!! url('/img/'.str_replace(' ', '_', $title)).'.jpg'!!}"> {{$title}} {{$totalCollected}}</h1>
         <ul>
             @foreach($coinTypes as $k => $v)
                 <li><a href="{!! route('getType', [$k]) !!}">{{$v}}</a></li>

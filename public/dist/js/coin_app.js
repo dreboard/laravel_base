@@ -23,6 +23,10 @@ $(document).ready(function() {
         return true;
     });
 
+    $('.yearSwitch').on("change", function(e){
+        window.open(this.options[this.selectedIndex].value,'_top');
+    });
+
 
 
 //Loads the correct sidebar on window load,

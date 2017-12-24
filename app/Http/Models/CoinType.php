@@ -63,4 +63,23 @@ class CoinType
         return $coinTypes;
     }
 
+
+    /**
+     * Get Coin Types
+     * @param string $coinType
+     * @return mixed
+     * @throws UnknownCoinTypeException
+     */
+    public function getYearList(string $coinType): array
+    {
+        $statement = $this->pdo->prepare("call CoinTypeDistinctYears(:type)");
+        $statement->bindValue(':type', $coinType, PDO::PARAM_STR);
+        $statement->execute();
+        $coinTypes = $statement->fetchAll(PDO::FETCH_COLUMN);
+        if (!$coinTypes) {
+            throw new UnknownCoinTypeException("Could not get types from {$coinType}");
+        }
+        return $coinTypes;
+    }
+
 }

@@ -103,6 +103,39 @@ CREATE PROCEDURE CoinTypeAllFromYear
     ORDER BY coinName ASC;
   END//
 DELIMITER ;
+
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS CoinGetAllFromCentury//
+CREATE PROCEDURE CoinGetAllFromCentury
+  (IN cent INT)
+  /***********************************************************
+  Authors Name : Andre Board
+  Created Date : 2017-12-01
+  Description : Get coins for this century.
+                MODEL-CoinVersion::getVersion().
+  ************************************************************/
+  BEGIN
+    SELECT * FROM coins WHERE century = cent;
+  END//
+DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS CoinGetCatFromCentury//
+CREATE PROCEDURE CoinGetCatFromCentury
+  (IN cent INT)
+  /***********************************************************
+  Authors Name : Andre Board
+  Created Date : 2017-12-01
+  Description : Get coins for this century.
+                MODEL-CoinVersion::getVersion().
+  ************************************************************/
+  BEGIN
+    SELECT DISTINCT(coins.coinCategory) FROM coins WHERE century = cent
+    ORDER BY denomination DESC;
+  END//
+DELIMITER ;
+
 /*-------------------------------------------------------------BY MINT MARK------------------------------------------------------------*/
 
 DELIMITER //

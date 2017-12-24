@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Coin;
 use App\Http\Models\CoinType;
+use Coins\Traits\CoinHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PDO;
@@ -20,6 +21,8 @@ use PDO;
  */
 class TypesController
 {
+    use CoinHelper;
+
     protected $typeLinkArr = [];
 
     protected $typeModel;
@@ -62,10 +65,14 @@ class TypesController
 
             $category = $this->getThisCategory($this->thisType);
             $coins = $this->typeModel->getCoinType($this->thisType);
+            $list = $this->typeModel->getYearList($this->thisType);
+            //$typeYears = $this->createYearArray($list);
 
             //$coins = Coin::where('coinType', "{$type}")->orderBy('coinYear', 'desc')->get();
             return view('area.coinTypes.typeview', [
                 'coinType' => $this->thisType,
+                'typeLink' => str_replace(' ', '_', $this->thisType),
+                'typeYears' => $list,
                 'title' => $this->thisType,
                 'coins' => $coins,
                 'category' => $this->getThisCategory($this->thisType),

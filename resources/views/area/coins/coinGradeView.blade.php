@@ -10,7 +10,11 @@
 @endpush
 
 @push('scripts')
-
+<style>
+    .table td {
+        text-align: center;
+    }
+</style>
 @endpush
 
 @push('css')
@@ -23,7 +27,8 @@
         <div class="page-header">
             <h2>
                 <img class="smImg"
-                     src="{!! url('/img/'.str_replace(' ', '_', $coinData['coinVersion'])).'.jpg'!!}"> {{$coinData['coinName']}}
+                     src="{!! url('/img/'.str_replace(' ', '_', $coinData['coinVersion'])).'.jpg'!!}">
+                <a href="{!! route('getCoin', [$coinData['coinID']]) !!}">{{$coinData['coinName']}}</a>
                 <br>
                 <small>
                     <a href="{!! route('getCategory', [$coinData['coinCategory']]) !!}">{{$coinData['coinCategory']}}</a>
@@ -61,32 +66,42 @@
 
         </div>
         <div class="table-responsive">
-            <table class="table">
+            <table class="table table-hover">
                 <tr>
-                    <th>Collected</th>
-                    <td>33</td>
+                    <th>Grade</th>
+                    <th class="text-center">Raw</th>
+                    <th class="text-center">Certified</th>
+                    <th class="text-center">Total</th>
                 </tr>
                 <tr>
-                    <th>Investment</th>
-                    <td>100.00</td>
-                </tr>
-
-                <tr>
-                    <th>Face Value</th>
-                    <td>$10.00</td>
+                    <th>MS-70</th>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
                 </tr>
                 <tr>
-                    <th><a href="{!! route('getCertfiedCoin', [$coinData['coinID']]) !!}">Certified</a></th>
-                    <td>5</td>
+                    <th>MS-69</th>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <th>MS-68</th>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+                <tr>
+                    <th>MS-67</th>
+                    <td>1</td>
+                    <td>1</td>
+                    <td>1</td>
                 </tr>
             </table>
         </div>
 
         <hr />
 
-        <p>
-            @include('partials.forms.coin_grade')
-        </p>
         <div class="table-responsive">
             <table class="table table-striped dataTable">
                 <thead>

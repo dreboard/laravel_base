@@ -19,6 +19,9 @@
 				<a href="{{ route('home') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
 			</li>
 			<li>
+				<a href="{{ route('detail') }}"><i class="fa fa-table fa-fw"></i> Detailed</a>
+			</li>
+			<li>
 				<a href="#"><i class="fa fa-wrench fa-fw"></i> Add<span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">
 					<li>

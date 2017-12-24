@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Http\Models\Coin;
+use App\Http\Models\CoinType;
 use Coins\Traits\CoinHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +25,7 @@ class CoinsController
     public function __construct()
     {
         $this->coinModel = new Coin();
+        $this->typeModel = new CoinType();
     }
 
     /**
@@ -57,6 +59,36 @@ class CoinsController
         }
     }
 
+    /**
+     * Create Coin Category Links
+     * @param int $coin
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getCertfiedCoin(int $coin)
+    {
+        try {
+            if (null === $coin || empty($coin)) {
+                throw new UnknownCoinException('Coin not found');
+            }
+            $coinData = $this->coinModel->getCoinByID($coin);
+            $mintMarks = $this->coinModel->yearMintMarks($coinData['coinYear'], $coinData['coinType']);
+
+            return view(
+                'area.coins.coinGradeView',
+                [
+                    'coinData' => $coinData,
+                    'mintMarks' => $mintMarks
+                ]
+            );
+        } catch (UnknownCoinException | \Throwable $e) {
+            return view(
+                'error',
+                [
+                    'message' => $e->getMessage()
+                ]
+            );
+        }
+    }
 
     /**
      * @param int $year
@@ -80,6 +112,29 @@ class CoinsController
                 ]
             );
         } catch (UnknownCoinException | \Throwable $e) {
+            return view(
+                'error',
+                [
+                    'message' => $e->getMessage()
+                ]
+            );
+        }
+    }
+
+    /**
+     * @param int $year
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getReport()
+    {
+        try {
+            return view(
+                'area.detail',
+                [
+                    'title' => 'Coin Detail Report',
+                ]
+            );
+        } catch (\Throwable $e) {
             return view(
                 'error',
                 [

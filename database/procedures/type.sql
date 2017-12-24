@@ -17,8 +17,13 @@
 
 
 
-/*--------------------------------------------------PROCEDURES------------------------------------------------------------*/
+/*####################################################################################################################################*/
+/*-------------------------------------------------------------PROCEDURES------------------------------------------------------------*/
+/*####################################################################################################################################*/
 
+
+
+/*--------------------------------------------------BY Type-----------------------------------------*/
 DELIMITER //
 DROP PROCEDURE IF EXISTS CoinTypeGetAll//
 CREATE PROCEDURE CoinTypeGetAll
@@ -55,13 +60,49 @@ CREATE PROCEDURE TypesGetThisCategory
 DELIMITER ;
 
 
+DELIMITER //
+DROP PROCEDURE IF EXISTS CoinTypeDistinctYears//
+CREATE PROCEDURE CoinTypeDistinctYears
+  (
+    IN type VARCHAR(100)
+  )
+  /***********************************************************
+  Authors Name : Andre Board
+  Created Date : 2017-12-01
+  Description : Get years minted for type.
+                MODEL-CoinType::getYearList().
+  ************************************************************/
+  BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'dates not found';
+    SELECT DISTINCT(coinYear) FROM `coins` WHERE `coinType` = type ORDER BY coinYear ASC;
+  END//
+DELIMITER ;
+/*--------------------------------------------------cointypes table-----------------------------------------*/
 
+DELIMITER //
+DROP PROCEDURE IF EXISTS CoinTypeYears//
+CREATE PROCEDURE CoinTypeYears
+  (
+    IN type VARCHAR(100)
+  )
+  /***********************************************************
+  Authors Name : Andre Board
+  Created Date : 2017-12-01
+  Description : Get years minted for type.
+                MODEL-CoinType::getYearList().
+  ************************************************************/
+  BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'dates not found';
+    SELECT dates FROM cointypes
+    WHERE coinType = type;
+  END//
+DELIMITER ;
 
 
 
 /*--------------------------------------------------TRIGGERS------------------------------------------------------------*/
 
-getTypeByYear
+# getTypeByYear
 
 
 
