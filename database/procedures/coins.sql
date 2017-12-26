@@ -1,4 +1,20 @@
 
+/*
+Series
+SELECT DISTINCT(series) FROM `coins` WHERE series <> 'none' ORDER BY `coins`.`series` DESC
+
+Special Mint
+Bicentennia
+
+design
+SELECT DISTINCT(design) FROM `coins` WHERE design <> 'none' ORDER BY `coins`.`design` DESC
+SELECT * FROM `coins` WHERE `coinType` LIKE 'Flowing Hair Half Dime' ORDER BY `coins`.`design` ASC
+
+
+
+
+ */
+
 
 
 
@@ -193,3 +209,5 @@ CREATE PROCEDURE CoinsGetBieCoins
     FROM lincolnWheatBieCoinsView;
   END//
 DELIMITER ;
+
+

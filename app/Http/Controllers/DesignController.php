@@ -60,4 +60,40 @@ class DesignController
             );
         }
     }
+
+    /**
+     * View Coin Category Page
+     * Create Coin Category Links
+     * @param string $category
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getDesignType(string $dt)
+    {
+        try {
+            $this->thisDesignType = \strip_tags(str_replace('_', ' ', $dt));
+            $coinDesigns = $this->designModel->getCoinDesignType($this->thisDesignType);
+            $designCategories = $this->designModel->getDesignCategories($this->thisDesignType);
+            $designTypes = $this->designModel->getDesignTypes($this->thisDesignType);
+//dd($coinDesigns);
+            return view(
+                'area.coinDesign.designTypeView',
+                [
+                    'coinVersions' => $coinDesigns,
+                    //'totalCollected' => $totalCollected,
+                    'coinCategory' => $designCategories,
+                    'coinType' => $designTypes,
+                    'title' => $this->thisDesignType
+                ]
+            );
+
+        } catch (\Throwable $e) {
+            return view(
+                'error',
+                [
+                    'message' => $e->getMessage()
+                ]
+            );
+        }
+    }
+
 }

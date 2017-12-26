@@ -502,4 +502,8 @@ return [
         'One Ounce Buffalo'
     ],
 
+    'seriesTypes' => [
+        ''
+    ]
+
 ];

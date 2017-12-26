@@ -21,10 +21,45 @@
 	<div class="col-lg-12">
 		<h2 class="page-header"><img class="smImg"
                                      src="{!! url('/img/'.str_replace(' ', '_', $coinType)).'.jpg'!!}"> {{$coinYear}} {{$title}}</h2>
-        <div class="well">
-            <p>Type: <a href="{!! route('getCategory', [$catLink]) !!}">{{$category}}</a> </p>
-        </div>
+        <p>Type: <a href="{!! route('getCategory', [$catLink]) !!}">{{$category}}</a> <br>
+        Year:  <select class="yearSwitch">
+                <option selected>Go To Year</option>
+                @foreach($typeYears as $v)
+                    <option value="{!! route('getTypeByYear', [str_replace(' ', '_', $coinType), $v]) !!}">
+                        {!! $v !!}
+                    </option>
+                @endforeach
+            </select>
+        </p>
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <th>Collected</th>
+                    <td>33</td>
+                </tr>
+                <tr>
+                    <th>Investment</th>
+                    <td>100.00</td>
+                </tr>
 
+                <tr>
+                    <th>Face Value</th>
+                    <td>$10.00</td>
+                </tr>
+                <tr>
+                    <th>Unique</th>
+                    <td>33</td>
+                </tr>
+                <tr>
+                    <th>Certified</th>
+                    <td>5</td>
+                </tr>
+                <tr>
+                    <th>Bulk</th>
+                    <td>788</td>
+                </tr>
+            </table>
+        </div>
 
 		<div class="table-responsive">
             <table class="table table-striped dataTable">

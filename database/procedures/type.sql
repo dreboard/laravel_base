@@ -77,6 +77,43 @@ CREATE PROCEDURE CoinTypeDistinctYears
     SELECT DISTINCT(coinYear) FROM `coins` WHERE `coinType` = type ORDER BY coinYear ASC;
   END//
 DELIMITER ;
+
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS CoinGetDesignByType//
+CREATE PROCEDURE CoinGetDesignByType
+  (
+    IN type VARCHAR(100)
+  )
+  /***********************************************************
+  Authors Name : Andre Board
+  Created Date : 2017-12-01
+  Description : Get years minted for type.
+                MODEL-CoinType::getYearList().
+  ************************************************************/
+  BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'dates not found';
+    SELECT DISTINCT(design) FROM `coins` WHERE design <> 'none' AND coinType = type;
+  END//
+DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS CoinGetDesignTypeByCoinType//
+CREATE PROCEDURE CoinGetDesignTypeByCoinType
+  (
+    IN type VARCHAR(100)
+  )
+  /***********************************************************
+  Authors Name : Andre Board
+  Created Date : 2017-12-01
+  Description : Get design types for type.
+                MODEL-CoinType::getDesignTypesList().
+  ************************************************************/
+  BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'design type not found';
+    SELECT DISTINCT(designType) FROM `coins` WHERE coinType = type;
+  END//
+DELIMITER ;
 /*--------------------------------------------------cointypes table-----------------------------------------*/
 
 DELIMITER //

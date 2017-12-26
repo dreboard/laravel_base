@@ -30,6 +30,8 @@
                      src="{!! url('/img/'.str_replace(' ', '_', $coinData['coinVersion'])).'.jpg'!!}">
                 <a href="{!! route('getCoin', [$coinData['coinID']]) !!}">{{$coinData['coinName']}}</a>
                 <br>
+                <small>Grade Report</small>
+                <br>
                 <small>
                     <a href="{!! route('getCategory', [$coinData['coinCategory']]) !!}">{{$coinData['coinCategory']}}</a>
                     |
@@ -43,12 +45,12 @@
                 <div class="btn-group" role="group">
                     <a href="{!! route('getTypeByYear', [str_replace(' ', '_', $coinData['coinType']), $coinData['coinYear']]) !!}"
                        class="btn btn-default">All {{$coinData['coinType']}} {{$coinData['coinYear']}}</a>
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="mintMarks"
                             aria-haspopup="true" aria-expanded="false">
                         Mint Marks
                         <span class="caret"></span>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-right">
+                    <ul class="dropdown-menu dropdown-menu-right" id="mintMarks">
                         @foreach($mintMarks as $m)
                             <li><a href="{!! route('getCategory', [$m['mintMark']]) !!}">{{$m['mintMark']}}</a></li>
                         @endforeach

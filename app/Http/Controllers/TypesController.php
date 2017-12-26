@@ -66,6 +66,9 @@ class TypesController
             $category = $this->getThisCategory($this->thisType);
             $coins = $this->typeModel->getCoinType($this->thisType);
             $list = $this->typeModel->getYearList($this->thisType);
+            $designTypes = $this->typeModel->getDesignTypesList($this->thisType);
+            $designs = $this->typeModel->getDesignsList($this->thisType);
+//dd($designs[0]);
             //$typeYears = $this->createYearArray($list);
 
             //$coins = Coin::where('coinType', "{$type}")->orderBy('coinYear', 'desc')->get();
@@ -75,6 +78,8 @@ class TypesController
                 'typeYears' => $list,
                 'title' => $this->thisType,
                 'coins' => $coins,
+                'designs' => $designs,
+                'designTypes' => $designTypes,
                 'category' => $this->getThisCategory($this->thisType),
                 'catLink' => str_replace(' ', '_', $this->getThisCategory($this->thisType))
             ]);
@@ -100,13 +105,17 @@ class TypesController
 
             $category = $this->getThisCategory($this->thisType);
             $coins = $this->typeModel->getYearCoinType($this->thisType, $year);
+            $list = $this->typeModel->getYearList($this->thisType);
+            $designs = $this->typeModel->getDesignTypesList($this->thisType);
 
             return view('area.coinTypes.typeYearView', [
                 'coinType' => $this->thisType,
                 'title' => $this->thisType,
                 'coins' => $coins,
+                'typeYears' => $list,
                 'category' => $category,
                 'coinYear' => (int)$year,
+                'designs' => $designs,
                 'catLink' => str_replace(' ', '_', $this->getThisCategory($this->thisType))
             ]);
         } catch (\Throwable $e) {

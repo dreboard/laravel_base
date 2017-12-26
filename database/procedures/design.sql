@@ -1,6 +1,6 @@
 /*
 |--------------------------------------------------------------------------
-| Coin Version MySQL Queries
+| Coin Design and Design type MySQL Queries
 |--------------------------------------------------------------------------
 |
 | This value is the name of your application. This value is used when the
@@ -67,6 +67,24 @@ CREATE PROCEDURE DesignGetAll
   END//
 DELIMITER ;
 
+DELIMITER //
+DROP PROCEDURE IF EXISTS DesignTypeGetAll//
+CREATE PROCEDURE DesignTypeGetAll
+  (
+    IN dt VARCHAR(100)
+  )
+  /***********************************************************
+  Authors Name : Andre Board
+  Created Date : 2017-12-01
+  Description : Get coin design type.
+                MODEL-CoinDesign::getDesign().
+  ************************************************************/
+  BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Design type not found';
+    SELECT * FROM coins WHERE coins.designType = dt AND coins.designType != 'None'
+    ORDER BY coinName ASC;
+  END//
+DELIMITER ;
 
 DELIMITER //
 DROP PROCEDURE IF EXISTS DesignCoinTypes//

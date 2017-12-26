@@ -82,4 +82,42 @@ class CoinType
         return $coinTypes;
     }
 
+    /**
+     * Get Coin Type Design Types
+     * @param string $coinType
+     * @return mixed
+     * @throws UnknownCoinTypeException
+     */
+    public function getDesignsList(string $coinType): array
+    {
+        $statement = $this->pdo->prepare("call CoinGetDesignByType(:type)");
+        $statement->bindValue(':type', $coinType, PDO::PARAM_STR);
+        $statement->execute();
+        $coinTypes = $statement->fetchAll(PDO::FETCH_COLUMN);
+        if (!$coinTypes) {
+            return [0 => 'None'];
+            //throw new UnknownCoinTypeException("Could not get getDesignsList from {$coinType}");
+        }
+        return $coinTypes;
+    }
+
+    /**
+     * Get Coin Type Design Types
+     * @param string $coinType
+     * @return mixed
+     * @throws UnknownCoinTypeException
+     */
+    public function getDesignTypesList(string $coinType): array
+    {
+        $statement = $this->pdo->prepare("call CoinGetDesignTypeByCoinType(:type)");
+        $statement->bindValue(':type', $coinType, PDO::PARAM_STR);
+        $statement->execute();
+        $coinTypes = $statement->fetchAll(PDO::FETCH_COLUMN);
+        if (!$coinTypes) {
+            return [0 => 'None'];
+            //throw new UnknownCoinTypeException("Could not get getDesignTypesList from {$coinType}");
+        }
+        return $coinTypes;
+    }
+
 }
