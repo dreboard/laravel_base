@@ -5,7 +5,7 @@ SELECT DISTINCT(series) FROM `coins` WHERE series <> 'none' ORDER BY `coins`.`se
 
 Special Mint
 Bicentennia
-
+-------------------------------------------
 design
 SELECT DISTINCT(design) FROM `coins` WHERE design <> 'none' ORDER BY `coins`.`design` DESC
 SELECT * FROM `coins` WHERE `coinType` LIKE 'Flowing Hair Half Dime' ORDER BY `coins`.`design` ASC
@@ -89,7 +89,7 @@ CREATE PROCEDURE CoinGetAllFromYear
   Authors Name : Andre Board
   Created Date : 2017-12-01
   Description : Get coins for this year.
-                MODEL-CoinVersion::getVersion().
+                MODEL-Coin::getAllFromYear().
   ************************************************************/
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Details not found';
@@ -109,8 +109,8 @@ CREATE PROCEDURE CoinTypeAllFromYear
   /***********************************************************
   Authors Name : Andre Board
   Created Date : 2017-12-01
-  Description : Get coins for this year.
-                MODEL-CoinVersion::getVersion().
+  Description : Get coins type coins for this year.
+                MODEL-CoinType::getYearCoinType().
   ************************************************************/
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Details not found';

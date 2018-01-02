@@ -11,10 +11,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\{Coin, CoinCategory};
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Auth;
+//use App\Http\Controllers\Auth;
 use PDO;
 use Coins\Exceptions\UnknownCoinCategoryException;
+use PDOException \Throwable;
 
 /**
  * Class CategoriesController
@@ -91,7 +93,9 @@ class CategoriesController
                 $catLinks = \array_map(array($this, 'createCatLink'), $this->allCategories);
                 $coinCategory = Coin::where('coinCategory', "{$this->thisCategory}")->orderBy('coinYear', 'desc')->get();
                 $coins = $this->categoryModel->getCoinCategory($this->thisCategory);
-                $totalCollected = $this->categoryCollectedCountByUser($this->thisCategory, 5);
+                $totalCollected = $this->categoryCollectedCountByUser($this->thisCategory, Auth::id());
+                //dd($totalCollected);
+                $lastCollected = $this->categoryLastCountByUser($this->thisCategory);
                 //$catDetails = $this->getCoinCategory->getCategoryDetails($this->thisCategory);
 
                 $coinTypes = $this->getCoinCategory->getTypesByCategory($this->thisCategory);
@@ -103,6 +107,7 @@ class CategoriesController
                     [
                         'totalCollected' => $totalCollected,
                         'coins' => $coins,
+                        'lastCollected' =>$lastCollected,
                         'catLinks' => $catLinks,
                         //'catDetails' => $catDetails,
                         'title' => str_replace('_', ' ', $category), 'coinTypes' => $typeLinksDisplay
@@ -166,6 +171,29 @@ class CategoriesController
         return $statement->fetchColumn();
     }
 
+    /**
+     * @param string $category
+     * @param int $userID
+     * @return mixed
+     */
+    public function categoryLastCountByUser(string $category)
+    {
+        try{
+            $pdo = DB::getPdo();
+            $statement = $pdo->prepare("call CategoryLastCountByUser(:cat, :id)");
+            $statement->bindValue(':cat', str_replace('_', ' ', $category), PDO::PARAM_STR);
+            $statement->bindValue(':id', Auth::id(), PDO::PARAM_INT);
+            $statement->execute();
+            $coinTypes = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if (!$coinTypes) {
+                throw new UnknownCoinTypeException("Could not get types from {$category}");
+            }
+            return $coinTypes;
+        }catch (\PDOException | Throwable $e){
+            return $e->getMessage();
+        }
+
+    }
     /**
      * View Coin Types Page
      *

@@ -9,7 +9,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Coin;
-use App\Http\Models\CoinType;
+use App\Http\Models\{CoinType, CoinTypeCollected};
 use Coins\Traits\CoinHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,11 +27,14 @@ class TypesController
 
     protected $typeModel;
 
+    protected $typeCollectedModel;
+
     protected $thisType;
 
     public function __construct()
     {
         $this->typeModel = new CoinType();
+        $this->typeCollectedModel = new CoinTypeCollected();
     }
 
     /**
@@ -68,7 +71,12 @@ class TypesController
             $list = $this->typeModel->getYearList($this->thisType);
             $designTypes = $this->typeModel->getDesignTypesList($this->thisType);
             $designs = $this->typeModel->getDesignsList($this->thisType);
-//dd($designs[0]);
+            $collected = $this->typeCollectedModel->getCoinTypeCollected($this->thisType);
+            if($collected[0] === "None"){
+                //echo 'None';
+                //die;
+            }
+//dd($collected[0]['userID']);
             //$typeYears = $this->createYearArray($list);
 
             //$coins = Coin::where('coinType', "{$type}")->orderBy('coinYear', 'desc')->get();

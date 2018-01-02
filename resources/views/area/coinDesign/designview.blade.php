@@ -13,14 +13,42 @@
 
 @section('content')
 	<div class="col-lg-12">
-		<h1 class="page-header">{{$title}} Collection</h1>
-        <ul>
-            @foreach($coinType as $t)
-                <li>
-                    <a href="{!! route('getType', [str_replace(' ', '_', $t['coinType'])]) !!}"> {{$t['coinType']}}</a>
-                </li>
-            @endforeach
-        </ul>
+		<h3 class="page-header"><img class="smImg" src="{!! url('/img/'.str_replace(' ', '_', $title)).'.jpg'!!}"> {{$title}}</h3>
+
+            <h4>Types:</h4>
+            <div class="row">
+                @foreach($coinType as $t)
+                    <div class="col-md-6">
+                        <a href="{!! route('getType', [str_replace(' ', '_', $t['coinType'])]) !!}"> {{$t['coinType']}}</a>
+                    </div>
+                @endforeach
+            </div>
+
+        <br />
+        <div class="table-responsive">
+            <table class="table">
+                <tr>
+                    <th>Collected</th>
+                    <td>33</td>
+                </tr>
+                <tr>
+                    <th>Investment</th>
+                    <td>100.00</td>
+                </tr>
+
+                <tr>
+                    <th>Face Value</th>
+                    <td>$10.00</td>
+                </tr>
+                <tr>
+                    <th>Certified</th>
+                    <td>5</td>
+                </tr>
+            </table>
+        </div>
+
+        <hr />
+
 		<div class="table-responsive">
             <table class="table table-striped dataTable">
                 <thead>

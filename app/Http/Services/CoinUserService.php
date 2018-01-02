@@ -1,15 +1,15 @@
 <?php
 /**
- * Traits CoinHelper
+ * class CoinUserService
  * @package Coins\Interfaces
  */
-namespace Coins\Traits;
+namespace Coins\Services;
 
 /**
- * Trait CoinHelper
- * @package Coins\Traits
+ * class CoinUserService
+ * @package Coins\Services
  */
-trait CoinHelper
+class CoinUserService
 {
 
 
@@ -89,16 +89,5 @@ trait CoinHelper
             return $yearList;
         }
         return [$years[0]['dates']];
-    }
-
-
-    /**
-     * Shorten Coin Name
-     * @param string $year
-     * @return string
-     */
-    public static function shortName(string $name): string
-    {
-        return substr($name, 0, 22);
     }
 }

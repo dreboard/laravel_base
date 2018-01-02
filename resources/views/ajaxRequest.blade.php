@@ -22,12 +22,13 @@
                     $.ajax({
                         type: 'POST',
                         dataType: 'json',
-                        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
-                        url: '/ajaxRequestPost',
+                        //contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                        url: 'ajaxRequestPost',
                         data: {name: name, password: password, email: email},
                         success: function (data) {
-                            alert(data.success);
                             console.log(data);
+                            $("#theName").text(data.email);
+                            console.log(data.name);
                         },
                         error: function (data) {
                             console.log('Error:', data);
@@ -49,6 +50,9 @@
     <div class="col-lg-12">
         <h1 class="page-header">Ajax</h1>
 
+        <ul>
+            <li id="theName"></li>
+        </ul>
         <form>
 
             <div class="form-group">

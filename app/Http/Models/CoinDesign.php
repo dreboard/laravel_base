@@ -95,4 +95,22 @@ class CoinDesign
         $statement->execute();
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Get all coins by design
+     * @param string $design
+     * @return mixed
+     * @throws UnknownCoinCategoryException
+     */
+    public function getCoinTypeFromDesign(string $design): array
+    {
+        $statement = $this->pdo->prepare("call DesignGetCoinType(:design)");
+        $statement->bindValue(':design', str_replace('_', ' ', $design), PDO::PARAM_STR);
+        $statement->execute();
+        $coinTypes = $statement->fetchAll(PDO::FETCH_COLUMN);
+        if (!$coinTypes) {
+            throw new UnknownCoinCategoryException("Could not get getCoinDesign from {$design}");
+        }
+        return $coinTypes;
+    }
 }

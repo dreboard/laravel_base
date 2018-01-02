@@ -20,17 +20,19 @@
 @section('content')
 	<div class="col-lg-12">
 		<h2 class="page-header"><img class="smImg"
-                                     src="{!! url('/img/'.str_replace(' ', '_', $coinType)).'.jpg'!!}"> {{$coinYear}} {{$title}}</h2>
-        <p>Type: <a href="{!! route('getCategory', [$catLink]) !!}">{{$category}}</a> <br>
-        Year:  <select class="yearSwitch">
-                <option selected>Go To Year</option>
-                @foreach($typeYears as $v)
-                    <option value="{!! route('getTypeByYear', [str_replace(' ', '_', $coinType), $v]) !!}">
-                        {!! $v !!}
-                    </option>
-                @endforeach
-            </select>
-        </p>
+                                     src="{!! url('/img/'.str_replace(' ', '_', $coinType)).'.jpg'!!}"> {{$coinYear}} {{$title}}<br />
+            <small>Type: <a href="{!! route('getCategory', [$catLink]) !!}">{{$category}}</a> <br>
+                Year:  <select class="yearSwitch">
+                    <option selected>Go To Year</option>
+                    @foreach($typeYears as $v)
+                        <option value="{!! route('getTypeByYear', [str_replace(' ', '_', $coinType), $v]) !!}">
+                            {!! $v !!}
+                        </option>
+                    @endforeach
+                </select> | <a href="{!! route('getYear', [$coinYear]) !!}">All {{$coinYear}}</a>
+            </small></h2>
+
+        <p></p>
         <div class="table-responsive">
             <table class="table">
                 <tr>

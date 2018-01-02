@@ -1,6 +1,6 @@
 <?php
 /**
- * Design Controller
+ * Notes Controller
  * Routing class for design types
  * @since v0.1.2
  * @package App\Http\Controllers
@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\DB;
 use PDO;
 
 /**
- * Class DesignController
+ * Class NotesController
  * @package App\Http\Controllers
  */
-class DesignController
+class NotesController
 {
     protected $typeLinkArr = [];
 
@@ -33,25 +33,17 @@ class DesignController
     /**
      * View Coin Category Page
      * Create Coin Category Links
-     * @param string $category
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function getDesign(string $version)
+    public function getNotebook()
     {
         try {
-            $this->thisDesign = \strip_tags(str_replace('_', ' ', $version));
-            $coinDesigns = $this->designModel->getCoinDesign($this->thisDesign);
-            $designCategories = $this->designModel->getDesignCategories($this->thisDesign);
-            $designTypes = $this->designModel->getDesignTypes($this->thisDesign);
-//dd($coinDesigns);
+
+
             return view(
-                'area.coinDesign.designview',
+                'area.notes.notebook',
                 [
-                    'coinVersions' => $coinDesigns,
-                    //'totalCollected' => $totalCollected,
-                    'coinCategory' => $designCategories,
-                    'coinType' => $designTypes,
-                    'title' => $this->thisDesign
+                    'title' => 'Notebook'
                 ]
             );
 

@@ -172,4 +172,37 @@ class CoinsController
     }
 
 
+
+
+    /**
+     * Create Coin Category Links
+     * @param int $coin
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function addCoin(int $coin)
+    {
+        try {
+            if (null === $coin || empty($coin)) {
+                throw new UnknownCoinException('Coin not found');
+            }
+            $coinData = $this->coinModel->getCoinByID($coin);
+            $mintMarks = $this->coinModel->yearMintMarks($coinData['coinYear'], $coinData['coinType']);
+
+            return view(
+                'area.coins.coinIDAdd',
+                [
+                    'coinData' => $coinData,
+                    'mintMarks' => $mintMarks
+                ]
+            );
+        } catch (UnknownCoinException | \Throwable $e) {
+            return view(
+                'error',
+                [
+                    'message' => $e->getMessage()
+                ]
+            );
+        }
+    }
+
 }

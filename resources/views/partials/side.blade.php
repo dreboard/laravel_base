@@ -113,7 +113,7 @@
 				<!-- /.nav-second-level -->
 			</li>
 			<li>
-				<a href="{{ route('home') }}"><i class="fa fa-table fa-fw"></i> Tables</a>
+				<a href="{{ route('getNotebook') }}"><i class="fa fa-table fa-fw"></i> Notebook</a>
 			</li>
 			<li>
 				<a href="forms.html"><i class="fa fa-edit fa-fw"></i> Forms</a>

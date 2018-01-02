@@ -1,20 +1,21 @@
 <?php
 /**
- * Coin Type Model.
- * Search database for coin type
+ * Coin Type Collected Model.
+ * Search database for coin types collected by user
  * @since v0.1.1
  */
 namespace App\Http\Models;
 
-use Coins\Exceptions\UnknownCoinTypeException;
+use Coins\Exceptions\{UnknownCoinTypeException, NotUsersCoinException};
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PDO;
 
 /**
- * Class CoinType
+ * Class CoinTypeCollected
  * @package App\Http\Models
  */
-class CoinType
+class CoinTypeCollected
 {
 
     /**
@@ -30,19 +31,23 @@ class CoinType
         $this->pdo = DB::getPdo();
     }
     /**
-     * Get Coin Types
+     * Get Coin Types Collected by user
      * @param string $coinType
      * @return mixed
      * @throws UnknownCoinTypeException
      */
-    public function getCoinType(string $coinType): array
+    public function getCoinTypeCollected(string $coinType): array
     {
-        $statement = $this->pdo->prepare("call CoinTypeGetAll(:type)");
-        $statement->bindValue(':type', str_replace('_', ' ', $coinType), PDO::PARAM_STR);
-        $statement->execute();
-        $coinTypes = $statement->fetchAll(PDO::FETCH_OBJ);
-        if (!$coinTypes) {
+        if (!$coinType) {
             throw new UnknownCoinTypeException("Could not get types from {$coinType}");
+        }
+        $statement = $this->pdo->prepare("call CoinTypeGetAllCollected(:type, :id)");
+        $statement->bindValue(':type', str_replace('_', ' ', $coinType), PDO::PARAM_STR);
+        $statement->bindValue(':id', Auth::id(), PDO::PARAM_INT);
+        $statement->execute();
+        $coinTypes = $statement->fetchAll(PDO::FETCH_ASSOC);
+        if (!$coinTypes) {
+            return [0 => 'None'];
         }
         return $coinTypes;
     }

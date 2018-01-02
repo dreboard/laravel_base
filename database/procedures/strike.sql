@@ -1,6 +1,6 @@
 /*
 |--------------------------------------------------------------------------
-| Coin By Metal MySQL Queries
+| Coin By Strike MySQL Queries
 |--------------------------------------------------------------------------
 |
 | This value is the name of your application. This value is used when the
@@ -12,24 +12,17 @@
 
 
 /*--------------------------------------------------VIEWS------------------------------------------------------------*/
-DROP VIEW IF EXISTS allGold;
-CREATE VIEW allGold AS SELECT * FROM `coins` WHERE coinMetal = 'Gold' ORDER BY denomination DESC;
+DROP VIEW IF EXISTS allProof;
+CREATE VIEW allProof AS SELECT * FROM `coins` WHERE strike = 'Proof' ORDER BY denomination DESC;
 
-DROP VIEW IF EXISTS allPlatinum;
-CREATE VIEW allPlatinum AS SELECT * FROM `coins` WHERE coinMetal = 'Platinum' ORDER BY denomination DESC;
+DROP VIEW IF EXISTS allBusiness;
+CREATE VIEW allBusiness AS SELECT * FROM `coins` WHERE strike = 'Business' ORDER BY denomination DESC;
 
-DROP VIEW IF EXISTS allGoldCategories;
-CREATE VIEW allGoldCategories AS SELECT DISTINCT coinCategory FROM `coins` WHERE coinMetal = 'Gold' ORDER BY denomination DESC;
+DROP VIEW IF EXISTS allProofCategories;
+CREATE VIEW allProofCategories AS SELECT DISTINCT coinCategory FROM `coins` WHERE strike = 'Proof' ORDER BY denomination DESC;
 
-DROP VIEW IF EXISTS allPlatinumCategories;
-CREATE VIEW allPlatinumCategories AS SELECT DISTINCT coinCategory FROM `coins` WHERE coinMetal = 'Platinum' ORDER BY denomination DESC;
-
-DROP VIEW IF EXISTS allGoldTypes;
-CREATE VIEW allGoldTypes AS SELECT DISTINCT coinType FROM `coins` WHERE coinMetal = 'Gold' ORDER BY denomination DESC;
-
-DROP VIEW IF EXISTS allPlatinumTypes;
-CREATE VIEW allPlatinumTypes AS SELECT DISTINCT coinType FROM `coins` WHERE coinMetal = 'Platinum' ORDER BY denomination DESC;
-
+DROP VIEW IF EXISTS allProofTypes;
+CREATE VIEW allProofTypes AS SELECT DISTINCT coinType FROM `coins` WHERE strike = 'Proof' ORDER BY denomination DESC;
 
 
 

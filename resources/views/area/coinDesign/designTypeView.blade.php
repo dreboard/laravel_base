@@ -13,14 +13,11 @@
 
 @section('content')
 	<div class="col-lg-12">
-		<h1 class="page-header">{{$title}} Collection</h1>
-        <ul>
-            @foreach($coinType as $t)
-                <li>
-                    <a href="{!! route('getType', [str_replace(' ', '_', $t['coinType'])]) !!}"> {{$t['coinType']}}</a>
-                </li>
-            @endforeach
-        </ul>
+		<h2 class="page-header"><img class="smImg" src="{!! url('/img/'.str_replace(' ', '_', $title)).'.jpg'!!}"> {{$title}}<br />
+        <small><a href="{!! route('getType', [str_replace(' ', '_', $coinType[0])]) !!}"> {{$coinType[0]}}</a></small>
+        </h2>
+
+
 		<div class="table-responsive">
             <table class="table table-striped dataTable">
                 <thead>

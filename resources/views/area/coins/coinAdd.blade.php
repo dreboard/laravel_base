@@ -14,7 +14,7 @@
 @endpush
 
 @push('css')
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+
 @endpush
 
 @section('content')
@@ -23,7 +23,8 @@
         <div class="page-header">
             <h2>
                 <img class="smImg"
-                     src="{!! url('/img/'.str_replace(' ', '_', $coinData['coinVersion'])).'.jpg'!!}"> {{$coinData['coinName']}}
+                     src="{!! url('/img/'.str_replace(' ', '_', $coinData['coinVersion'])).'.jpg'!!}"> Add Coin<br />
+                <small>{{$coinData['coinName']}}</small>
                 <br>
                 <small>
                     <a href="{!! route('getCategory', [$coinData['coinCategory']]) !!}">{{$coinData['coinCategory']}}</a>
@@ -45,8 +46,8 @@
                         Add <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="{!! route('addCoin', [$coinData['coinID']]) !!}">Add Coin</a></li>
-                        <li><a href="{!! route('addCoin', [$coinData['coinID']]) !!}">Add Multiple</a></li>
+                        <li><a href="{!! route('getCoin', [$coinData['coinID']]) !!}">Add Coin</a></li>
+                        <li><a href="{!! route('getCoin', [$coinData['coinID']]) !!}">Add Multiple</a></li>
                         <li class="divider"></li>
                         <li><a href="{!! route('getCoin', [$coinData['coinID']]) !!}">Add Roll</a></li>
                         <li><a href="{!! route('getCoin', [$coinData['coinID']]) !!}">Add Roll</a></li>

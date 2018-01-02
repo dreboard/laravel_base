@@ -124,6 +124,23 @@ CREATE PROCEDURE DesignCoinCategory
   END//
 DELIMITER ;
 
+DELIMITER //
+DROP PROCEDURE IF EXISTS DesignGetCoinType//
+CREATE PROCEDURE DesignGetCoinType
+  (
+    IN design VARCHAR(100)
+  )
+  /***********************************************************
+  Authors Name : Andre Board
+  Created Date : 2017-12-01
+  Description : Get coin designs category.
+                MODEL-CoinVersion::getVersion().
+  ************************************************************/
+  BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Design not found';
+    SELECT coinType FROM coins WHERE coins.designType = design LIMIT 1;
+  END//
+DELIMITER ;
 
 /*--------------------------------------------------TRIGGERS------------------------------------------------------------*/
 

@@ -1,6 +1,5 @@
-{{$coinData['coinName']}}
 
-<select name="{{$coinData['coinID']}}">
+<select class="form-control" name="coinGrade">
     <option value="No Grade" selected="selected">No Grade </option>
 @switch($coinData['strike'])
     @case('Business')

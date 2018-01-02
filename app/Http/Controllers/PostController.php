@@ -3,12 +3,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Http\Models\Coin;
-use App\Http\Models\CoinType;
-use Coins\Traits\CoinHelper;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Auth;
-use Coins\Exceptions\UnknownCoinException;
 
 /**
  * Class PostController
@@ -31,12 +26,14 @@ class PostController extends Controller
      *
      * @return void
      */
-    public function ajaxRequestPost()
+    public function ajaxRequestPost(Request $request)
     {
-        $input = request()->all();
-        //dd($input);
-
-        return response()->json(['success'=>'Got Simple Ajax Request.']);
+        //$input = request()->all();
+        $input = [];
+        $name = $request->input( 'name' );
+        $password = $request->input( 'password' );
+        $email = $request->input( 'email' );
+        return response()->json(['name' => $name, 'password' => $password, 'email' => $email]);
     }
 
 }
