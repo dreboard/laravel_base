@@ -95,7 +95,7 @@ class CategoriesController
                 $coins = $this->categoryModel->getCoinCategory($this->thisCategory);
                 $totalCollected = $this->categoryCollectedCountByUser($this->thisCategory, Auth::id());
                 //dd($totalCollected);
-                $lastCollected = $this->categoryLastCountByUser($this->thisCategory);
+                $lastCollected = $this->categoryModel->categoryLastCountByUser($this->thisCategory);
                 //$catDetails = $this->getCoinCategory->getCategoryDetails($this->thisCategory);
 
                 $coinTypes = $this->getCoinCategory->getTypesByCategory($this->thisCategory);
@@ -171,29 +171,7 @@ class CategoriesController
         return $statement->fetchColumn();
     }
 
-    /**
-     * @param string $category
-     * @param int $userID
-     * @return mixed
-     */
-    public function categoryLastCountByUser(string $category)
-    {
-        try{
-            $pdo = DB::getPdo();
-            $statement = $pdo->prepare("call CategoryLastCountByUser(:cat, :id)");
-            $statement->bindValue(':cat', str_replace('_', ' ', $category), PDO::PARAM_STR);
-            $statement->bindValue(':id', Auth::id(), PDO::PARAM_INT);
-            $statement->execute();
-            $coinTypes = $statement->fetchAll(PDO::FETCH_ASSOC);
-            if (!$coinTypes) {
-                throw new UnknownCoinTypeException("Could not get types from {$category}");
-            }
-            return $coinTypes;
-        }catch (\PDOException | Throwable $e){
-            return $e->getMessage();
-        }
 
-    }
     /**
      * View Coin Types Page
      *

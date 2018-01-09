@@ -79,8 +79,8 @@
                 </tfoot>
                 @foreach($coins as $t)
                     <tr>
-                        <td><a href="{!! route('getCoin', [$t->coinID]) !!}"> {{$t->coinName}}</a></td>
-                        <td><a href="{!! route('getSubCategory', [str_replace(' ', '_', $t->coinSubCategory)]) !!}"> {{$t->coinSubCategory}}</a></td>
+                        <td><a href="{!! route('getCoin', [$t['coinID']]) !!}"> {{$t['coinName']}}</a></td>
+                        <td><a href="{!! route('getSubCategory', [str_replace(' ', '_', $t['coinSubCategory'])]) !!}"> {{$t['coinSubCategory']}}</a></td>
                     </tr>
                 @endforeach
             </table>

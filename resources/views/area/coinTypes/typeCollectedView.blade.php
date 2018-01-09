@@ -61,8 +61,8 @@
 
 @section('content')
     <div class="col-lg-12 typeView">
-        <h1 class="page-header"><img class="smImg"
-                                     src="{!! url('/img/'.str_replace(' ', '_', $title)).'.jpg'!!}"> {{$title}}<br/>
+        <h1 class="page-header">
+            <img class="smImg" src="{!! url('/img/'.str_replace(' ', '_', $title)).'.jpg'!!}"> <a href="{!! route('getType', [str_replace(' ', '_', $title)]) !!}"> {{$title}}</a><br/>
             <small>Type: <a href="{!! route('getCategory', [$catLink]) !!}">{{$category}}</a> |
                 <select class="yearSwitch">
                     <option selected>Go To Year</option>
@@ -86,7 +86,7 @@
                             <table class="table table-hover">
                                 <tr>
                                     <th>Collected</th>
-                                    <td><a href="{!! route('getTypeCollected', [$typeLink]) !!}">33</a></td>
+                                    <td>33</td>
                                 </tr>
                                 <tr>
                                     <th>Investment</th>
@@ -116,42 +116,7 @@
                 </div>
                     <hr/>
 
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><i class="fa fa-money fa-fw"></i> Recent Transactions</h3>
-                        </div>
-                        <div class="panel-body">
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-hover table-striped">
-                                    <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Grade</th>
-                                        <th>Amount</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    @if($lastCollected !== false)
-                                        @foreach($lastCollected as $coinData)
-                                            <tr>
-                                                <td>
-                                                    <a href="{!! route('collectView', [$coinData['collectionID']]) !!}">{{\Coins\Traits\CoinHelper::shortName($coinData['coinName'])}}</a>
-                                                </td>
-                                                <td>
-                                                    <a href="{!! route('getCoin', [$coinData['coinID']]) !!}">{{$coinData['coinGrade']}}</a>
-                                                </td>
-                                                <td>${{$coinData['purchasePrice']}}</td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="text-right">
-                                <a href="#">View All <i class="fa fa-arrow-circle-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
                 <div class="col-md-6">
                     <div class="panel panel-default">
@@ -160,7 +125,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="list-group">
-                                <a href="{!! route('getTypeCollected', [$catLink]) !!}" class="list-group-item">
+                                <a href="{!! route('getCategory', [$catLink]) !!}" class="list-group-item">
                                     <i class="fa fa-fw fa-check"></i> All Coins
                                 </a>
                                 <a href="{!! route('getCategory', [$catLink]) !!}" class="list-group-item">
@@ -216,13 +181,13 @@
                                     @endif
                                 @endif
                                 @if(in_array($category, config('coins.colorCategories')))
-                                    <a href="{!! route('getTypeColor', [str_replace(' ', '_', $title)]) !!}" class="list-group-item">
+                                    <a href="" class="list-group-item">
                                         <i class="fa fa-fw fa-check"></i> Color Report
                                     </a>
                                 @endif
                             </div>
                             <div class="text-right">
-                                <a href="{!! route('getTypeCollected', [$typeLink]) !!}">View All Activity <i
+                                <a href="{!! route('getCategory', [$catLink]) !!}">View All Activity <i
                                             class="fa fa-arrow-circle-right"></i></a>
                             </div>
                         </div>
@@ -230,38 +195,8 @@
                 </div>
             </div>
 
-            <hr/>
-            @if($designs[0] == 'None' || ($designs[0] == ""))
-
-            @elseif((!empty($designs[0])) || ($designs[0] !== $title))
-                <h3>Designs:</h3>
-                @foreach(array_chunk($designs, 2) as $chunk)
-                    <div class="row">
-                        @foreach($chunk as $add)
-                            <div class="col-md-6">
-                                <a href="{!! route('getDesign', [str_replace(' ', '_', $add)]) !!}">{{$add}}</a>
-                            </div>
-                        @endforeach
-                    </div>
-                @endforeach
-
                 <hr/>
-            @endif
-            @if($designTypes[0] !== 'None')
-                <h4>Types:</h4>
 
-                @foreach(array_chunk($designTypes, 2) as $chunk2)
-                    <div class="row">
-                        @foreach($chunk2 as $add2)
-                            <div class="col-md-6">
-                                <a href="{!! route('getDesignType', [str_replace(' ', '_', $add2)]) !!}">{{$add2}}</a>
-                            </div>
-                        @endforeach
-                    </div>
-                @endforeach
-
-                <hr/>
-            @endif
 
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -275,23 +210,30 @@
                             <thead>
                             <tr>
                                 <th>Coin</th>
+                                <th class="text-center">Year</th>
                                 <th class="text-center">Collected</th>
                                 <th class="text-center">Investment</th>
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($coins as $t)
-                                <tr>
-                                    <td><a href="{!! route('getCoin', [$t['coinID']]) !!}"> {{$t['coinName']}}</a></td>
-                                    <td class="text-center"><a
-                                                href="{!! route('getTypeByYear', [str_replace(' ', '_', $t['coinType']), $t['coinYear']]) !!}"> {{$t['coinYear']}}</a>
-                                    </td>
-                                    <td class="text-center"><a
-                                                href="{!! route('getType', [str_replace(' ', '_', $t['coinType'])]) !!}"> {{$t['coinType']}}</a>
-                                    </td>
-                                </tr>
-                            @endforeach
-
+                            @if($collected !== false)
+                                @foreach($collected as $t)
+                                    <tr>
+                                        <td>
+                                            <a href="{!! route('collectView', [$t['collectionID']]) !!}"> {{$t['coinNickname']}}</a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="{!! route('getTypeByYear', [str_replace(' ', '_', $t['coinType']), $t['coinYear']]) !!}"> {{$t['coinYear']}}</a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="{!! route('getCoin', [$t['coinID']]) !!}">{{$t['coinName']}}</a>
+                                        </td>
+                                        <td class="text-center">
+                                            <a href="{!! route('getType', [str_replace(' ', '_', $t['coinType'])]) !!}"> {{$t['coinType']}}</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
                             </tbody>
                         </table>
                     </div>
@@ -300,7 +242,7 @@
                         <h4>View All {{$title}}</h4>
                         <p>Only saved coins</p>
                         <a class="btn btn-default btn-lg btn-block" target="_blank"
-                           href="{!! route('getTypeCollected', [$typeLink]) !!}">Go</a>
+                           href="https://datatables.net/">Go</a>
                     </div>
                 </div>
                 <!-- /.panel-body -->

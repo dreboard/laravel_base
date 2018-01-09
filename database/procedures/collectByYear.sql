@@ -12,36 +12,11 @@
 
 
 /*--------------------------------------------------VIEWS------------------------------------------------------------*/
-DROP VIEW IF EXISTS allCategoriesListView;
-CREATE VIEW allCategoriesListView AS SELECT DISTINCT coinCategory FROM `coins` ORDER BY denomination DESC;
-
-
-
-
-
-
 
 /*--------------------------------------------------FUNCTIONS------------------------------------------------------------*/
 
 
-DELIMITER //
-DROP PROCEDURE IF EXISTS CategoryGetAll//
-CREATE PROCEDURE CategoryGetAll
-  (
-    IN category VARCHAR(100)
-  )
-  /***********************************************************
-  Authors Name : Andre Board
-  Created Date : 2017-12-01
-  Description : Get coin category.
-                MODEL-CoinDesign::getDesign().
-  ************************************************************/
-  BEGIN
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'category not found';
-    SELECT * FROM coins WHERE coins.coinCategory = category AND coins.coinYear <= YEAR(CURDATE())
-    ORDER BY coinYear ASC;
-  END//
-DELIMITER ;
+
 
 
 /*
@@ -70,107 +45,17 @@ Get all Category details
 CoinCategory::getCategoryDetails()
 */
 DELIMITER //
-DROP PROCEDURE IF EXISTS CategoryGetDetails//
-CREATE PROCEDURE CategoryGetDetails
-  (IN cat VARCHAR(100)
- )
-  /***********************************************************
-  Authors Name : Andre Board
-  Created Date : 2017-12-01
-  Description : Total Investments By Category FROM Source.
-                MODEL-CoinCategory::getCategoryDetails().
-  ************************************************************/
-  BEGIN
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Details not found';
-    SELECT * FROM coincategories WHERE coinCategory = cat;
-  END//
-DELIMITER ;
-
-
-
-
-
-
-
-DELIMITER //
-DROP PROCEDURE IF EXISTS CategoryDistinctCoinTypes//
-CREATE PROCEDURE CategoryDistinctCoinTypes
-  (IN cat VARCHAR(100))
-  /***********************************************************
-  Authors Name : Andre Board
-  Created Date : 2017-12-01
-  Description : Total Investments By Category FROM Source.
-                Collection::CategoryUserTotalInvestmentSum().
-                REPLACE UserTotalInvestmentSumByCategory
-  ************************************************************/
-  BEGIN
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT '0';
-    SELECT DISTINCT coinType,
-      categoryGetCoinTypesCount(cat) AS typeCount
-    FROM coins
-    WHERE coins.coinCategory = cat;
-  END//
-DELIMITER ;
-
-
-
-DELIMITER //
-DROP PROCEDURE IF EXISTS CategoryDistinctWithTypesCount//
-CREATE PROCEDURE CategoryDistinctWithTypesCount
-  (IN cat VARCHAR(100)
-)
-  /***********************************************************
-  Authors Name : Andre Board
-  Created Date : 2017-12-01
-  Description : Get all Category Distinct Types Counts.
-                CoinCategory::getTypesByCategory().
-  ************************************************************/
-  BEGIN
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Types counts not found';
-    SELECT DISTINCT coinCategory,
-      categoryGetCoinTypesCount(cat) AS typeCount
-    FROM coins
-    WHERE coins.coinCategory = cat;
-  END//
-DELIMITER ;
-
-
-
-
-DELIMITER //
-DROP PROCEDURE IF EXISTS CategoryCollectedCountByUser//
-CREATE PROCEDURE CategoryCollectedCountByUser
+DROP PROCEDURE IF EXISTS CollectionGetCoin//
+CREATE PROCEDURE CollectionGetCoin
   (
-    IN cat VARCHAR(20),
-    IN id  INT
+    IN collectID VARCHAR(50),
+    IN id  INT(10)
 
   )
   /***********************************************************
    Authors Name : Andre Board
    Created Date : 2017-12-01
    Description : Get all Category Distinct Types Counts.
-                 CoinCategory::CategoryCollectedCountByUser().
-   ************************************************************/
-  BEGIN
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT '0';
-    SELECT COUNT(*) AS catCount FROM collection
-      INNER JOIN coins ON collection.coinID = coins.coinID
-    WHERE collection.userID = id
-          AND coins.coinCategory = cat;
-  END //
-DELIMITER ;
-
-DELIMITER //
-DROP PROCEDURE IF EXISTS CategoryLastFiveByUser//
-CREATE PROCEDURE CategoryLastFiveByUser
-  (
-    IN cat VARCHAR(50),
-    IN id  INT(10)
-  )
-  /***********************************************************
-   Authors Name : Andre Board
-   Created Date : 2017-12-01
-   Description : Get last five category collected by user.
                  CoinCategory::categoryLastCountByUser().
    ************************************************************/
   BEGIN
@@ -183,9 +68,8 @@ CREATE PROCEDURE CategoryLastFiveByUser
 
     SELECT * FROM collection
       INNER JOIN coins ON coins.coinID = collection.coinID
-    WHERE coins.coinCategory = cat AND collection.userID = id
-    ORDER BY collection.enterDate DESC
-    LIMIT 5;
+    WHERE collection.collectionID = collectID AND collection.userID = id;
+
   END //
 DELIMITER ;
 
@@ -236,6 +120,49 @@ CREATE PROCEDURE CategoryUserTotalInvestmentSumFrom
     AND collection.purchaseFrom = purchaseFrom;
   END//
 DELIMITER ;
+
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS CollectionUpdateCleanedCoin//
+CREATE PROCEDURE CollectionUpdateCleanedCoin
+  (IN id INT,
+   IN val INT(1),
+   IN user INT(1)
+  )
+  /***********************************************************
+   Authors Name : Andre Board
+   Created Date : 2017-12-01
+   Description : Get all Category Distinct Types Counts.
+                 CoinCategory::CategoryUserTotalInvestmentSumAll().
+   ************************************************************/
+  BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT '0';
+    SELECT COALESCE(sum(purchasePrice), 0.00) AS catCount
+    FROM collection
+      INNER JOIN coins ON collection.coinID = coins.coinID
+    WHERE collection.userID = id
+          AND coins.coinCategory = cat;
+  END//
+DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS CollectionUpdateCoinDetails//
+CREATE PROCEDURE CollectionUpdateCoinDetails(
+  IN val INT(1),
+  IN col CHAR(64),
+  IN userID INT(10),
+  IN coin INT(100)
+)
+  BEGIN
+    SET @s = CONCAT('UPDATE collection SET ', col, '=', val, 'WHERE userID = ', userID, 'AND collectionID = ',coin);
+    #SET @s = CONCAT('SELECT ',col,' FROM ',tbl );
+    PREPARE stmt FROM @s;
+    EXECUTE stmt;
+    DEALLOCATE PREPARE stmt;
+  END
+//
+delimiter ;
+
 
 /*--------------------------------------------------TRIGGERS------------------------------------------------------------*/
 

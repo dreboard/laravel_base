@@ -79,6 +79,9 @@
 <script src="{{ asset('/vendor/metisMenu/metisMenu.min.js') }}"></script>
 <script src="//cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 <script src="{{ asset('/dist/js/coin_app.js?v=tg3e') }}"></script>
+<script>
+    //javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([]);};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();
+</script>
 @stack('scripts')
 </body>
 </html>

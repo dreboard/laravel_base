@@ -3,6 +3,27 @@
  * Copyright 2013-2016 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
+
+/*
+
+--------------------------------------------------
+The Block, Element, Modifier methodology
+
+* Block component
+.btn {}
+
+* Element that depends upon the block
+.btn__price {}
+
+* Modifier that changes the style of the block
+.btn--orange {}
+.btn--big {}
+*/
+
+
+
+/* Layout styles
+-------------------------------------------------- */
 body {
   background-color: #f8f8f8;
 }
@@ -467,4 +488,13 @@ body {
 .smImg {
   height: 50px;
   width: auto;
+}
+
+
+/* Coin Type styles
+-------------------------------------------------- */
+.fixed-panel {
+  min-height: 250px;
+  max-height: 250px;
+  overflow-y: scroll;
 }

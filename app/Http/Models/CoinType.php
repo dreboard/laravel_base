@@ -40,9 +40,9 @@ class CoinType
         $statement = $this->pdo->prepare("call CoinTypeGetAll(:type)");
         $statement->bindValue(':type', str_replace('_', ' ', $coinType), PDO::PARAM_STR);
         $statement->execute();
-        $coinTypes = $statement->fetchAll(PDO::FETCH_OBJ);
+        $coinTypes = $statement->fetchAll(PDO::FETCH_ASSOC);
         if (!$coinTypes) {
-            throw new UnknownCoinTypeException("Could not get types from {$coinType}");
+            throw new UnknownCoinTypeException("Could not get coins from {$coinType}");
         }
         return $coinTypes;
     }
@@ -59,9 +59,9 @@ class CoinType
         $statement->bindValue(':year', $year, PDO::PARAM_STR);
         $statement->bindValue(':type', $coinType, PDO::PARAM_STR);
         $statement->execute();
-        $coinTypes = $statement->fetchAll(PDO::FETCH_OBJ);
+        $coinTypes = $statement->fetchAll(PDO::FETCH_ASSOC);
         if (!$coinTypes) {
-            throw new UnknownCoinTypeException("Could not get types from {$coinType}");
+            throw new UnknownCoinTypeException("Could not get years from {$coinType}");
         }
         return $coinTypes;
     }
@@ -80,7 +80,7 @@ class CoinType
         $statement->execute();
         $coinTypes = $statement->fetchAll(PDO::FETCH_COLUMN);
         if (!$coinTypes) {
-            throw new UnknownCoinTypeException("Could not get types from {$coinType}");
+            throw new UnknownCoinTypeException("Could not get year list from {$coinType}");
         }
         return $coinTypes;
     }

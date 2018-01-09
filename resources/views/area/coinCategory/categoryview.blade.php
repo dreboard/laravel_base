@@ -72,15 +72,20 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($lastCollected as $coinData)
-                                    <tr>
-                                        <td><a href="{!! route('collectView', [$coinData['collectionID']]) !!}">{{\Coins\Traits\CoinHelper::shortName($coinData['coinName'])}}</a></td>
-                                        <td>
-                                            <a href="{!! route('getCoin', [$coinData['coinID']]) !!}">{{$coinData['coinGrade']}}</a>
+                                @if($lastCollected !== false)
+                                    @foreach($lastCollected as $coinData)
+                                        <tr>
+                                            <td>
+                                                <a href="{!! route('collectView', [$coinData['collectionID']]) !!}">{{\Coins\Traits\CoinHelper::shortName($coinData['coinName'])}}</a>
                                             </td>
-                                        <td>${{$coinData['purchasePrice']}}</td>
-                                    </tr>
-                                @endforeach
+                                            <td>
+                                                <a href="{!! route('getCoin', [$coinData['coinID']]) !!}">{{$coinData['coinGrade']}}</a>
+                                            </td>
+                                            <td>${{$coinData['purchasePrice']}}</td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+
                                 </tbody>
                             </table>
                         </div>
@@ -126,13 +131,16 @@
                                 <span class="badge">4</span>
                                 <i class="fa fa-fw fa-globe"></i> Saved the world
                             </a>
+
+                            @if(in_array($title, config('coins.colorCategories')))
                             <a href="" class="list-group-item">
                                 <span class="badge">4</span>
-                                <i class="fa fa-fw fa-check"></i> Completed task: "fix error on sales page"
+                                <i class="fa fa-fw fa-check"></i> Color Report
                             </a>
+                            @endif
                         </div>
                         <div class="text-right">
-                            <a href="{!! route('getCertfiedCoin', [$coinData['coinID']]) !!}">View All Activity <i class="fa fa-arrow-circle-right"></i></a>
+                            <a href="">View All Activity <i class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                 </div>
@@ -161,7 +169,7 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">
-                DataTables Advanced Tables
+                {{$title}} Coins By Year
             </div>
             <!-- /.panel-heading -->
             <div class="panel-body">

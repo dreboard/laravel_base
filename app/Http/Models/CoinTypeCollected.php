@@ -23,6 +23,7 @@ class CoinTypeCollected
      */
     protected $pdo;
 
+
     /**
      * CoinCategory constructor.
      */
@@ -36,7 +37,7 @@ class CoinTypeCollected
      * @return mixed
      * @throws UnknownCoinTypeException
      */
-    public function getCoinTypeCollected(string $coinType): array
+    public function getCoinTypeCollected(string $coinType)
     {
         if (!$coinType) {
             throw new UnknownCoinTypeException("Could not get types from {$coinType}");
@@ -47,9 +48,46 @@ class CoinTypeCollected
         $statement->execute();
         $coinTypes = $statement->fetchAll(PDO::FETCH_ASSOC);
         if (!$coinTypes) {
-            return [0 => 'None'];
+            return false;
         }
         return $coinTypes;
+    }
+
+    /**
+     * Get Coin Types Collected by user
+     * @param string $coinType
+     * @return mixed
+     * @throws UnknownCoinTypeException
+     */
+    public function getCoinTypeColors(string $color, string $coinType)
+    {
+        if (!$coinType) {
+            throw new UnknownCoinTypeException("Could not get types from {$coinType}");
+        }
+        $statement = $this->pdo->prepare("call CoinGetColorCountByTypeCollected(:color, :type, :id)");
+        $statement->bindValue(':color', str_replace('_', ' ', $color), PDO::PARAM_STR);
+        $statement->bindValue(':type', str_replace('_', ' ', $coinType), PDO::PARAM_STR);
+        $statement->bindValue(':id', Auth::id(), PDO::PARAM_INT);
+        $statement->execute();
+        $coinTypes = $statement->fetchColumn();
+        if (!$coinTypes) {
+            return 0;
+        }
+        return $coinTypes;
+    }
+
+    /**
+     * @param string $coinType
+     * @return array
+     * @throws UnknownCoinTypeException
+     */
+    public function getColorsArray(string $coinType):array
+    {
+        $red = $this->getCoinTypeColors('RD', $coinType);
+        $redBrown = $this->getCoinTypeColors('RB', $coinType);
+        $brown = $this->getCoinTypeColors('BN', $coinType);
+        $none = $this->getCoinTypeColors('None', $coinType);
+        return ['red' => $red, 'redBrown' => $redBrown, 'brown' => $brown, 'none' => $none];
     }
 
     /**
@@ -126,6 +164,32 @@ class CoinTypeCollected
             //throw new UnknownCoinTypeException("Could not get getDesignTypesList from {$coinType}");
         }
         return $coinTypes;
+    }
+
+    /**
+     * Recent last five collected
+     * @param string $category
+     * @param int $userID
+     * @return mixed
+     */
+    public function typeLastCountByUser(string $category)
+    {
+        try{
+            $pdo = DB::getPdo();
+            $statement = $pdo->prepare("call CoinTypeLastFiveByUser(:cat, :id)");
+            $statement->bindValue(':cat', str_replace('_', ' ', $category), PDO::PARAM_STR);
+            $statement->bindValue(':id', Auth::id(), PDO::PARAM_INT);
+            $statement->execute();
+            $coinTypes = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if (!$coinTypes) {
+                return false;
+                return [0 => 'None'];
+                //throw new UnknownCoinTypeException("Could not get types from {$category}");
+            }
+            return $coinTypes;
+        }catch (\PDOException | Throwable $e){
+            return $e->getMessage();
+        }
     }
 
 }

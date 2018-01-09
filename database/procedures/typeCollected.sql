@@ -168,6 +168,38 @@ CREATE FUNCTION coinGetDesignTypeByCoinTypeCollectedCount(
     RETURN typesCollected;
   END//
 DELIMITER ;
+
+/*--------------------------------------------------colors-----------------------------------------*/
+DELIMITER //
+DROP PROCEDURE IF EXISTS CoinGetColorCountByTypeCollected//
+CREATE PROCEDURE CoinGetColorCountByTypeCollected
+  (
+    IN color VARCHAR(100),
+    IN type VARCHAR(100),
+    IN id INT(100)
+  )
+  /***********************************************************
+  Authors Name : Andre Board
+  Created Date : 2017-12-01
+  Description : Get design types for type.
+                MODEL-CoinType::getDesignTypesList().
+  ************************************************************/
+  BEGIN
+    DECLARE designTypeCount INT(11);
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+      GET DIAGNOSTICS CONDITION 1
+      @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+      SELECT @p1, @p2;
+    END;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET designTypeCount = 0;
+
+    SELECT COUNT(*) FROM collection
+      INNER JOIN coins ON collection.coinID = coins.coinID
+    WHERE collection.userID = id AND coins.coinType = type
+          AND collection.color = color;
+  END//
+DELIMITER ;
 /*--------------------------------------------------cointypes table-----------------------------------------*/
 
 

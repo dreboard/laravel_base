@@ -60,7 +60,7 @@ class CoinsController
     }
 
     /**
-     * Create Coin Category Links
+     * Certified grade report by coin
      * @param int $coin
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */

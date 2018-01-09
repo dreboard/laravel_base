@@ -37,11 +37,9 @@ CREATE PROCEDURE CoinTypeGetAll
   ************************************************************/
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Type not found';
-    SELECT * FROM coins WHERE coinType = type
-    ORDER BY coinSubCategory ASC;
-
+    SELECT * FROM coins WHERE coinType = type AND coins.coinYear <= YEAR(CURDATE())
+    ORDER BY coinYear DESC;
     #SELECT * FROM (SELECT * FROM coins c1 WHERE c1.coinType = type ORDER BY c1.coinYear DESC) coins GROUP BY coins.coinSubCategory;
-
   END//
 DELIMITER ;
 
@@ -113,6 +111,35 @@ CREATE PROCEDURE CoinGetDesignTypeByCoinType
     DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'design type not found';
     SELECT DISTINCT(designType) FROM `coins` WHERE coinType = type;
   END//
+DELIMITER ;
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS CoinTypeLastFiveByUser//
+CREATE PROCEDURE CoinTypeLastFiveByUser
+  (
+    IN type VARCHAR(50),
+    IN id  INT(10)
+  )
+  /***********************************************************
+   Authors Name : Andre Board
+   Created Date : 2017-12-01
+   Description : Get last five type collected by user.
+                 CoinCategory::categoryLastCountByUser().
+   ************************************************************/
+  BEGIN
+    DECLARE EXIT HANDLER FOR SQLEXCEPTION
+    BEGIN
+      GET DIAGNOSTICS CONDITION 1
+      @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
+      SELECT @p1, @p2;
+    END;
+
+    SELECT * FROM collection
+      INNER JOIN coins ON coins.coinID = collection.coinID
+    WHERE coins.coinType = type AND collection.userID = id
+    ORDER BY collection.enterDate DESC
+    LIMIT 5;
+  END //
 DELIMITER ;
 /*--------------------------------------------------cointypes table-----------------------------------------*/
 

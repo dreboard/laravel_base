@@ -12,7 +12,9 @@
 $(document).ready(function() {
 
     $('#side-menu').metisMenu();
-    $('.dataTable').DataTable();
+    $('.dataTable').DataTable( {
+        "order": [[ 0, "desc" ]]
+    } );
     //$('div.main-content .col-lg-12').height($(window).height());
 
     $('#searchForm').on("submit", function(e){

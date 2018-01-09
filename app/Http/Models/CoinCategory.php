@@ -6,6 +6,7 @@
 namespace App\Http\Models;
 
 use Coins\Exceptions\UnknownCoinCategoryException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use PDO;
 
@@ -84,5 +85,31 @@ class CoinCategory
         }
         return $catObj;
     }
+
+    /**
+     * @param string $category
+     * @param int $userID
+     * @return mixed
+     */
+    public function categoryLastCountByUser(string $category)
+    {
+        try{
+            $pdo = DB::getPdo();
+            $statement = $pdo->prepare("call CategoryLastFiveByUser(:cat, :id)");
+            $statement->bindValue(':cat', str_replace('_', ' ', $category), PDO::PARAM_STR);
+            $statement->bindValue(':id', Auth::id(), PDO::PARAM_INT);
+            $statement->execute();
+            $coinTypes = $statement->fetchAll(PDO::FETCH_ASSOC);
+            if (!$coinTypes) {
+                return false;
+                //throw new UnknownCoinCategoryException("Could not get {$category} Last Five By User");
+            }
+            return $coinTypes;
+        }catch (\PDOException | Throwable $e){
+            return $e->getMessage();
+        }
+    }
+
+
 
 }
