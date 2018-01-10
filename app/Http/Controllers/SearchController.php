@@ -43,7 +43,7 @@ class SearchController extends Controller
         $validation = $validator->make(
             $request->all(),
             [
-                'search' => 'required|max:22|min:2'
+                'search' => 'required|max:30|min:2'
             ]
         );
         if ($validation->fails()) {

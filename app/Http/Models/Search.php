@@ -38,13 +38,14 @@ class Search
      * @return mixed
      * @throws UnknownCoinCategoryException
      */
-    public function findItem(string $item): array
+    public function findItem(string $item)
     {
         $statement = $this->pdo->prepare("call FindSearchItem(:item)");
         $statement->bindValue(':item', str_replace('_', ' ', $item), PDO::PARAM_STR);
         $statement->execute();
-        $coinTypes = $statement->fetchAll(PDO::FETCH_OBJ);
+        $coinTypes = $statement->fetch(PDO::FETCH_ASSOC);
         if (!$coinTypes) {
+            return false;
             throw new UnknownCoinException("Could not get {$item}");
         }
         return $coinTypes;

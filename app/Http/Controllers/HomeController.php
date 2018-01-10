@@ -36,12 +36,12 @@ class HomeController extends Controller
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function smallCent()
+    public function testFunc()
     {
 
         $coins = Coin::where('coinType', 'Lincoln Memorial')->orderBy('coinYear', 'desc')->get();
 
-        return view('area.smallCent', ['coins' => $coins]);
+        return view('area.home', ['coins' => $coins]);
     }
 
     /**

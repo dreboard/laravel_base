@@ -23,22 +23,11 @@
         <div class="page-header">
             <h2>
                 <img class="smImg"
-                     src="{!! url('/img/'.str_replace(' ', '_', $coinData['coinVersion'])).'.jpg'!!}"> {{$coinData['coinName']}}
+                     src="{!! url('/img/'.str_replace(' ', '_', $coinData['coinVersion'])).'.jpg'!!}"> <a href="{!! route('getCoin', [$coinData['coinID']]) !!}">{{$coinData['coinName']}}</a>
                 <br>
-                <small>Main View</small>
-                <br>
-                <small>
-                    <a href="{!! route('getCategory', [$coinData['coinCategory']]) !!}">{{$coinData['coinCategory']}}</a>
-                    |
-                    <a href="{!! route('getType', [$coinData['coinType']]) !!}">{{$coinData['coinType']}}</a> |
-                    <a href="{!! route('getYear', [$coinData['coinYear']]) !!}">{{$coinData['coinYear']}}</a>
-                    <br>
-
-                </small>
+                <small>Color Report</small>
             </h2>
-
-@include('partials.coin.hdr_btn_group')
-
+            @include('partials.coin.hdr_btn_group')
         </div>
 
         <div class="row">
@@ -46,25 +35,21 @@
                 <div class="table-responsive">
                     <table class="table table-hover">
                         <tr>
-                            <th>Collected</th>
+                            <th>Red</th>
                             <td>33</td>
                         </tr>
                         <tr>
-                            <th>Investment</th>
-                            <td>100.00</td>
+                            <th>Red-Brown</th>
+                            <td>100</td>
                         </tr>
 
                         <tr>
-                            <th>Face Value</th>
-                            <td>$10.00</td>
+                            <th>Brown</th>
+                            <td>10</td>
                         </tr>
                         <tr>
-                            <th><a href="{!! route('getCertfiedCoin', [$coinData['coinID']]) !!}">Certified</a></th>
-                            <td>5</td>
-                        </tr>
-                        <tr>
-                            <th><a href="{!! route('getCertfiedCoin', [$coinData['coinID']]) !!}">View All Collected</a></th>
-                            <td></td>
+                            <th>Unclassified</th>
+                            <td>54</td>
                         </tr>
                     </table>
                 </div>
@@ -136,7 +121,7 @@
                                     <i class="fa fa-fw fa-money"></i> Damaged
                                 </a>
                                 @if(in_array($coinData['coinCategory'], config('coins.colorCategories')))
-                                    <a href="{!! route('getCoinColor', [$coinData['coinID']]) !!}" class="list-group-item">
+                                    <a href="{!! route('getCoin', [$coinData['coinCategory']]) !!}" class="list-group-item">
                                         <i class="fa fa-fw fa-check"></i> Color Report
                                     </a>
                                 @endif

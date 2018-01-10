@@ -88,7 +88,7 @@
                                 @foreach($coins as $t)
                                     <tr>
                                         <td>
-                                            <a href="{!! route('getCertfiedCoin', [$t['coinID']]) !!}">{{$t['coinName']}}</a>
+                                            <a href="{!! route('getCoinColor', [$t['coinID']]) !!}">{{$t['coinName']}}</a>
                                         </td>
                                     </tr>
                                 @endforeach

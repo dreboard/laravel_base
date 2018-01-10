@@ -41,30 +41,11 @@
 
                 </small>
             </h2>
-            <div class="btn-group" role="group" aria-label="...">
-                <div class="btn-group" role="group">
-                    <a href="{!! route('getTypeByYear', [str_replace(' ', '_', $coinData['coinType']), $coinData['coinYear']]) !!}"
-                       class="btn btn-default">All {{$coinData['coinType']}} {{$coinData['coinYear']}}</a>
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="mintMarks"
-                            aria-haspopup="true" aria-expanded="false">
-                        Mint Marks
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right" id="mintMarks">
-                        @foreach($mintMarks as $m)
-                            <li><a href="{!! route('getCategory', [$m['mintMark']]) !!}">{{$m['mintMark']}}</a></li>
-                        @endforeach
-                    </ul>
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
-                        Add
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right">
-                            <li><a href="{!! route('getCategory', [$m['mintMark']]) !!}">Add This Coin</a></li>
-                    </ul>
-                </div>
-            </div>
+
+            @include('partials.coin.hdr_btn_group')
+
+
+
 
         </div>
         <div class="table-responsive">

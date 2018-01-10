@@ -13,7 +13,7 @@
 
 /*--------------------------------------------------VIEWS------------------------------------------------------------*/
 DROP VIEW IF EXISTS BullionCategories;
-CREATE OR REPLACE VIEW BullionCategories AS SELECT DISTINCT(coinCategory) FROM coins WHERE coinMetal IN ('Gold', 'Platinum') ORDER BY denomination;
+CREATE OR REPLACE VIEW BullionCategories AS SELECT DISTINCT(coinCategory) FROM coins WHERE coinMetal IN ('Gold', 'Platinum', 'Palladium') ORDER BY denomination;
 
 #CREATE OR REPLACE VIEW
 

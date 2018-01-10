@@ -499,7 +499,8 @@ return [
         'Tenth Ounce Buffalo',
         'Quarter Ounce Buffalo',
         'Half Ounce Buffalo',
-        'One Ounce Buffalo'
+        'One Ounce Buffalo',
+        'American Palladium Eagle'
     ],
 
     'seriesTypes' => [

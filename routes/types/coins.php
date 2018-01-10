@@ -12,3 +12,6 @@ Route::get('/detail', 'CoinsController@getReport')->name('detail');
 
 Route::get('/addCoin/{id}', 'CoinsController@addCoin')->name('addCoin');
 Route::get('/getCertfiedCoin/{id}', 'CoinsController@getCertfiedCoin')->name('getCertfiedCoin');
+
+Route::get('/getCoinColor/{id}', 'CoinsController@getCoinColor')->name('getCoinColor');
+

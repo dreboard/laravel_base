@@ -19,12 +19,14 @@
 					<th>Type</th>
 				</tr>
 				</tfoot>
+				@if($search !== false)
 				@foreach($search as $t)
 					<tr>
-						<td><a href="{!! route('getCoin', [$t->coinID]) !!}"> {{$t->coinName}}</a></td>
-						<td><a href="{!! route('getType', [str_replace(' ', '_', $t->coinType)]) !!}"> {{$t->coinType}}</a></td>
+						<td><a href="{!! route('getCoin', [$t['coinID']]) !!}"> {{$t['coinName']}}</a></td>
+						<td><a href="{!! route('getType', [str_replace(' ', '_', $t['coinType'])]) !!}"> {{$t['coinType']}}</a></td>
 					</tr>
 				@endforeach
+					@endif
 			</table>
 		</div>
 	</div>

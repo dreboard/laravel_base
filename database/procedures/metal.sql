@@ -18,6 +18,10 @@ CREATE VIEW allGold AS SELECT * FROM `coins` WHERE coinMetal = 'Gold' ORDER BY d
 DROP VIEW IF EXISTS allPlatinum;
 CREATE VIEW allPlatinum AS SELECT * FROM `coins` WHERE coinMetal = 'Platinum' ORDER BY denomination DESC;
 
+DROP VIEW IF EXISTS allPalladium;
+CREATE VIEW allPalladium AS SELECT * FROM `coins` WHERE coinMetal = 'Palladium' ORDER BY denomination DESC;
+
+
 DROP VIEW IF EXISTS allGoldCategories;
 CREATE VIEW allGoldCategories AS SELECT DISTINCT coinCategory FROM `coins` WHERE coinMetal = 'Gold' ORDER BY denomination DESC;
 
@@ -31,6 +35,8 @@ DROP VIEW IF EXISTS allPlatinumTypes;
 CREATE VIEW allPlatinumTypes AS SELECT DISTINCT coinType FROM `coins` WHERE coinMetal = 'Platinum' ORDER BY denomination DESC;
 
 
+DROP VIEW IF EXISTS allPalladiumTypes;
+CREATE VIEW allPalladiumTypes AS SELECT DISTINCT coinType FROM `coins` WHERE coinMetal = 'Palladium' ORDER BY denomination DESC;
 
 
 /*--------------------------------------------------FUNCTIONS------------------------------------------------------------*/

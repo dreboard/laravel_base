@@ -228,6 +228,11 @@
                         </div>
                     </div>
                 </div>
+            <div class="col-md-6">
+                @includeIf('partials.types.' . $typeLink)
+            </div>
+
+
             </div>
 
             <hr/>
