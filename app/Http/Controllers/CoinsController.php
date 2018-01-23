@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Coin;
 use App\Http\Models\CoinType;
+use App\Http\Models\Collection;
+use Coins\Exceptions\NotUsersCoinException;
 use Coins\Traits\CoinHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,11 +23,15 @@ class CoinsController
     use CoinHelper;
 
     protected $thisCoin;
+    protected $coinModel;
+    protected $typeModel;
+    protected $collectModel;
 
     public function __construct()
     {
         $this->coinModel = new Coin();
         $this->typeModel = new CoinType();
+        $this->collectModel = new Collection();
     }
 
     /**
@@ -39,17 +45,19 @@ class CoinsController
             if (null === $coin || empty($coin)) {
                 throw new UnknownCoinException('Coin not found');
             }
+            $collected = $this->collectModel->getCollectedCoinByID($coin);
             $coinData = $this->coinModel->getCoinByID($coin);
             $mintMarks = $this->coinModel->yearMintMarks($coinData['coinYear'], $coinData['coinType']);
-
+//dd($collected);
             return view(
                 'area.coins.coinview',
                 [
                     'coinData' => $coinData,
-                    'mintMarks' => $mintMarks
+                    'mintMarks' => $mintMarks,
+                    'collected' => $collected
                 ]
             );
-        } catch (UnknownCoinException | \Throwable $e) {
+        } catch (UnknownCoinException | NotUsersCoinException | \Throwable $e) {
             return view(
                 'error',
                 [

@@ -13,3 +13,4 @@ yarn-error.log
 
 /dev_ops/logs/*
 /public/img/
+/database/procedures/_ADMIN.sql

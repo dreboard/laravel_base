@@ -21,7 +21,7 @@
 	<div class="col-lg-12">
 		<h2 class="page-header"><img class="smImg"
                                      src="{!! url('/img/'.str_replace(' ', '_', $coinType)).'.jpg'!!}"> {{$coinYear}} {{$title}}<br />
-            <small>Type: <a href="{!! route('getCategory', [$catLink]) !!}">{{$category}}</a> <br>
+            <small>Type: <a href="{!! route('getType', [str_replace(' ', '_', $coinType)]) !!}">{{$title}}</a> <br>
                 Year:  <select class="yearSwitch">
                     <option selected>Go To Year</option>
                     @foreach($typeYears as $v)

@@ -6,11 +6,10 @@ namespace App\Http\Controllers;
 use App\Http\Models\Coin;
 use App\Http\Models\CoinType;
 use App\Http\Models\Collection;
-use Coins\Traits\CoinHelper;
+use Coins\Exceptions\NotUsersCoinException;
+use Coins\Traits\{CoinHelper, CollectionHelper};
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Auth;
-use PDO;
 use Coins\Exceptions\UnknownCoinException;
 
 /**
@@ -20,6 +19,7 @@ use Coins\Exceptions\UnknownCoinException;
 class CollectController
 {
     use CoinHelper;
+    use CollectionHelper;
 
     protected $thisCoin;
 
@@ -47,7 +47,7 @@ class CollectController
                     'coinData' => $coinData,
                 ]
             );
-        } catch (UnknownCoinException | \Throwable $e) {
+        } catch (UnknownCoinException | NotUsersCoinException | \Throwable $e) {
             return view(
                 'error',
                 [
@@ -66,7 +66,9 @@ class CollectController
      */
     public function postCollectionDamage(Request $request)
     {
+        $damages = [];
         //$input = request()->all();
+        return response()->json([request()->all()]);
         $holed = $request->input('holed');
         $cleaned = $request->input('cleaned');
         $altered = $request->input('altered');
@@ -76,11 +78,27 @@ class CollectController
         $bent = $request->input('bent');
         $plugged = $request->input('plugged');
         $polished = $request->input('altered');
-//dd($request->input('holed'));
-        $this->collectModel->saveDamages($holed, $cleaned, $altered, $damaged, $pvc, $corrosion, $bent, $plugged, $polished);
-        return response()->json([request()->all()]);
+        $collectionID = $request->input('collectionID');
 
-        return response()->json(['holed' => $holed, 'cleaned' => $cleaned, 'altered' => $altered]);
+        $damages['holed'] = $request->input('holed');
+        $damages['cleaned'] = $request->input('cleaned');
+        $damages['altered'] = $request->input('altered');
+        $damages['damaged'] = $request->input('damaged');
+        $damages['pvc'] = $request->input('pvc');
+        $damages['corrosion'] = $request->input('corrosion');
+        $damages['bent'] = $request->input('bent');
+        $damages['plugged'] = $request->input('plugged');
+        $damages['polished'] = $request->input('altered');
+        $damages['collectionID'] = $request->input('collectionID');
+        //$this->collectModel->saveDamages($damages);
+
+//dd($request->input('holed'));
+        //$this->collectModel->saveDamages($holed, $cleaned, $altered, $damaged, $pvc, $corrosion, $bent, $plugged, $polished, $collectionID);
+
+        return response()->json($damages);
+        //return response()->json([request()->all()]);
+
+        //return response()->json(['holed' => $holed, 'cleaned' => $cleaned, 'altered' => $altered]);
     }
 
     public function postCollectionDamage2(Request $request)

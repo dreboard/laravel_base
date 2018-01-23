@@ -23,7 +23,8 @@
         <div class="page-header">
             <h2>
                 <img class="smImg"
-                     src="{!! url('/img/'.str_replace(' ', '_', $coinData['coinVersion'])).'.jpg'!!}"> <a href="{!! route('getCoin', [$coinData['coinID']]) !!}">{{$coinData['coinName']}}</a>
+                     src="{!! url('/img/'.str_replace(' ', '_', $coinData['coinVersion'])).'.jpg'!!}"> <a
+                        href="{!! route('getCoin', [$coinData['coinID']]) !!}">{{$coinData['coinName']}}</a>
                 <br>
                 <small>Color Report</small>
             </h2>
@@ -54,7 +55,7 @@
                     </table>
                 </div>
 
-                <hr />
+                <hr/>
 
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -95,48 +96,52 @@
                             </table>
                         </div>
                         <div class="text-right">
-                            <a href="{!! route('getCoin', [$coinData['coinID']]) !!}">View All <i class="fa fa-arrow-circle-right"></i></a>
+                            <a href="{!! route('getCoin', [$coinData['coinID']]) !!}">View All <i
+                                        class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
                 </div>
 
             </div>
             <div class="col-md-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> Details Panel</h3>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> Details Panel</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="list-group">
+                            <a href="{!! route('getCoin', [$coinData['coinID']]) !!}" class="list-group-item">
+                                <i class="fa fa-fw fa-calendar"></i> Main
+                            </a>
+                            <a href="{!! route('getCertfiedCoin', [$coinData['coinID']]) !!}" class="list-group-item">
+                                <i class="fa fa-fw fa-comment"></i> Grades
+                            </a>
+                            <a href="{!! route('getCertfiedCoin', [$coinData['coinID']]) !!}" class="list-group-item">
+                                <i class="fa fa-fw fa-comment"></i> Finance
+                            </a>
+                            <a href="{!! route('getCoin', [$coinData['coinID']]) !!}" class="list-group-item">
+                                <i class="fa fa-fw fa-truck"></i> Errors
+                            </a>
+                            <a href="{!! route('getCoin', [$coinData['coinID']]) !!}" class="list-group-item">
+                                <i class="fa fa-fw fa-money"></i> Damaged
+                            </a>
+                            @if(in_array($coinData['coinCategory'], config('coins.colorCategories')))
+                                <a href="{!! route('getCoin', [$coinData['coinCategory']]) !!}" class="list-group-item">
+                                    <i class="fa fa-fw fa-check"></i> Color Report
+                                </a>
+                            @endif
                         </div>
-                        <div class="panel-body">
-                            <div class="list-group">
-                                <a href="{!! route('getCoin', [$coinData['coinID']]) !!}" class="list-group-item">
-                                    <i class="fa fa-fw fa-calendar"></i> Main
-                                </a>
-                                <a href="{!! route('getCertfiedCoin', [$coinData['coinID']]) !!}" class="list-group-item">
-                                    <i class="fa fa-fw fa-comment"></i> Grades
-                                </a>
-                                <a href="{!! route('getCoin', [$coinData['coinID']]) !!}" class="list-group-item">
-                                    <i class="fa fa-fw fa-truck"></i> Errors
-                                </a>
-                                <a href="{!! route('getCoin', [$coinData['coinID']]) !!}" class="list-group-item">
-                                    <i class="fa fa-fw fa-money"></i> Damaged
-                                </a>
-                                @if(in_array($coinData['coinCategory'], config('coins.colorCategories')))
-                                    <a href="{!! route('getCoin', [$coinData['coinCategory']]) !!}" class="list-group-item">
-                                        <i class="fa fa-fw fa-check"></i> Color Report
-                                    </a>
-                                @endif
-                            </div>
-                            <div class="text-right">
-                                <a href="{!! route('getCertfiedCoin', [$coinData['coinID']]) !!}">View All Activity <i class="fa fa-arrow-circle-right"></i></a>
-                            </div>
+                        <div class="text-right">
+                            <a href="{!! route('getCertfiedCoin', [$coinData['coinID']]) !!}">View All Activity <i
+                                        class="fa fa-arrow-circle-right"></i></a>
                         </div>
                     </div>
+                </div>
             </div>
         </div>
 
 
-
-        <hr />
+        <hr/>
 
         <p>
             @include('partials.forms.coin_grade')

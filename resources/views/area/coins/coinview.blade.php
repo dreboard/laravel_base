@@ -156,22 +156,41 @@
         <p>
             @include('partials.forms.coin_grade')
         </p>
-        <div class="table-responsive">
-            <table class="table table-striped dataTable">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                </tr>
-                </thead>
-                <tfoot>
-                <tr>
-                    <th>Name</th>
-                    <th>Type</th>
-                </tr>
-                </tfoot>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{$coinData['coinName']}} Coins Collected
+            </div>
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <table width="100%" class="table table-striped table-bordered table-hover dataTable" id="dataTables-example">
+                        <thead>
+                        <tr>
+                            <th>Nickname</th>
+                            <th class="text-center">Grade</th>
+                            <th class="text-center">Collected</th>
+                            <th class="text-center">Investment</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($collected as $t)
+                            <tr>
+                                <td>
+                                    <a href="{!! route('collectView', [$t['collectionID']]) !!}"> {{$t['coinNickname']}}</a>
+                                </td>
+                                <td class="text-center">{{$t['coinGrade']}}</td>
+                                <td class="text-center">{{ \Carbon\Carbon::parse($t['purchaseDate'])->format('d/m/Y')}}</td>
+                                <td class="text-center">{{$t['purchasePrice']}}</td>
+                            </tr>
+                        @endforeach
 
-            </table>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <!-- /.panel-body -->
         </div>
     </div>
 @endsection
+

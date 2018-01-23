@@ -31,6 +31,7 @@ CREATE PROCEDURE CoinTypeGetAllCollected
     IN type VARCHAR(100),
     IN id INT(100)
 )
+  COMMENT 'Get all collected by coin type'
   /***********************************************************
   Authors Name : Andre Board
   Created Date : 2017-12-01
@@ -38,7 +39,6 @@ CREATE PROCEDURE CoinTypeGetAllCollected
                 MODEL-CoinVersion::getVersion().
   ************************************************************/
   BEGIN
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Collected type not found';
     SELECT * FROM collection
     INNER JOIN coins ON collection.coinID = coins.coinID
     WHERE coins.coinType = type AND collection.userID = id
@@ -55,6 +55,7 @@ DELIMITER //
 DROP PROCEDURE IF EXISTS TypesGetThisCategory//
 CREATE PROCEDURE TypesGetThisCategory
   (IN p_type VARCHAR(100))
+  COMMENT 'Get category by type'
   BEGIN
     SELECT coinCategory FROM coins WHERE coinType = p_type;
   END//
@@ -67,6 +68,7 @@ CREATE PROCEDURE CoinTypeDistinctYears
   (
     IN type VARCHAR(100)
   )
+  COMMENT 'Get years minted for type'
   /***********************************************************
   Authors Name : Andre Board
   Created Date : 2017-12-01
@@ -74,7 +76,6 @@ CREATE PROCEDURE CoinTypeDistinctYears
                 MODEL-CoinType::getYearList().
   ************************************************************/
   BEGIN
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'dates not found';
     SELECT DISTINCT(coinYear) FROM `coins` WHERE `coinType` = type ORDER BY coinYear ASC;
   END//
 DELIMITER ;
@@ -86,6 +87,7 @@ CREATE PROCEDURE CoinGetDesignByTypeCollected
   (
     IN type VARCHAR(100)
   )
+  COMMENT ''
   /***********************************************************
   Authors Name : Andre Board
   Created Date : 2017-12-01
@@ -105,6 +107,7 @@ CREATE PROCEDURE CoinGetDesignTypeByCoinTypeCollected
     IN design VARCHAR(100),
     IN id INT(100)
   )
+  COMMENT 'Get design types for type collected'
   /***********************************************************
   Authors Name : Andre Board
   Created Date : 2017-12-01
@@ -113,15 +116,7 @@ CREATE PROCEDURE CoinGetDesignTypeByCoinTypeCollected
   ************************************************************/
   BEGIN
     DECLARE designTypeCount INT(11);
-    #DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'design collected type not found';
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-      GET DIAGNOSTICS CONDITION 1
-      @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
-      SELECT @p1, @p2;
-    END;
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET designTypeCount = 0;
-
     SELECT DISTINCT(coins.designType) AS designType,
       #coinGetDesignTypeByCoinTypeCollectedCount(design, id) AS designTypeCount
       (SELECT COUNT(coins.designType)
@@ -129,12 +124,10 @@ CREATE PROCEDURE CoinGetDesignTypeByCoinTypeCollected
          INNER JOIN coins ON collection.coinID = coins.coinID
        WHERE collection.userID = id
              AND coins.designType = design) AS designTypeCount
-
     FROM collection
     INNER JOIN coins ON collection.coinID = coins.coinID
     WHERE coins.designType = design AND collection.userID = id
     ORDER BY coins.coinYear ASC;
-
   END//
 DELIMITER ;
 /*
@@ -178,22 +171,14 @@ CREATE PROCEDURE CoinGetColorCountByTypeCollected
     IN type VARCHAR(100),
     IN id INT(100)
   )
+  COMMENT 'Get color count for cents by type.'
   /***********************************************************
   Authors Name : Andre Board
   Created Date : 2017-12-01
-  Description : Get design types for type.
+  Description : Get color count for cents by typee.
                 MODEL-CoinType::getDesignTypesList().
   ************************************************************/
   BEGIN
-    DECLARE designTypeCount INT(11);
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-      GET DIAGNOSTICS CONDITION 1
-      @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
-      SELECT @p1, @p2;
-    END;
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET designTypeCount = 0;
-
     SELECT COUNT(*) FROM collection
       INNER JOIN coins ON collection.coinID = coins.coinID
     WHERE collection.userID = id AND coins.coinType = type

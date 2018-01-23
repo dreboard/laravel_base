@@ -9,6 +9,39 @@
 
 @endpush
 
+
+@push('css')
+    <link href="https://cdn.quilljs.com/1.3.4/quill.snow.css" rel="stylesheet">
+    <style>
+        .list-group-item{
+            border: 0;
+            padding-left: 0;
+            border-top: 1px solid;
+            border-color: rgba(37,40,43,0.1);
+        }
+        .list-group .list-group-item:first-child{
+            border:0;
+        }
+        .list-group .list-group-item a{
+            color: #2895F1;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .list-group.list-group-header{
+            padding:0;
+            margin:0;
+        }
+        .list-group.list-group-body .glyphicon {
+            font-size: 25px; vertical-align: middle;
+        }
+        .list-group-panel{
+            border: 1px solid #ccdbeb;
+            border-radius: 0;
+        }
+    </style>
+
+@endpush
+
 @push('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
@@ -33,7 +66,7 @@
                     var polished= $("#polished").is(":checked") ? 1:0;
                     //var damaged = $("#holed").val();
                     //var id = $("input[name=damagedID]").val();
-                    //console.log(damages);
+                    //console.log(damaged);
                     $.ajax({
                         method: "POST",
                         url: "../postCollectionDamage",
@@ -47,15 +80,22 @@
                             corrosion: corrosion,
                             bent: bent,
                             plugged: plugged,
-                            polished: polished,
-
-                        },
+                            polished: polished
+                        }
                     })
                         .done(function( data ) {
-                            console.log(data.holed);
-                            if(data.holed == 1){
-                                $("#holed").prop('checked', true);
-                            }
+
+                            //var obj = JSON.parse(data);
+                            jQuery.each(data, function(i, obj) {
+                                console.log(obj.holed);
+                                console.log(i);
+                                if(obj == 1){
+                                    $("#"+obj+"").prop('checked', false);
+                                }
+                                //$("#"+obj+"").html(obj.id + " " + obj.name);
+                            });
+
+
 
                         })
                         .fail(function(error) {
@@ -78,46 +118,7 @@
         var quill = new Quill('#editor', {
             theme: 'snow'
         });
-    </script><script src="https://cdn.quilljs.com/1.3.4/quill.js"></script>
-
-    <!-- Initialize Quill editor -->
-    <script>
-        var quill = new Quill('#editor', {
-            theme: 'snow'
-        });
     </script>
-@endpush
-
-@push('css')
-    <link href="https://cdn.quilljs.com/1.3.4/quill.snow.css" rel="stylesheet">
-<style>
-    .list-group-item{
-        border: 0;
-        padding-left: 0;
-        border-top: 1px solid;
-        border-color: rgba(37,40,43,0.1);
-    }
-    .list-group .list-group-item:first-child{
-        border:0;
-    }
-    .list-group .list-group-item a{
-        color: #2895F1;
-        cursor: pointer;
-        text-decoration: none;
-    }
-    .list-group.list-group-header{
-        padding:0;
-        margin:0;
-    }
-    .list-group.list-group-body .glyphicon {
-        font-size: 25px; vertical-align: middle;
-    }
-    .list-group-panel{
-        border: 1px solid #ccdbeb;
-        border-radius: 0;
-    }
-</style>
-
 @endpush
 
 @section('content')
@@ -164,7 +165,11 @@
                         </tr>
                         <tr>
                             <th><a href="{!! route('getCertfiedCoin', [$coinData['coinID']]) !!}">View All Collected</a></th>
-                            <td></td>
+                            <td>
+                                <form class="form-inline">
+                                    <button type="submit" class="btn btn-danger removeIt">Delete</button>
+                                </form>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -181,7 +186,10 @@
                             <table class="table table-hover">
                                 <tr>
                                     <th>Roll</th>
-                                    <td><a href="{!! route('getCertfiedCoin', [$coinData['coinID']]) !!}">Collection</a></td>
+                                    <td>
+
+
+                                        </td>
                                 </tr>
                                 <tr>
                                     <th>Folder</th>
@@ -228,7 +236,7 @@
                                                     <div class="col-xs-3" style="">
                                                         <form class="form-inline" id="damagedCoin">
                                                             <div class="form-group">
-                                                                <select id="damaged" name="damaged" class="form-control">
+                                                                <select id="damaged2" name="damaged2" class="form-control">
                                                                     <option value="0">No</option>
                                                                     <option value="1">Yes</option>
                                                                 </select>
@@ -396,6 +404,31 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <a href="{!! route('getCertfiedCoin', [$coinData['coinID']]) !!}">Collection</a>
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="exampleInputName2"></label>
+                        <select name="collectrollsID" id="collectrollsID" class="form-control">
+                            @if($coinData['collectrollsID'] == 1)
+                                <option selected value="">Not In Roll</option>
+                            @else
+                                <option selected value="">Not In Roll</option>
+                            @endif
+                            <option value="">Sample Roll 1</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-default">Change</button>
+                    <button type="button" class="btn btn-danger removeIt">Remove</button>
+                </form>
+            </div>
+            <div class="col-md-6">
+
+
             </div>
         </div>
 

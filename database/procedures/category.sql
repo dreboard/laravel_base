@@ -36,6 +36,7 @@ CREATE PROCEDURE CategoryGetAll
   Description : Get coin category.
                 MODEL-CoinDesign::getDesign().
   ************************************************************/
+  COMMENT ''
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'category not found';
     SELECT * FROM coins WHERE coins.coinCategory = category AND coins.coinYear <= YEAR(CURDATE())
@@ -174,13 +175,6 @@ CREATE PROCEDURE CategoryLastFiveByUser
                  CoinCategory::categoryLastCountByUser().
    ************************************************************/
   BEGIN
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-      GET DIAGNOSTICS CONDITION 1
-      @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
-      SELECT @p1, @p2;
-    END;
-
     SELECT * FROM collection
       INNER JOIN coins ON coins.coinID = collection.coinID
     WHERE coins.coinCategory = cat AND collection.userID = id

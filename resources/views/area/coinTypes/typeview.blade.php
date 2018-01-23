@@ -166,7 +166,9 @@
                                 <a href="{!! route('getCategory', [$catLink]) !!}" class="list-group-item">
                                     <i class="fa fa-fw fa-check"></i> Errors
                                 </a>
-
+                                <a href="{!! route('getCategory', [$catLink]) !!}" class="list-group-item">
+                                    <i class="fa fa-fw fa-check"></i> Proofs
+                                </a>
                                 @if(in_array($title, config('coins.rollTypes')))
                                     <a href="{!! route('getCategory', [$catLink]) !!}" class="list-group-item">
                                         <i class="fa fa-fw fa-check"></i> Coin Rolls

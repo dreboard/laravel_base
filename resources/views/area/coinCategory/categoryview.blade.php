@@ -178,20 +178,18 @@
                     <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Year</th>
-                        <th>Type</th>
-                        <th>head</th>
-                        <th>head</th>
+                        <th class="text-center">Year</th>
+                        <th class="text-center">Collected</th>
+                        <th class="text-center">Investment</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($coins as $t)
                         <tr>
                             <td><a href="{!! route('getCoin', [$t['coinID']]) !!}"> {{$t['coinName']}}</a></td>
-                            <td><a href="{!! route('getTypeByYear', [str_replace(' ', '_', $t['coinType']), $t['coinYear']]) !!}"> {{$t['coinYear']}}</a></td>
-                            <td><a href="{!! route('getType', [str_replace(' ', '_', $t['coinType'])]) !!}"> {{$t['coinType']}}</a></td>
-                            <td><a href="{!! route('getType', [str_replace(' ', '_', $t['coinType'])]) !!}"> {{$t['coinType']}}</a></td>
-                            <td><a href="{!! route('getType', [str_replace(' ', '_', $t['coinType'])]) !!}"> {{$t['coinType']}}</a></td>
+                            <td class="text-center"><a href="{!! route('getTypeByYear', [str_replace(' ', '_', $t['coinType']), $t['coinYear']]) !!}"> {{$t['coinYear']}}</a></td>
+                            <td class="text-center"><a href="{!! route('getType', [str_replace(' ', '_', $t['coinType'])]) !!}"> {{$t['coinType']}}</a></td>
+                            <td class="text-center"><a href="{!! route('getType', [str_replace(' ', '_', $t['coinType'])]) !!}"> {{$t['coinType']}}</a></td>
                         </tr>
                     @endforeach
 
@@ -200,7 +198,7 @@
                 </div>
                 <!-- /.table-responsive -->
                 <div class="well">
-                    <h4>DataTables Usage Information</h4>
+                    <h4>All Collected {{$title}}</h4>
                     <p>DataTables is a very flexible, advanced tables plugin for jQuery. In SB Admin, we are using a specialized version of DataTables built for Bootstrap 3. We have also customized the table headings to use Font Awesome icons in place of images. For complete documentation on DataTables, visit their website at <a target="_blank" href="https://datatables.net/">https://datatables.net/</a>.</p>
                     <a class="btn btn-default btn-lg btn-block" target="_blank" href="https://datatables.net/">View DataTables Documentation</a>
                 </div>

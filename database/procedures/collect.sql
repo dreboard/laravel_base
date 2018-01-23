@@ -28,13 +28,10 @@ REPLACE UserTotalInvestmentSumByCategory
 DELIMITER //
 DROP FUNCTION IF EXISTS categoryGetCoinTypesCount//
 CREATE FUNCTION categoryGetCoinTypesCount(p_cat VARCHAR(20)) RETURNS INT
-
   BEGIN
     DECLARE typesCollected INT;
-
     SELECT COUNT(DISTINCT coins.coinType) INTO typesCollected FROM coins
     WHERE coins.coinCategory = p_cat;
-
     RETURN typesCollected;
   END//
 DELIMITER ;
@@ -44,27 +41,128 @@ DELIMITER ;
 Get all Category details
 CoinCategory::getCategoryDetails()
 */
+
+
+/***********************************************************
+ Authors Name : Andre Board
+ Created Date : 2017-12-01
+ Description : Save users coin.
+               CoinCategory::categoryLastCountByUser().
+ ************************************************************/
 DELIMITER //
-DROP PROCEDURE IF EXISTS CollectionGetCoin//
-CREATE PROCEDURE CollectionGetCoin
+DROP PROCEDURE IF EXISTS CollectionSaveCoin//
+CREATE PROCEDURE CollectionSaveCoin
   (
-    IN collectID VARCHAR(50),
-    IN id  INT(10)
+    IN user INT(10),
+    IN id  INT(100),
+    IN coinNickname VARCHAR(50),
+    IN coinGrade VARCHAR(50),
+    IN coinGradeNum INT(2),
+    IN designation VARCHAR(100),
+    IN pcgsVariety VARCHAR(55),
+    IN purchaseFrom VARCHAR(255),
+    IN purchaseDate DATE,
+    IN purchasePrice DECIMAL(10,2),
+    IN coinValue DECIMAL(10,2),
+    IN ebaySellerID VARCHAR(255),
+    IN shopName VARCHAR(255),
+    IN shopUrl VARCHAR(255)
+
+
 
   )
-  /***********************************************************
-   Authors Name : Andre Board
-   Created Date : 2017-12-01
-   Description : Get all Category Distinct Types Counts.
-                 CoinCategory::categoryLastCountByUser().
-   ************************************************************/
+  COMMENT 'Save users coin.'
   BEGIN
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION
-    BEGIN
-      GET DIAGNOSTICS CONDITION 1
-      @p1 = RETURNED_SQLSTATE, @p2 = MESSAGE_TEXT;
-      SELECT @p1, @p2;
-    END;
+    INSERT INTO collection
+    (
+      userID,
+     coinID,
+     coinNickname,
+      coinGrade,
+      coinGradeNum,
+      designation,
+      pcgsVariety,
+      purchaseFrom,
+      purchaseDate,
+      purchasePrice,
+      coinValue,
+      ebaySellerID,
+      shopName,
+      shopUrl,
+
+
+      proService,
+     proSerialNumber,
+     slabCondition,
+
+     slabLabel,
+     coinGrade,
+     coinGradeNum,
+     designation,
+     problem,
+     coinValue,
+
+
+     auctionNumber,
+     additional,
+
+     ebaySellerID,
+     shopName,
+     shopUrl,
+     coinNote,
+     enterDate,
+     userID,
+     errorCoin,
+     mintBox,
+     showName,
+     showCity,
+     color,
+     fullAtt,
+     morganDesignation,
+     dieCrack,
+     bie,
+     wddo,
+     ddo,
+     wddr,
+     ddr,
+     coincollectID,
+     coinLotID
+    )
+    VALUES
+      (user,
+       id,
+       coinNickname,
+       coinGrade,
+       coinGradeNum,
+       designation,
+       pcgsVariety,
+       purchaseFrom,
+       purchaseDate,
+
+       purchasePrice,
+       coinValue,
+        ebaySellerID,
+        shopName,
+        shopUrl,
+
+
+
+
+        coinGradeNum,
+       designation,
+       pcgsVariety,
+       purchaseFrom,
+       purchaseDate,
+       coinNickname,
+       coinGrade,
+       coinGradeNum,
+       designation,
+       pcgsVariety,
+       purchaseFrom,
+       purchaseDate,
+      );
+
+
 
     SELECT * FROM collection
       INNER JOIN coins ON coins.coinID = collection.coinID
@@ -74,16 +172,68 @@ CREATE PROCEDURE CollectionGetCoin
 DELIMITER ;
 
 
+
+
+/***********************************************************
+ Authors Name : Andre Board
+ Created Date : 2017-12-01
+ Description : Get all Category Distinct Types Counts.
+               CoinCategory::categoryLastCountByUser().
+ ************************************************************/
+DELIMITER //
+DROP PROCEDURE IF EXISTS CollectionGetCoin//
+CREATE PROCEDURE CollectionGetCoin
+  (
+    IN collectID VARCHAR(50),
+    IN id  INT(10)
+
+  )
+  COMMENT 'Get coins with same year, type and mint mark.'
+  BEGIN
+    SELECT * FROM collection
+      INNER JOIN coins ON coins.coinID = collection.coinID
+    WHERE collection.collectionID = collectID AND collection.userID = id;
+
+  END //
+DELIMITER ;
+
+/***********************************************************
+ Authors Name : Andre Board
+ Created Date : 2017-12-01
+ Description : Get all Category Distinct Types Counts.
+               CoinCategory::categoryLastCountByUser().
+ ************************************************************/
+DELIMITER //
+DROP PROCEDURE IF EXISTS CollectionGetCoinsByID//
+CREATE PROCEDURE CollectionGetCoinsByID
+  (
+    IN coin INT(10),
+    IN id  INT(10)
+
+  )
+  COMMENT 'Get coins with same coinID.'
+  BEGIN
+    DECLARE CONTINUE HANDLER FOR SQLWARNING BEGIN END;
+    SELECT * FROM collection
+      INNER JOIN coins ON coins.coinID = collection.coinID
+    WHERE collection.coinID = coin AND collection.userID = id;
+
+  END //
+DELIMITER ;
+
+
+
 DELIMITER //
 DROP PROCEDURE IF EXISTS CategoryUserTotalInvestmentSumAll//
 CREATE PROCEDURE CategoryUserTotalInvestmentSumAll
   (IN id INT,
    IN cat VARCHAR(100)
 )
+  COMMENT 'Get total investment by category'
   /***********************************************************
    Authors Name : Andre Board
    Created Date : 2017-12-01
-   Description : Get all Category Distinct Types Counts.
+   Description : Get total investment by category.
                  CoinCategory::CategoryUserTotalInvestmentSumAll().
    ************************************************************/
   BEGIN
@@ -104,6 +254,7 @@ CREATE PROCEDURE CategoryUserTotalInvestmentSumFrom
    IN cat VARCHAR(100),
    IN purchaseFrom VARCHAR(100)
 )
+  COMMENT 'Total Investments By Category FROM Source'
   /***********************************************************
    Authors Name : Andre Board
    Created Date : 2017-12-01
@@ -129,6 +280,7 @@ CREATE PROCEDURE CollectionUpdateCleanedCoin
    IN val INT(1),
    IN user INT(1)
   )
+  COMMENT ''
   /***********************************************************
    Authors Name : Andre Board
    Created Date : 2017-12-01
@@ -163,7 +315,37 @@ CREATE PROCEDURE CollectionUpdateCoinDetails(
 //
 delimiter ;
 
-
+DELIMITER //
+DROP PROCEDURE IF EXISTS CollectionUpdateCoinDamage//
+CREATE PROCEDURE CollectionUpdateCoinDamage(
+  IN holed INT(1),
+  IN cleaned INT(1),
+  IN altered INT(1),
+  IN damaged INT(1),
+  IN pvc INT(1),
+  IN corrosion INT(1),
+  IN bent INT(1),
+  IN plugged INT(1),
+  IN polished INT(1),
+  IN coin INT(100),
+  IN id INT(100)
+)
+  BEGIN
+    UPDATE collection
+    SET
+      collection.holed  = holed,
+      collection.cleaned  = cleaned,
+      collection.altered  = altered,
+      collection.damaged  = damaged,
+      collection.pvc  = pvc,
+      collection.corrosion  = corrosion,
+      collection.bent  = bent,
+      collection.plugged  = plugged,
+      collection.polished  = polished
+    WHERE collection.collectionID = coin AND collection.userID = id;
+  END
+//
+delimiter ;
 /*--------------------------------------------------TRIGGERS------------------------------------------------------------*/
 
 

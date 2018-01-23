@@ -18,6 +18,10 @@ CREATE VIEW commemorativeCategoriesView AS SELECT DISTINCT coinCategory FROM coi
 DROP VIEW IF EXISTS commemorativeTypesView;
 CREATE VIEW commemorativeTypesView AS SELECT DISTINCT coinType FROM coins WHERE commemorative = 1 ORDER BY denomination DESC;
 
+DROP VIEW IF EXISTS commemorativeGroupView;
+CREATE VIEW commemorativeGroupView AS SELECT DISTINCT commemorativeType FROM `coins` ORDER BY `coinYear` DESC;
+
+SELECT * FROM commemorativeGroupView;
 
 SELECT commemorativeVersion FROM `coins` ORDER BY `coins`.`commemorativeVersion` ASC;
 SELECT * FROM `coins` WHERE `coinType` = 'First Spouse' ORDER BY `coinType` ASC;
