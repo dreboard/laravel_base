@@ -22,29 +22,6 @@ CREATE VIEW allCategoriesListView AS SELECT DISTINCT coinCategory FROM `coins` O
 
 
 /*--------------------------------------------------FUNCTIONS------------------------------------------------------------*/
-
-
-DELIMITER //
-DROP PROCEDURE IF EXISTS CategoryGetAll//
-CREATE PROCEDURE CategoryGetAll
-  (
-    IN category VARCHAR(100)
-  )
-  /***********************************************************
-  Authors Name : Andre Board
-  Created Date : 2017-12-01
-  Description : Get coin category.
-                MODEL-CoinDesign::getDesign().
-  ************************************************************/
-  COMMENT ''
-  BEGIN
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'category not found';
-    SELECT * FROM coins WHERE coins.coinCategory = category AND coins.coinYear <= YEAR(CURDATE())
-    ORDER BY coinYear ASC;
-  END//
-DELIMITER ;
-
-
 /*
 Total Investments By Category FROM Source
 
@@ -65,7 +42,83 @@ CREATE FUNCTION categoryGetCoinTypesCount(p_cat VARCHAR(20)) RETURNS INT
   END//
 DELIMITER ;
 
+
+DELIMITER //
+DROP FUNCTION IF EXISTS categoryGetInvestment//
+CREATE FUNCTION categoryGetInvestment(p_cat VARCHAR(20), p_id INT(10))
+  RETURNS INT
+  COMMENT 'Returns total investment by category'
+  READS SQL DATA
+
+  BEGIN
+    DECLARE returnVal INT;
+
+    SELECT COALESCE(sum(purchasePrice), 0.00)
+    INTO returnVal
+    FROM collection
+      INNER JOIN coins ON collection.coinID = coins.coinID
+    WHERE collection.userID = p_id
+          AND coins.coinCategory = p_cat;
+    RETURN returnVal;
+  END//
+DELIMITER ;
+
+DELIMITER //
+DROP FUNCTION IF EXISTS categoryGetPurchase//
+CREATE FUNCTION categoryGetPurchase(p_cat VARCHAR(20), p_id INT(10)) RETURNS INT
+
+  BEGIN
+    DECLARE returnVal INT;
+
+    SELECT COUNT(*) AS catCount INTO returnVal FROM collection
+      INNER JOIN coins ON collection.coinID = coins.coinID
+    WHERE collection.userID = p_id
+          AND coins.coinCategory = p_cat;
+
+    RETURN returnVal;
+  END//
+DELIMITER ;
+
 /*--------------------------------------------------PROCEDURES------------------------------------------------------------*/
+SHOW CREATE PROCEDURE CategoryGetAll;
+CALL CategoryGetAll('Half Cent');
+
+DELIMITER //
+DROP PROCEDURE IF EXISTS CategoryGetAll//
+CREATE PROCEDURE CategoryGetAll
+  (
+    IN category VARCHAR(100)
+  )
+  /***********************************************************
+  Authors Name : Andre Board
+  Created Date : 2017-12-01
+  Description : Get all coins by category.
+                MODEL-CoinDesign::getDesign().
+  ************************************************************/
+  COMMENT 'Get all coins by category'
+  READS SQL DATA
+  DETERMINISTIC
+  CONTAINS SQL
+  BEGIN
+    -- Declare variables to hold diagnostics area information
+    DECLARE msg TEXT;
+
+    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
+    BEGIN
+      GET DIAGNOSTICS CONDITION 1
+      msg = MESSAGE_TEXT;
+      INSERT INTO db_log (error_message) VALUES (msg);
+    END;
+
+    -- DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'category not found';
+    SELECT * FROM coins WHERE coins.coinCategory = category AND coins.coinYear <= YEAR(CURDATE())
+    ORDER BY coinYear ASC;
+  END//
+DELIMITER ;
+
+
+
+
 /*
 Get all Category details
 CoinCategory::getCategoryDetails()
@@ -175,7 +228,13 @@ CREATE PROCEDURE CategoryLastFiveByUser
                  CoinCategory::categoryLastCountByUser().
    ************************************************************/
   BEGIN
-    SELECT * FROM collection
+    SELECT coins.coinName,
+      coins.coinID,
+      collection.coinGrade,
+      collection.collectionID,
+      collection.coinYear,
+      collection.purchasePrice
+    FROM collection
       INNER JOIN coins ON coins.coinID = collection.coinID
     WHERE coins.coinCategory = cat AND collection.userID = id
     ORDER BY collection.enterDate DESC

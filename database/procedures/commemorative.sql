@@ -40,11 +40,10 @@ DELIMITER //
 DROP FUNCTION IF EXISTS commemorativeGetCoinVersion//
 CREATE FUNCTION commemorativeGetCoinVersion(type VARCHAR(20))
   RETURNS VARCHAR(20)
-
+  READS SQL DATA
   BEGIN
     DECLARE cv VARCHAR(20);
     SELECT coinVersion INTO cv FROM coins WHERE coinType = type;
-
     RETURN type;
   END//
 DELIMITER ;
@@ -59,7 +58,8 @@ Description : Get coin category.
 DELIMITER //
 DROP PROCEDURE IF EXISTS CommemorativeGetAll//
 CREATE PROCEDURE CommemorativeGetAll()
-
+READS SQL DATA
+COMMENT 'Get all commemorative coins'
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'commemoratives not found';
     SELECT * FROM coins WHERE coins.commemorative = 1
@@ -76,7 +76,8 @@ Description : Get all commemorative coin types.
 DELIMITER //
 DROP PROCEDURE IF EXISTS CommemorativeGetTypes//
 CREATE PROCEDURE CommemorativeGetTypes()
-
+READS SQL DATA
+COMMENT 'Get all commemorative coin types using a views'
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'commemoratives not found';
     SELECT * FROM commemorativeTypesView;
@@ -92,7 +93,7 @@ Description : Get all commemorative coin categories.
 DELIMITER //
 DROP PROCEDURE IF EXISTS CommemorativeGetCats//
 CREATE PROCEDURE CommemorativeGetCats()
-
+READS SQL DATA
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'commemoratives not found';
     SELECT * FROM commemorativeCategoriesView;
@@ -111,7 +112,8 @@ CREATE PROCEDURE CommemorativeGetVersionTypes
   (
     IN type VARCHAR(100)
   )
-
+READS SQL DATA
+  COMMENT 'Get all commemorative version type coins'
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'commemoratives not found';
     SELECT coinVersion FROM coins WHERE coinType = type ORDER BY denomination DESC;

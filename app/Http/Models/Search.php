@@ -34,23 +34,26 @@ class Search
 
     /**
      * Search database from form
-     * @param string $version
+     * @param string $item
      * @return mixed
-     * @throws UnknownCoinCategoryException
      */
     public function findItem(string $item)
     {
         $statement = $this->pdo->prepare("call FindSearchItem(:item)");
         $statement->bindValue(':item', str_replace('_', ' ', $item), PDO::PARAM_STR);
         $statement->execute();
-        $coinTypes = $statement->fetch(PDO::FETCH_ASSOC);
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
         if (!$coinTypes) {
             return false;
-            throw new UnknownCoinException("Could not get {$item}");
         }
         return $coinTypes;
     }
 
+    /**
+     * Search database count results
+     * @param string $item
+     * @return mixed
+     */
     public function countSearchItem(string $item)
     {
         $statement = $this->pdo->prepare("call CountSearchItem(:item)");

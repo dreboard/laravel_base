@@ -47,39 +47,6 @@ CREATE PROCEDURE CoinTypeGetAllCollected
 DELIMITER ;
 
 
-/*
-Get Category for this type
-TypesController::getThisCategory()
-*/
-DELIMITER //
-DROP PROCEDURE IF EXISTS TypesGetThisCategory//
-CREATE PROCEDURE TypesGetThisCategory
-  (IN p_type VARCHAR(100))
-  COMMENT 'Get category by type'
-  BEGIN
-    SELECT coinCategory FROM coins WHERE coinType = p_type;
-  END//
-DELIMITER ;
-
-
-DELIMITER //
-DROP PROCEDURE IF EXISTS CoinTypeDistinctYears//
-CREATE PROCEDURE CoinTypeDistinctYears
-  (
-    IN type VARCHAR(100)
-  )
-  COMMENT 'Get years minted for type'
-  /***********************************************************
-  Authors Name : Andre Board
-  Created Date : 2017-12-01
-  Description : Get years minted for type.
-                MODEL-CoinType::getYearList().
-  ************************************************************/
-  BEGIN
-    SELECT DISTINCT(coinYear) FROM `coins` WHERE `coinType` = type ORDER BY coinYear ASC;
-  END//
-DELIMITER ;
-
 
 DELIMITER //
 DROP PROCEDURE IF EXISTS CoinGetDesignByTypeCollected//
@@ -130,13 +97,7 @@ CREATE PROCEDURE CoinGetDesignTypeByCoinTypeCollected
     ORDER BY coins.coinYear ASC;
   END//
 DELIMITER ;
-/*
-'Seated Dime No Stars'
-SELECT DISTINCT(coins.designType) FROM collection
-    INNER JOIN coins ON collection.coinID = coins.coinID
-    WHERE coins.coinType = 'Seated Liberty Dime' AND collection.userID = 5
-    ORDER BY coins.coinYear ASC
-    */
+
 DELIMITER //
 DROP FUNCTION IF EXISTS coinGetDesignTypeByCoinTypeCollectedCount//
 CREATE FUNCTION coinGetDesignTypeByCoinTypeCollectedCount(

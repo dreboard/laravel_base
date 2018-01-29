@@ -27,4 +27,20 @@ CREATE PROCEDURE _TestType(cointype VARCHAR(100))
 
 CALL _TestType('Westward Journey');
 
+
+/*
+'Seated Dime No Stars'
+SELECT DISTINCT(coins.designType) FROM collection
+    INNER JOIN coins ON collection.coinID = coins.coinID
+    WHERE coins.coinType = 'Seated Liberty Dime' AND collection.userID = 5
+    ORDER BY coins.coinYear ASC
+    */
+
+
+
+
+
+
+
+
   -- end

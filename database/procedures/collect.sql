@@ -8,8 +8,19 @@
 | any other location as required by the application or its packages.
 */
 
+/*--------------------------------------------------INDEXS------------------------------------------------------------*/
 
-
+ALTER TABLE `collection` ADD INDEX(`userID`);
+ALTER TABLE `collection` ADD INDEX(`collectfolderID`);
+ALTER TABLE `collection` ADD INDEX(`collectrollsID`);
+ALTER TABLE `collection` ADD INDEX(`collectsetID`);
+ALTER TABLE `collection` ADD INDEX(`collectfirstdayID`);
+ALTER TABLE `collection` ADD INDEX(`mintsetID`);
+ALTER TABLE `collection` ADD INDEX(`varietysetID`);
+ALTER TABLE `collection` ADD INDEX(`coincollectID`);
+ALTER TABLE `collection` ADD INDEX(`containerID`);
+ALTER TABLE `collection` ADD INDEX(`coinLotID`);
+ALTER TABLE `collection` ADD INDEX(`coinID`);
 
 /*--------------------------------------------------VIEWS------------------------------------------------------------*/
 
@@ -71,6 +82,7 @@ CREATE PROCEDURE CollectionSaveCoin
 
 
   )
+  MODIFIES SQL DATA
   COMMENT 'Save users coin.'
   BEGIN
     INSERT INTO collection
@@ -163,7 +175,6 @@ CREATE PROCEDURE CollectionSaveCoin
       );
 
 
-
     SELECT * FROM collection
       INNER JOIN coins ON coins.coinID = collection.coinID
     WHERE collection.collectionID = collectID AND collection.userID = id;
@@ -188,6 +199,7 @@ CREATE PROCEDURE CollectionGetCoin
     IN id  INT(10)
 
   )
+  READS SQL DATA
   COMMENT 'Get coins with same year, type and mint mark.'
   BEGIN
     SELECT * FROM collection
@@ -211,9 +223,9 @@ CREATE PROCEDURE CollectionGetCoinsByID
     IN id  INT(10)
 
   )
+  READS SQL DATA
   COMMENT 'Get coins with same coinID.'
   BEGIN
-    DECLARE CONTINUE HANDLER FOR SQLWARNING BEGIN END;
     SELECT * FROM collection
       INNER JOIN coins ON coins.coinID = collection.coinID
     WHERE collection.coinID = coin AND collection.userID = id;
@@ -229,6 +241,7 @@ CREATE PROCEDURE CategoryUserTotalInvestmentSumAll
   (IN id INT,
    IN cat VARCHAR(100)
 )
+  READS SQL DATA
   COMMENT 'Get total investment by category'
   /***********************************************************
    Authors Name : Andre Board
@@ -237,7 +250,6 @@ CREATE PROCEDURE CategoryUserTotalInvestmentSumAll
                  CoinCategory::CategoryUserTotalInvestmentSumAll().
    ************************************************************/
   BEGIN
-    DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT '0';
     SELECT COALESCE(sum(purchasePrice), 0.00) AS catCount
     FROM collection
       INNER JOIN coins ON collection.coinID = coins.coinID
@@ -250,11 +262,13 @@ DELIMITER ;
 DELIMITER //
 DROP PROCEDURE IF EXISTS CategoryUserTotalInvestmentSumFrom//
 CREATE PROCEDURE CategoryUserTotalInvestmentSumFrom
-  (IN id INT,
-   IN cat VARCHAR(100),
-   IN purchaseFrom VARCHAR(100)
+(
+  IN id INT,
+  IN cat VARCHAR(100),
+  IN purchaseFrom VARCHAR(100)
 )
   COMMENT 'Total Investments By Category FROM Source'
+  READS SQL DATA
   /***********************************************************
    Authors Name : Andre Board
    Created Date : 2017-12-01
@@ -273,6 +287,14 @@ CREATE PROCEDURE CategoryUserTotalInvestmentSumFrom
 DELIMITER ;
 
 
+
+
+
+/*--------------------------------------------------TRIGGERS------------------------------------------------------------*/
+
+
+
+/*--------------------------------------------------Development------------------------------------------------------------*/
 DELIMITER //
 DROP PROCEDURE IF EXISTS CollectionUpdateCleanedCoin//
 CREATE PROCEDURE CollectionUpdateCleanedCoin
@@ -296,6 +318,7 @@ CREATE PROCEDURE CollectionUpdateCleanedCoin
           AND coins.coinCategory = cat;
   END//
 DELIMITER ;
+
 
 DELIMITER //
 DROP PROCEDURE IF EXISTS CollectionUpdateCoinDetails//
@@ -346,12 +369,5 @@ CREATE PROCEDURE CollectionUpdateCoinDamage(
   END
 //
 delimiter ;
-/*--------------------------------------------------TRIGGERS------------------------------------------------------------*/
-
-
-
-
-
-
 
 /*--------------------------------------------------END------------------------------------------------------------*/

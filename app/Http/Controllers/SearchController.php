@@ -51,7 +51,8 @@ class SearchController extends Controller
         }
         $item = $request->input('search');
         $results = $this->searchModel->findItem($item);
-        $count = $this->searchModel->countSearchItem($item);
+        //dd($results);
+        $count = $this->searchModel->countSearchItem($item) ?? 0;
 
         return view(
             'area.search',

@@ -29,6 +29,7 @@ DELIMITER //
 DROP FUNCTION IF EXISTS subcatGetCount//
 CREATE FUNCTION subcatGetCount(subcat VARCHAR(20)) RETURNS INT
 
+  READS SQL DATA
   BEGIN
     DECLARE coinSubCategoryCollected INT;
 
@@ -52,6 +53,7 @@ CREATE PROCEDURE FindSearchItem
   Description : Search coins for item.
                 MODEL-Search::findItem().
   ************************************************************/
+  READS SQL DATA
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Item not found';
     SELECT * FROM coins
@@ -65,7 +67,7 @@ CREATE PROCEDURE FindSearchItem
         OR
         design LIKE CONCAT('%', searchItem, '%')
       )
-    ORDER BY coinName ASC;
+    ORDER BY denomination ASC;
   END//
 DELIMITER ;
 
@@ -80,6 +82,7 @@ CREATE PROCEDURE CountSearchItem
   Description : Search count for item.
                 MODEL-Search::findItem().
   ************************************************************/
+  READS SQL DATA
   BEGIN
     DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'Item not found';
     SELECT COUNT(*) FROM coins
@@ -92,8 +95,7 @@ CREATE PROCEDURE CountSearchItem
         coins.coinVersion LIKE CONCAT('%', searchItem, '%')
         OR
         design LIKE CONCAT('%', searchItem, '%')
-      )
-    ORDER BY coinName ASC;
+      );
   END//
 DELIMITER ;
 
@@ -120,6 +122,6 @@ DELIMITER ;
 
 /*--------------------------------------------------TRIGGERS------------------------------------------------------------*/
 
-
+CALL FindSearchItem('1999');
 
 /*--------------------------------------------------END------------------------------------------------------------*/
