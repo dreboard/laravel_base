@@ -47,6 +47,8 @@ class CoinsController
             }
             $collected = $this->collectModel->getCollectedCoinByID($coin);
             $coinData = $this->coinModel->getCoinByID($coin);
+            $coinObj = $this->coinModel->getCoin($coin);
+            dd($coinObj);
             $mintMarks = $this->coinModel->yearMintMarks($coinData['coinYear'], $coinData['coinType']);
 //dd($collected);
             return view(
@@ -54,7 +56,8 @@ class CoinsController
                 [
                     'coinData' => $coinData,
                     'mintMarks' => $mintMarks,
-                    'collected' => $collected
+                    'collected' => $collected,
+                    'coinObj' => $coinObj
                 ]
             );
         } catch (UnknownCoinException | NotUsersCoinException | \Throwable $e) {

@@ -40,24 +40,7 @@ CREATE OR REPLACE VIEW lincolnWheatBieCoinsView AS
 /*-------------------------------------------------------------FUNCTIONS------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------------------------------------------------------------*/
 
-DELIMITER \\
 
-CREATE FUNCTION CustomerLevel(p_id INT) RETURNS INT(4)
-DETERMINISTIC
-  BEGIN
-    DECLARE p_year INT(4);
-
-    IF p_creditLimit > 50000 THEN
-      SET lvl = 'PLATINUM';
-    ELSEIF (p_creditLimit <= 50000 AND p_creditLimit >= 10000) THEN
-      SET lvl = 'GOLD';
-    ELSEIF p_creditLimit < 10000 THEN
-      SET lvl = 'SILVER';
-    END IF;
-
-    RETURN (lvl);
-  END\\
-    DELIMITER ;
 /*-----------------------------------------------------------------------------------------------------------------------------------*/
 /*-------------------------------------------------------------PROCEDURES------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------------------------------------------------------------*/
@@ -89,6 +72,7 @@ CREATE PROCEDURE CoinsGetLikeID
     IN p_id INT
   )
   COMMENT 'Get coins with same year, type and mint mark.'
+  READS SQL DATA
   BEGIN
     DECLARE likeCoinYear INT(4);
     DECLARE likeCoinMark VARCHAR(10);
@@ -105,7 +89,11 @@ CREATE PROCEDURE CoinsGetLikeID
     AND coinYear = likeCoinYear;
   END//
 DELIMITER ;
+
+LOCK TABLES coins READ;
 CALL CoinsGetLikeID(1197);
+UNLOCK TABLES;
+
 /*-------------------------------------------------------------BY YEAR------------------------------------------------------------*/
 
 DELIMITER //

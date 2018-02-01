@@ -100,16 +100,6 @@ CREATE PROCEDURE CategoryGetAll
   DETERMINISTIC
   CONTAINS SQL
   BEGIN
-    -- Declare variables to hold diagnostics area information
-    DECLARE msg TEXT;
-
-    DECLARE CONTINUE HANDLER FOR SQLEXCEPTION
-    BEGIN
-      GET DIAGNOSTICS CONDITION 1
-      msg = MESSAGE_TEXT;
-      INSERT INTO db_log (error_message) VALUES (msg);
-    END;
-
     -- DECLARE EXIT HANDLER FOR SQLEXCEPTION SELECT 'category not found';
     SELECT * FROM coins WHERE coins.coinCategory = category AND coins.coinYear <= YEAR(CURDATE())
     ORDER BY coinYear ASC;

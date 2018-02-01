@@ -54,135 +54,6 @@ CoinCategory::getCategoryDetails()
 */
 
 
-/***********************************************************
- Authors Name : Andre Board
- Created Date : 2017-12-01
- Description : Save users coin.
-               CoinCategory::categoryLastCountByUser().
- ************************************************************/
-DELIMITER //
-DROP PROCEDURE IF EXISTS CollectionSaveCoin//
-CREATE PROCEDURE CollectionSaveCoin
-  (
-    IN user INT(10),
-    IN id  INT(100),
-    IN coinNickname VARCHAR(50),
-    IN coinGrade VARCHAR(50),
-    IN coinGradeNum INT(2),
-    IN designation VARCHAR(100),
-    IN pcgsVariety VARCHAR(55),
-    IN purchaseFrom VARCHAR(255),
-    IN purchaseDate DATE,
-    IN purchasePrice DECIMAL(10,2),
-    IN coinValue DECIMAL(10,2),
-    IN ebaySellerID VARCHAR(255),
-    IN shopName VARCHAR(255),
-    IN shopUrl VARCHAR(255)
-
-
-
-  )
-  MODIFIES SQL DATA
-  COMMENT 'Save users coin.'
-  BEGIN
-    INSERT INTO collection
-    (
-      userID,
-     coinID,
-     coinNickname,
-      coinGrade,
-      coinGradeNum,
-      designation,
-      pcgsVariety,
-      purchaseFrom,
-      purchaseDate,
-      purchasePrice,
-      coinValue,
-      ebaySellerID,
-      shopName,
-      shopUrl,
-
-
-      proService,
-     proSerialNumber,
-     slabCondition,
-
-     slabLabel,
-     coinGrade,
-     coinGradeNum,
-     designation,
-     problem,
-     coinValue,
-
-
-     auctionNumber,
-     additional,
-
-     ebaySellerID,
-     shopName,
-     shopUrl,
-     coinNote,
-     enterDate,
-     userID,
-     errorCoin,
-     mintBox,
-     showName,
-     showCity,
-     color,
-     fullAtt,
-     morganDesignation,
-     dieCrack,
-     bie,
-     wddo,
-     ddo,
-     wddr,
-     ddr,
-     coincollectID,
-     coinLotID
-    )
-    VALUES
-      (user,
-       id,
-       coinNickname,
-       coinGrade,
-       coinGradeNum,
-       designation,
-       pcgsVariety,
-       purchaseFrom,
-       purchaseDate,
-
-       purchasePrice,
-       coinValue,
-        ebaySellerID,
-        shopName,
-        shopUrl,
-
-
-
-
-        coinGradeNum,
-       designation,
-       pcgsVariety,
-       purchaseFrom,
-       purchaseDate,
-       coinNickname,
-       coinGrade,
-       coinGradeNum,
-       designation,
-       pcgsVariety,
-       purchaseFrom,
-       purchaseDate,
-      );
-
-
-    SELECT * FROM collection
-      INNER JOIN coins ON coins.coinID = collection.coinID
-    WHERE collection.collectionID = collectID AND collection.userID = id;
-
-  END //
-DELIMITER ;
-
-
 
 
 /***********************************************************
@@ -197,15 +68,13 @@ CREATE PROCEDURE CollectionGetCoin
   (
     IN collectID VARCHAR(50),
     IN id  INT(10)
-
   )
   READS SQL DATA
-  COMMENT 'Get coins with same year, type and mint mark.'
+  COMMENT 'Get users collected coin.'
   BEGIN
     SELECT * FROM collection
       INNER JOIN coins ON coins.coinID = collection.coinID
     WHERE collection.collectionID = collectID AND collection.userID = id;
-
   END //
 DELIMITER ;
 
@@ -229,7 +98,6 @@ CREATE PROCEDURE CollectionGetCoinsByID
     SELECT * FROM collection
       INNER JOIN coins ON coins.coinID = collection.coinID
     WHERE collection.coinID = coin AND collection.userID = id;
-
   END //
 DELIMITER ;
 
@@ -238,7 +106,8 @@ DELIMITER ;
 DELIMITER //
 DROP PROCEDURE IF EXISTS CategoryUserTotalInvestmentSumAll//
 CREATE PROCEDURE CategoryUserTotalInvestmentSumAll
-  (IN id INT,
+(
+   IN id INT,
    IN cat VARCHAR(100)
 )
   READS SQL DATA
@@ -369,5 +238,136 @@ CREATE PROCEDURE CollectionUpdateCoinDamage(
   END
 //
 delimiter ;
+
+
+
+/***********************************************************
+ Authors Name : Andre Board
+ Created Date : 2017-12-01
+ Description : Save users coin.
+               Collection::saveCoin().
+ ************************************************************/
+DELIMITER //
+DROP PROCEDURE IF EXISTS CollectionSaveCoin//
+CREATE PROCEDURE CollectionSaveCoin
+  (
+    IN user INT(10),
+    IN id  INT(100),
+    IN coinNickname VARCHAR(50),
+    IN coinGrade VARCHAR(50),
+    IN coinGradeNum INT(2),
+    IN designation VARCHAR(100),
+    IN pcgsVariety VARCHAR(55),
+    IN purchaseFrom VARCHAR(255),
+    IN purchaseDate DATE,
+    IN purchasePrice DECIMAL(10,2),
+    IN coinValue DECIMAL(10,2),
+    IN ebaySellerID VARCHAR(255),
+    IN shopName VARCHAR(255),
+    IN shopUrl VARCHAR(255)
+
+
+
+  )
+MODIFIES SQL DATA
+  COMMENT 'Save users coin.'
+  BEGIN
+    INSERT INTO collection
+    (
+      userID,
+      coinID,
+      coinNickname,
+      coinGrade,
+      coinGradeNum,
+      designation,
+      pcgsVariety,
+      purchaseFrom,
+      purchaseDate,
+      purchasePrice,
+      coinValue,
+      ebaySellerID,
+      shopName,
+      shopUrl,
+
+
+      proService,
+      proSerialNumber,
+      slabCondition,
+
+      slabLabel,
+      coinGrade,
+      coinGradeNum,
+      designation,
+      problem,
+      coinValue,
+
+
+      auctionNumber,
+      additional,
+
+      ebaySellerID,
+      shopName,
+      shopUrl,
+      coinNote,
+      enterDate,
+      userID,
+      errorCoin,
+      mintBox,
+      showName,
+      showCity,
+      color,
+      fullAtt,
+      morganDesignation,
+      dieCrack,
+      bie,
+      wddo,
+      ddo,
+      wddr,
+      ddr,
+      coincollectID,
+      coinLotID
+    )
+    VALUES
+      (user,
+        id,
+        coinNickname,
+        coinGrade,
+        coinGradeNum,
+        designation,
+        pcgsVariety,
+        purchaseFrom,
+        purchaseDate,
+
+        purchasePrice,
+        coinValue,
+        ebaySellerID,
+        shopName,
+        shopUrl,
+
+
+
+
+        coinGradeNum,
+        designation,
+        pcgsVariety,
+        purchaseFrom,
+        purchaseDate,
+        coinNickname,
+        coinGrade,
+       coinGradeNum,
+       designation,
+       pcgsVariety,
+       purchaseFrom,
+       purchaseDate,
+      );
+
+
+    SELECT * FROM collection
+      INNER JOIN coins ON coins.coinID = collection.coinID
+    WHERE collection.collectionID = collectID AND collection.userID = id;
+
+  END //
+DELIMITER ;
+
 
 /*--------------------------------------------------END------------------------------------------------------------*/

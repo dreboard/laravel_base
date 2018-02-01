@@ -6,6 +6,7 @@ use Coins\Exceptions\UnknownCoinException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use PDO;
+use App\Http\Models\CoinObject;
 /**
  * Class Coin
  * @package App\Http\Models
@@ -47,6 +48,28 @@ class Coin extends Model
         return $coinData;
     }
 
+    /**
+     * @param int $coin
+     * @return mixed
+     * @throws UnknownCoinException
+     */
+    public function getCoin(int $coin)
+    {
+        if (null === $coin || empty($coin)) {
+            throw new UnknownCoinException('Coin not found');
+        }
+
+        $stmt = $this->pdo->prepare('call CoinsGetByID(:id)');
+        $stmt->bindValue(':id', 11, PDO::PARAM_INT);
+
+        $stmt->execute();
+        $stmt->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, 'CoinObject', [$coin]);
+        $obj = $stmt->fetch(PDO::FETCH_ASSOC);
+        if (!$obj) {
+            throw new UnknownCoinException('Coin not found');
+        }
+        return $obj;
+    }
     /**
      * @param string $year
      * @return array

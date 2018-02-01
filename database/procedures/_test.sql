@@ -1,4 +1,30 @@
 
+
+
+
+
+SELECT DAY(CURDATE());
+
+
+DELIMITER \\
+
+CREATE FUNCTION CustomerLevel(p_id INT) RETURNS INT(4)
+DETERMINISTIC
+  BEGIN
+    DECLARE p_year INT(4);
+
+    IF p_creditLimit > 50000 THEN
+      SET lvl = 'PLATINUM';
+    ELSEIF (p_creditLimit <= 50000 AND p_creditLimit >= 10000) THEN
+      SET lvl = 'GOLD';
+    ELSEIF p_creditLimit < 10000 THEN
+      SET lvl = 'SILVER';
+    END IF;
+
+    RETURN (lvl);
+  END\\
+DELIMITER ;
+
 /***********************************************************
 --cursors
 
@@ -13,8 +39,8 @@ CREATE PROCEDURE _TestType(cointype VARCHAR(100))
     DECLARE type VARCHAR(100);
     DECLARE denom DECIMAL;
     DECLARE type_cursor CURSOR FOR
-      SELECT coins.coinType,coins.coinType, coins.denomination FROM coins
-        WHERE coins.coinType = cointype ORDER BY coins.coinYear DESC;
+      SELECT c.coinType, c.denomination FROM coins c
+        WHERE c.coinType = cointype ORDER BY c.coinYear DESC;
     -- open
     OPEN type_cursor;
     LOOP
