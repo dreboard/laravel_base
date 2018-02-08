@@ -11,6 +11,7 @@ namespace Coins\Traits;
  */
 trait CoinHelper
 {
+    public $minCoinYear = 1793;
 
 
     /**
@@ -30,7 +31,7 @@ trait CoinHelper
      */
     public function getMaxYear(string $year): string
     {
-        if ((int)$year > date('Y') || (int)$year < 1793) {
+        if ((int)$year > date('Y') || (int)$year < $this->minCoinYear) {
             return date('Y');
         }
         return $year;
@@ -94,11 +95,12 @@ trait CoinHelper
 
     /**
      * Shorten Coin Name
-     * @param string $year
+     * @param string $name
+     * @param int $length
      * @return string
      */
-    public static function shortName(string $name): string
+    public static function shortName(string $name, int $length = 22): string
     {
-        return substr($name, 0, 22);
+        return substr($name, 0, $length);
     }
 }

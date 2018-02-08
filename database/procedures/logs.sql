@@ -1,7 +1,9 @@
 /*
 Master logs
 */
-
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 
 DROP TABLE IF EXISTS db_log;
 CREATE TABLE IF NOT EXISTS db_log (
@@ -32,3 +34,5 @@ DELIMITER ;
 CALL log_msg('General', 'Some message',1);
 CALL log_msg('Error', 'Log an error', 1);
 SELECT * FROM db_log;
+
+COMMIT;

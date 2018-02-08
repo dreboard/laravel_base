@@ -8,17 +8,17 @@ use App\Http\Models\CoinType;
 use App\Http\Models\Collection;
 use Coins\Exceptions\NotUsersCoinException;
 use Coins\Traits\CoinHelper;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Auth;
-use PDO;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Coins\Exceptions\UnknownCoinException;
 
 /**
  * Class CoinsController
  * @package App\Http\Controllers
  */
-class CoinsController
+class CoinsController extends Controller
 {
     use CoinHelper;
 
@@ -32,16 +32,18 @@ class CoinsController
         $this->coinModel = new Coin();
         $this->typeModel = new CoinType();
         $this->collectModel = new Collection();
+
     }
 
     /**
      * Create Coin Category Links
      * @param int $coin
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|\Illuminate\View\View
      */
     public function getCoin(int $coin)
     {
         try {
+            //throw new \Exception('User defined');
             if (null === $coin || empty($coin)) {
                 throw new UnknownCoinException('Coin not found');
             }
@@ -61,10 +63,19 @@ class CoinsController
                 ]
             );
         } catch (UnknownCoinException | NotUsersCoinException | \Throwable $e) {
+            if ($e instanceof UnknownCoinException || $e instanceof NotUsersCoinException) {
+                return view(
+                    'error',
+                    [
+                        'message' => $e->getMessage()
+                    ]
+                );
+            }
+            Log::error($e->getMessage(), ['id' => Auth::id()]);
             return view(
                 'error',
                 [
-                    'message' => $e->getMessage()
+                    'message' => 'Could not retrieve that coin'
                 ]
             );
         }
@@ -73,7 +84,7 @@ class CoinsController
     /**
      * Certified grade report by coin
      * @param int $coin
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|\Illuminate\View\View
      */
     public function getCertfiedCoin(int $coin)
     {
@@ -103,7 +114,7 @@ class CoinsController
 
     /**
      * @param int $year
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|\Illuminate\View\View
      */
     public function getYear(string $year)
     {
@@ -134,7 +145,7 @@ class CoinsController
 
     /**
      * @param int $year
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|\Illuminate\View\View
      */
     public function getReport()
     {
@@ -146,6 +157,7 @@ class CoinsController
                 ]
             );
         } catch (\Throwable $e) {
+            Log::error($e->getMessage());
             return view(
                 'error',
                 [
@@ -158,7 +170,7 @@ class CoinsController
     /**
      * Find all coins from year.
      * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|\Illuminate\View\View
      * @throws UnknownCoinException
      */
     public function findYear(Request $request)
@@ -185,7 +197,7 @@ class CoinsController
     /**
      * Create Coin Category Links
      * @param int $coin
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|\Illuminate\View\View
      */
     public function getCoinColor(int $coin)
     {
@@ -217,7 +229,7 @@ class CoinsController
     /**
      * Create Coin Category Links
      * @param int $coin
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return Factory|\Illuminate\View\View
      */
     public function addCoin(int $coin)
     {

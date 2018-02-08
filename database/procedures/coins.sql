@@ -90,9 +90,7 @@ CREATE PROCEDURE CoinsGetLikeID
   END//
 DELIMITER ;
 
-LOCK TABLES coins READ;
-CALL CoinsGetLikeID(1197);
-UNLOCK TABLES;
+
 
 /*-------------------------------------------------------------BY YEAR------------------------------------------------------------*/
 

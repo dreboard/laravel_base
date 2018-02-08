@@ -1,7 +1,9 @@
 
 
 
-
+LOCK TABLES coins READ;
+CALL CoinsGetLikeID(1197);
+UNLOCK TABLES;
 
 SELECT DAY(CURDATE());
 
