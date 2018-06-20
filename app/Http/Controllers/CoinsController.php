@@ -50,7 +50,7 @@ class CoinsController extends Controller
             $collected = $this->collectModel->getCollectedCoinByID($coin);
             $coinData = $this->coinModel->getCoinByID($coin);
             $coinObj = $this->coinModel->getCoin($coin);
-            dd($coinObj);
+            //dd($coinObj);
             $mintMarks = $this->coinModel->yearMintMarks($coinData['coinYear'], $coinData['coinType']);
 //dd($collected);
             return view(

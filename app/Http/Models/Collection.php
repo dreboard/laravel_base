@@ -163,18 +163,18 @@ class Collection
             :id
             )'
         );
-        $statement->bindValue(':holed', $damages['holed'], PDO::PARAM_INT);
-        $statement->bindValue(':cleaned', $damages['cleaned'], PDO::PARAM_INT);
-        $statement->bindValue(':altered', $damages['altered'], PDO::PARAM_INT);
-        $statement->bindValue(':damaged', $damages['damaged'], PDO::PARAM_INT);
-        $statement->bindValue(':pvc', $damages['pvc'], PDO::PARAM_INT);
-        $statement->bindValue(':corrosion', $damages['corrosion'], PDO::PARAM_INT);
-        $statement->bindValue(':bent', $damages['bent'], PDO::PARAM_INT);
-        $statement->bindValue(':plugged', $damages['plugged'], PDO::PARAM_INT);
-        $statement->bindValue(':plugged', $damages['plugged'], PDO::PARAM_INT);
-        $statement->bindValue(':polished', $damages['polished'], PDO::PARAM_INT);
-        $statement->bindValue(':collectionID', $damages['collectionID'], PDO::PARAM_INT);
-        $statement->bindValue(':userID', Auth::id(), PDO::PARAM_INT);
+        $statement->bindValue(':holed', $damages['holed'], PDO::PARAM_INT|PDO::PARAM_INPUT_OUTPUT);
+        $statement->bindValue(':cleaned', $damages['cleaned'], PDO::PARAM_INT|PDO::PARAM_INPUT_OUTPUT);
+        $statement->bindValue(':altered', $damages['altered'], PDO::PARAM_INT|PDO::PARAM_INPUT_OUTPUT);
+        $statement->bindValue(':damaged', $damages['damaged'], PDO::PARAM_INT|PDO::PARAM_INPUT_OUTPUT);
+        $statement->bindValue(':pvc', $damages['pvc'], PDO::PARAM_INT|PDO::PARAM_INPUT_OUTPUT);
+        $statement->bindValue(':corrosion', $damages['corrosion'], PDO::PARAM_INT|PDO::PARAM_INPUT_OUTPUT);
+        $statement->bindValue(':bent', $damages['bent'], PDO::PARAM_INT|PDO::PARAM_INPUT_OUTPUT);
+        $statement->bindValue(':plugged', $damages['plugged'], PDO::PARAM_INT|PDO::PARAM_INPUT_OUTPUT);
+        $statement->bindValue(':plugged', $damages['plugged'], PDO::PARAM_INT|PDO::PARAM_INPUT_OUTPUT);
+        $statement->bindValue(':polished', $damages['polished'], PDO::PARAM_INT|PDO::PARAM_INPUT_OUTPUT);
+        $statement->bindValue(':collectionID', $damages['collectionID'], PDO::PARAM_INT|PDO::PARAM_INPUT_OUTPUT);
+        $statement->bindValue(':userID', Auth::id(), PDO::PARAM_INT|PDO::PARAM_INPUT_OUTPUT);
         $statement->execute();
         $coinUpdate = $statement->fetchAll(PDO::FETCH_ASSOC);
         if (!$coinUpdate) {
